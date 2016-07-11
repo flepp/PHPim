@@ -17,13 +17,9 @@ class DefaultController extends Controller
 
 	//explained +- in doc/tuto creer une page
 
-
-
-    public function contact()
+    public function about()
     {
-    	echo 'test';
-        //traiter le formulaire contact ici...
-        //$this->show('default/contact');
+        $this->show('default/about');
     }
 
 }
