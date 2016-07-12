@@ -23,6 +23,7 @@
 				<a href="<?= $this->url('admin_invitations') ?>">Invits</a>
 				<a href="<?= $this->url('admin_activateQuiz') ?>">Activate Quiz</a>
 				<a href="<?= $this->url('admin_modifyQuiz') ?>">Modify Quiz</a>
+				<a href="<?= $this->url('quiz_quiz') ?>">Quiz</a>
 				<a href="<?= $this->url('admin_database') ?>">BDD</a>
 
 			</nav>
