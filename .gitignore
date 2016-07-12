@@ -4,4 +4,4 @@
 /composer/
 composer.lock
 /docs/
-
+*.sql
