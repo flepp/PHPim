@@ -1,7 +1,7 @@
 <?php
 
 	namespace Controller;
-	use \W\Manager\UserManager;
+	use \W\Manager\UsersManager;
 	use \W\Controller\Controller;
 
 class UsersController extends Controller
