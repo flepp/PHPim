@@ -26,6 +26,7 @@
 		["GET", "/administration/gestion-bdd", "Session#database", "session_database"],
 		["POST", "/administration/gestion-bdd", "Session#databasePost", "session_database_post"],
 		["GET", "/administration/activation-quiz", "Quiz#activate", "quiz_activate"],
+		["POST", "/administration/activation-quiz", "Quiz#activatePost", "quiz_activate_post"],
 			/* Pass quiz id as POST parameters */
 		["GET", "/administration/modification-quiz/[i:id]", "Quiz#modify", "quiz_modify"],
 		["POST", "/administration/modification-quiz/[i:id]", "Quiz#modifyPost", "quiz_modify_post"],
