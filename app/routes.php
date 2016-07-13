@@ -16,22 +16,24 @@
 		["GET", "/gestion-bdd/", "Users#database", "user_database"],
 		["POST", "/gestion-bdd/", "Users#databasePost", "user_database_post"],
 		/* ----- AllUsers controller ------ */
-		["GET", "/etudiant/[i:id]", "AllUsers#details", "allusers_details"],
+		["GET", "/etudiant/[i:id]/", "AllUsers#details", "allusers_details"],
 		["GET", "/liste-etudiants/", "AllUsers#allUsers", "allusers_allUsers"],
 		/* ----- Admin controller ----- */
-		["GET", "/administration/sessions", "Session#session", "session_session"],
-		["POST", "/administration/sessions", "Session#sessionPost", "sessions_session_post"],
-		["GET", "/administration/invitations", "Users#invitations", "user_invitations"],
-		["POST", "/administration/invitations", "Users#invitationsPost", "user_invitations_post"],
-		["GET", "/administration/gestion-bdd", "Session#database", "session_database"],
-		["POST", "/administration/gestion-bdd", "Session#databasePost", "session_database_post"],
-		["GET", "/administration/activation-quiz", "Quiz#activate", "quiz_activate"],
-		["POST", "/administration/activation-quiz", "Quiz#activatePost", "quiz_activate_post"],
+		["GET", "/administration/sessions/", "Session#session", "session_session"],
+		["POST", "/administration/sessions/", "Session#sessionPost", "sessions_session_post"],
+		["GET", "/administration/invitations/", "Users#invitations", "user_invitations"],
+		["POST", "/administration/invitations/", "Users#invitationsPost", "user_invitations_post"],
+		["GET", "/administration/gestion-bdd/", "Session#database", "session_database"],
+		["POST", "/administration/gestion-bdd/", "Session#databasePost", "session_database_post"],
+		["GET", "/administration/ajout-quiz/", "Quiz#add", "quiz_add"],
+		["POST", "/administration/ajout-quiz/", "Quiz#addPost", "quiz_add_post"],
+		["GET", "/administration/activation-quiz/", "Quiz#activate", "quiz_activate"],
+		["POST", "/administration/activation-quiz/", "Quiz#activatePost", "quiz_activate_post"],
 			/* Pass quiz id as POST parameters */
-		["GET", "/administration/modification-quiz/[i:id]", "Quiz#modify", "quiz_modify"],
-		["POST", "/administration/modification-quiz/[i:id]", "Quiz#modifyPost", "quiz_modify_post"],
-		["GET", "/administration/modification-categorie/[i:id]", "Category#modify", "Category_modify"],
-		["POST", "/administration/modification-categorie/[i:id]", "Category#modifyPost", "Category_modify_post"],
+		["GET", "/administration/modification-quiz/[i:id]/", "Quiz#modify", "quiz_modify"],
+		["POST", "/administration/modification-quiz/[i:id]/", "Quiz#modifyPost", "quiz_modify_post"],
+		["GET", "/administration/modification-categorie/[i:id]/", "Category#modify", "Category_modify"],
+		["POST", "/administration/modification-categorie/[i:id]/", "Category#modifyPost", "Category_modify_post"],
 		/* ----- Quiz controller ------*/
 		["GET", "/quiz/", "Quiz#quiz", "quiz_quiz"]
 
