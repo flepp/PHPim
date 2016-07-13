@@ -1,7 +1,9 @@
 <?php
 
 	namespace Controller;
-	use \Manager\SessionManager;
+
+    use \Manager\SessionManager;
+	use \Manager\UsersManager;
 	use \W\Controller\Controller;
 
 class SessionController extends Controller{
@@ -18,7 +20,7 @@ class SessionController extends Controller{
         $tableInsert = array();
         $sessionManager = new SessionManager;
         //debug($_POST);
-        if(isset($_POST['sessionName'])){
+        if(isset($_POST['sessionName'])||isset($_POST['sessionStart'])||isset($_POST['sessionEnd'])){
             if(!empty($_POST)){
                 $sessionName = $_POST['sessionName'];
                 $sessionStart = $_POST['sessionStart'];
@@ -37,7 +39,8 @@ class SessionController extends Controller{
                             ];
 
                             $insert = $sessionManager->insert($tableInsert);
-                            //debug($tableInsert);
+                            
+                            /*--------REDIRECTION---------*/
                             $this->redirectToRoute('session_session');
                         }
                         else{
@@ -52,24 +55,41 @@ class SessionController extends Controller{
                 }
             }
         }
-        else if(!empty($_POST)){    
-            $id = $_POST['sessionId'];
-            $sessionStatus = $_POST['sessionStatus'];
-            $tableUpdate = array();
-            $tableUpdate = [
-                'ses_status' => $sessionStatus,
-                'ses_updated' => date('Y-m-d'),
-            ];
-            $update = $sessionManager->update($tableUpdate, $id);
-            $this->redirectToRoute('session_session');
+        else if(isset($_POST['sessionStatus'])){
+            if(!empty($_POST)){ 
+                /*-------------------Disable OR Enable  session------------*/   
+                $id = $_POST['sessionId'];
+                $sessionStauts = $_POST['sessionStatus'];
+                $tableUpdate = array();
+                $tableUpdateUser = array();
+                $userManager = new UsersManager;
+                $tableUpdate = [
+                    'ses_status' => $sessionStatus,
+                    'ses_updated' => date('Y-m-d'),
+                ];
+                $update = $sessionManager->update($tableUpdate, $id);
 
+                /*-------------------Disable OR Enable all students from a specific session------------*/
+                $tableUpdateUser = [
+                    'usr_status' => $sessionStatus,
+                    'usr_updated' => date('Y-m-d'),
+                ];
+                $updateUser = $userManager->UpdateUsersStatusBySession($tableUpdateUser, $id);
+
+                /*--------REDIRECTION---------*/
+                $this->redirectToRoute('session_session');
+            }
+        }
+        else{
+            if(!empty($_POST)){ 
+                $id = $_POST['sessionId'];
+                $sessionManager = new SessionManager;
+                $delete = $sessionManager->delete($id);
+                /*--------REDIRECTION---------*/
+                $this->redirectToRoute('session_session');
+            }
         }
     }
-    /*public function sessionPost(){
-        $sessionManager = new SessionManager;
-        
-        
-    }*/
     public function database(){
 
         $this->show('user/admin/database');
@@ -78,5 +98,4 @@ class SessionController extends Controller{
 
         $this->show('user/admin/invitations');
     }
-
 }
