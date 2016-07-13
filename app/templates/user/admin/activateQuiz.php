@@ -32,6 +32,10 @@
 					Désactiver
 				</button>
 			</form>
+			<form action="" method="POST">
+				<input type="text" name="deleteQuiz" value="<?= $value['id'] ?>" hidden>
+				<button type="submit" name="delete" >Supprimer</button>
+			</form>
 			<a href="<?= $this->url('quiz_modify', ['id' => $value['id']])?>">Modifier</a>
 		</div>
 	<?php endforeach ?>

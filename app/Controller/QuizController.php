@@ -22,10 +22,9 @@ class QuizController extends Controller
         $quizManager = new QuizManager();
         $quizList = $quizManager->findAll();
 
-
         debug($_POST);
 
-        if(isset($_POST)){
+        if(isset($_POST['quiStatus'])){
             $id = $_POST['quiId'];
             $quiStatus = $_POST['quiStatus'];
             $data = array(
@@ -36,8 +35,15 @@ class QuizController extends Controller
         }
         debug($quizList);
 
-        $this->show('user/admin/activateQuiz', array('quizList' => $quizList));
-
+        if (isset($_POST['delete'])) {
+        $id = $_POST['deleteQuiz'];
+        $quizManager = new QuizManager();
+        //$quizSingle = $quizManager->find($id);
+        $quizDelete = $quizManager->delete($id);
+         $this->redirectToRoute('quiz_activate');
+        //$this->show('user/admin/activateQuiz', array('quizDelete' => $quizDelete));
+        debug($_POST);
+        }
     }
 
     public function modify($id)
