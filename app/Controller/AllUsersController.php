@@ -12,7 +12,7 @@ class AllUsersController extends Controller
     {   
         $allUsersManager = new AllUsersManager();
         $allUsersTable = $allUsersManager->findAll();
-        debug($allUsersTable);
+        //debug($allUsersTable);
         $this->show(
             'allusers/allUsers',
             array(
