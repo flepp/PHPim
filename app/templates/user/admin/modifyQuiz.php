@@ -9,7 +9,7 @@
 		<br>
 		<label for="title">Titre : </label>
 		<br>
-		<input type="text" id="title" name="quiTitle" value="<?php echo $quizSingle['qui_title'] ?>">
+		<input type="text" id="title" name="quiTitle" value="<?= $quizSingle['qui_title'] ?>">
 		<br>
 		<label for="link">Lien : </label>
 		<br>

@@ -2,7 +2,6 @@
 
 <?php $this->start('main_content') ?>
 	<p>Quiz</p>
-
 		<?php foreach ($quizList as $key => $value): ?>
 				<?php if ($value['qui_status'] == 1): ?>
 					<div>
@@ -14,6 +13,7 @@
 					<? return false; ?>
 				<?php endif ?>
 		<?php endforeach ?>
+	<?php debug($quizList); ?>
 
 <?php $this->stop('main_content') ?>
 
