@@ -1,7 +1,7 @@
 <?php
 
 	namespace Controller;
-	use \W\Manager\UsersManager;
+	use \Manager\UsersManager;
 	use \W\Controller\Controller;
 
 class UsersController extends Controller
@@ -44,14 +44,22 @@ class UsersController extends Controller
     }
 
     public function edit()
-    {
+    {   $id = '1'; //to change when I'll have some users in database
+        $detailsUser = new UsersManager();
+        $userInfo = $detailsUser->find($id);
+        //debug($userInfo);
+        $this->show(
+            'user/edit',
+            array(
+                'edit' => $userInfo,
 
-        $this->show('user/edit');
+            )
+        );
     }
 
     public function editPost()
-    {
-
+    {   
+        
         $this->show('user/edit');
     }
 
