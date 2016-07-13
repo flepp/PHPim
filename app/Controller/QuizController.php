@@ -22,29 +22,19 @@ class QuizController extends Controller
         $quizManager = new QuizManager();
         $quizList = $quizManager->findAll();
 
-        $quiStatus = isset($_POST['quiStatusOne']);
-        $quiStatusTwo = isset($_POST['quiStatusTwo']);
 
-        $data = array(
-            "qui_status" => 1
-        );
-        $dataTwo = array(
-            "qui_status" => 0
-        );
-
-        $id = $_POST['quiId'];
         debug($_POST);
 
         if(isset($_POST)){
-            if ($quiStatus) {
-                $quizManager->update($data, $id, $stripTags = true);
-            }
-            else if($quiStatusTwo){
-                $quizManager->update($dataTwo, $id, $stripTags = true);
-            }
-
+            $id = $_POST['quiId'];
+            $quiStatus = $_POST['quiStatus'];
+            $data = array(
+                "qui_status" => $quiStatus
+            );
+            $quizManager->update($data, $id, $stripTags = true);
             $this->redirectToRoute('quiz_activate');
         }
+        debug($quizList);
 
         $this->show('user/admin/activateQuiz', array('quizList' => $quizList));
 
