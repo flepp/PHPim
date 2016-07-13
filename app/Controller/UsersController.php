@@ -19,10 +19,16 @@ class UsersController extends Controller
     {
         //debug($_POST);
         //Recupération des données du POST (formulaire d'inscription)
-        $userpseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
+        $userpseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
         $password = isset($_POST['password']) ? trim($_POST['password']): '';
         $password2 = isset($_POST['password2']) ? trim($_POST['password2']): '';
+
+        $street = isset($_POST['street']) ? trim($_POST['street']): '';
+        $city = isset($_POST['city']) ? trim($_POST['city']): '';
+        $zipcode = isset($_POST['zipcode']) ? trim($_POST['zipcode']): '';
+        $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
+        $photo = isset($_POST['photo']) ? trim($_POST['photo']): '/upload/avatar_0.png';
 
         //Validation des données
         if ($password != '' && $password == $password2){
@@ -30,10 +36,17 @@ class UsersController extends Controller
             $userManager = new \Manager\UsersManager();
             $userManager->insert(
                 array(
-                    'usr_pseudo' => $userpseudo,
                     'usr_email' => $email,
+                    'usr_pseudo' => $userpseudo,
                     'usr_password' =>  password_hash($password, PASSWORD_BCRYPT),
                     'usr_role' => '0',
+
+                    'usr_street' => $street,
+                    'usr_city' => $city,
+                    'usr_zipcode' => $zipcode,
+                    'usr_birthdate' => $birthdate,
+                    'usr_status' => '1',
+                    'usr_created' => NOW()
                 )
             );
 
@@ -41,7 +54,7 @@ class UsersController extends Controller
             $this->redirectToRoute('user_login');
         }
         else {
-            echo 'Remplissez le mot de passe';
+            echo 'Verifiez les champs';
             exit;
         }
     }
