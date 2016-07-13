@@ -3,7 +3,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title><?= $this->e($title) ?></title>
-
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/reset.css') ?>">
 </head>
 <body>
@@ -23,7 +22,6 @@
 				<a href="<?= $this->url('user_invitations') ?>">Invits</a>
 				<a href="<?= $this->url('quiz_quiz') ?>">Quiz</a>
 				<a href="<?= $this->url('quiz_activate') ?>">Activate Quiz</a>
-				<a href="<?= $this->url('quiz_modify') ?>">Modify Quiz</a>
 				<a href="<?= $this->url('session_database') ?>">BDD Session</a>
 			</nav>
 		</header>
