@@ -17,7 +17,43 @@ class UsersController extends Controller
     //Methode d'inscription
      public function registerPost()
     {
-        //debug($_POST);
+        //if (!empty($_GET['id'])) {
+            //$userId = $_GET['id'];
+            //print_r($studentId);
+
+            $extensionAutorisees = array('jpg','png','gif');
+
+            // Je récupère mon tableau avec les infos sur le fichier
+            foreach ($_FILES as $key => $photo) {
+                // Je teste si le fichier a été uploadé
+                if (!empty($photo) && !empty($photo['photo'])) {
+                    print_r($photo);
+                    if ($photo['size'] <= 500000) {
+                        $filename = $photo['photo'];
+                        $dotPos = strrpos($filename, '.');
+                        $extension = strtolower(substr($filename, $dotPos+1));
+                        // Je test si c'est pas un hack (sur l'extension)
+                        if (in_array($extension, $extensionAutorisees)) {
+                            // Je déplace le fichier uploadé au bon endroit
+                            if (move_uploaded_file($photo['tmp_name'], 'upload/'. 'avatar_' .$userId.'.'.$extension)) {
+                                echo 'fichier téléversé<br />';
+                            }
+                            else {
+                                echo 'une erreur est survenue<br />';
+                            }
+                        }
+                        else {
+                            echo 'extension interdite<br />';
+                        }
+                    }
+                    else {
+                        echo 'fichier trop lourd<br />';
+                    }
+                }
+            }
+        //}
+
+        debug($_POST);
         //Recupération des données du POST (formulaire d'inscription)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
         $userpseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
@@ -27,8 +63,9 @@ class UsersController extends Controller
         $street = isset($_POST['street']) ? trim($_POST['street']): '';
         $city = isset($_POST['city']) ? trim($_POST['city']): '';
         $zipcode = isset($_POST['zipcode']) ? trim($_POST['zipcode']): '';
+        $country = isset($_POST['country']) ? trim($_POST['country']): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
-        $photo = isset($_POST['photo']) ? trim($_POST['photo']): '/upload/avatar_0.png';
+        $photo = isset($_POST['photo']) ? $_POST['photo']: '';
 
         //Validation des données
         if ($password != '' && $password == $password2){
@@ -39,14 +76,15 @@ class UsersController extends Controller
                     'usr_email' => $email,
                     'usr_pseudo' => $userpseudo,
                     'usr_password' =>  password_hash($password, PASSWORD_BCRYPT),
-                    'usr_role' => '0',
-
+                    'usr_role' => 'user',
                     'usr_street' => $street,
                     'usr_city' => $city,
                     'usr_zipcode' => $zipcode,
+                    'usr_country' => $country,
                     'usr_birthdate' => $birthdate,
+                    'usr_photo' => $photo,
                     'usr_status' => '1',
-                    'usr_created' => NOW()
+                    'usr_created' => date('Y-m-d H:i:s')
                 )
             );
 
