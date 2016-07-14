@@ -1,16 +1,17 @@
 <?php
 
 	namespace Controller;
-
-    use \Manager\UsersManager;
+	use \Manager\UsersManager;
 	use \W\Controller\Controller;
 
 class UsersController extends Controller
 {
     //INSCRIPTION\\
     //Appel de la vue d'inscription
+
     public function register()
     {
+
         $this->show('user/register');
     }
 
@@ -94,13 +95,15 @@ class UsersController extends Controller
         else {
             echo 'Verifiez les champs';
             exit;
-        }
+
+        $this->show('user/register');
     }
 
     //CONNEXION\\
     //Appel de la vue de connexion
    public function login()
     {
+
         $this->show('user/login');
     }
     //Methode de connexion
@@ -128,6 +131,7 @@ class UsersController extends Controller
             // Redirection vers "Home"
             $this->redirectToRoute('home');
         }
+        $this->show('user/login');
     }
 
     public function forgot()
@@ -143,14 +147,22 @@ class UsersController extends Controller
     }
 
     public function edit()
-    {
+    {   $id = '1'; //to change when I'll have some users in database
+        $detailsUser = new UsersManager();
+        $userInfo = $detailsUser->find($id);
+        //debug($userInfo);
+        $this->show(
+            'user/edit',
+            array(
+                'edit' => $userInfo,
 
-        $this->show('user/edit');
+            )
+        );
     }
 
     public function editPost()
-    {
-
+    {   
+        
         $this->show('user/edit');
     }
 
