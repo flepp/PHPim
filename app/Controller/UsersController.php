@@ -139,12 +139,11 @@ class UsersController extends Controller
     {   $id = '1'; //to change when I'll have some users in database
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
-        //debug($userInfo);
+        debug($userInfo);
         $this->show(
             'user/edit',
             array(
-                'edit' => $userInfo,
-
+                'editUserInfo' => $userInfo,
             )
         );
     }
