@@ -2,6 +2,7 @@
 	namespace Controller;
 	use \Manager\UsersManager;
 	use \W\Controller\Controller;
+    use \W\Security\AuthentificationManager;
 
 class UsersController extends Controller
 {
@@ -59,7 +60,7 @@ class UsersController extends Controller
         $photo = isset($_POST['avatar']) ? $_POST['avatar']: '';
 
         // Verification des données
-        $authManager = new \W\Security\AuthentificationManager();
+        $authManager = new AuthentificationManager();
         $id = $authManager->isValidLoginInfo($email, $password);
         if ($id === 0) {
             echo'Login invalide <br />';
@@ -70,7 +71,6 @@ class UsersController extends Controller
             $userManager->update(
                 array(
                     'usr_pseudo' => $userpseudo,
-                    'usr_role' => 'user',
                     'usr_street' => $street,
                     'usr_city' => $city,
                     'usr_zipcode' => $zipcode,
@@ -85,7 +85,6 @@ class UsersController extends Controller
             //Redirect to "LOGIN" page
             $this->redirectToRoute('user_login');
         }
-        $this->show('user/register');
     }
 
 
