@@ -15,7 +15,15 @@
 		<br>
 		<input type="text" id="link" name="quiLink">
 		<br>
+		<select name="categories">
+			<option value="0">Sélectionnez une catégorie</option>
+			<?php foreach ($categoryList as $key => $value): ?>
+				<option value="<?= $value['id']?>"><?= $value['cat_name']?></option>
+			<?php endforeach ?>
+		</select>
+		<br>
 		<button type="submit">Ajouter</button>
 	</form>
+	<a href="<?= $this->url('quiz_activate'); ?>">Retour</a>
 <?php $this->stop('main_content') ?>
 
