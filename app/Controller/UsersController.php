@@ -6,31 +6,30 @@
 class UsersController extends Controller
 {
     //INSCRIPTION\\
-    //Appel de la vue d'inscription
+    //Calling the inscription view
     public function register()
     {
-
         $this->show('user/register');
     }
 
-    //Methode d'inscription
-     public function registerPost($id, $token)
+    //Inscription method
+     public function registerPost()
     {
         $extensionAutorisees = array('jpg','png','gif');
 
-        // Je récupère mon tableau avec les infos sur le fichier
+        // Gathering file (photo) info table
         foreach ($_FILES as $key => $photo) {
-            // Je teste si le fichier a été uploadé
+            // Testing upload of file
             if (!empty($photo) && !empty($photo['avatar'])) {
                 print_r($photo);
                 if ($photo['size'] <= 500000) {
                     $filename = $photo['avatar'];
                     $dotPos = strrpos($filename, '.');
                     $extension = strtolower(substr($filename, $dotPos+1));
-                    // Je test si c'est pas un hack (sur l'extension)
+                    // Testing the extension
                     if (in_array($extension, $extensionAutorisees)) {
-                        // Je déplace le fichier uploadé au bon endroit
-                        if (move_uploaded_file($photo['tmp_name'], 'public/upload/img/'. 'avatar_156'.'.' /*.$userId.'.'*/.$extension)) {
+                        // Moving file to the right folder
+                        if (move_uploaded_file($photo['tmp_name'], 'public/assets/upload/img/'. 'img_'.$userpseudo.'.'.$extension)) {
                             //echo 'fichier téléversé<br />';
                         }
                         else {
@@ -48,12 +47,10 @@ class UsersController extends Controller
         }
 
         //debug($_POST);
-        //Recupération des données du POST (formulaire d'inscription)
+        // Gathering POST datas (form)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
         $userpseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
         $password = isset($_POST['password']) ? trim($_POST['password']): '';
-        $password2 = isset($_POST['password2']) ? trim($_POST['password2']): '';
-
         $street = isset($_POST['street']) ? trim($_POST['street']): '';
         $city = isset($_POST['city']) ? trim($_POST['city']): '';
         $zipcode = isset($_POST['zipcode']) ? trim($_POST['zipcode']): '';
@@ -61,15 +58,18 @@ class UsersController extends Controller
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
         $photo = isset($_POST['avatar']) ? $_POST['avatar']: '';
 
-        //Validation des données
-        if ($password != '' && $password == $password2){
-            //Insertion en DB
+        // Verification des données
+        $authManager = new \W\Security\AuthentificationManager();
+        $id = $authManager->isValidLoginInfo($email, $password);
+        if ($id === 0) {
+            echo'Login invalide <br />';
+        }
+        else {
+            //DB insersion
             $userManager = new \Manager\UsersManager();
             $userManager->update(
                 array(
-                    'usr_email' => $email,
                     'usr_pseudo' => $userpseudo,
-                    'usr_password' =>  password_hash($password, PASSWORD_BCRYPT),
                     'usr_role' => 'user',
                     'usr_street' => $street,
                     'usr_city' => $city,
@@ -78,37 +78,33 @@ class UsersController extends Controller
                     'usr_birthdate' => $birthdate,
                     'usr_photo' => $photo,
                     'usr_status' => '1',
-                    'usr_created' => date('Y-m-d H:i:s')
+                    'usr_updated' => date('Y-m-d H:i:s')
                 )
             );
 
-            //Redirection vers la page "LOGIN"
+            //Redirect to "LOGIN" page
             $this->redirectToRoute('user_login');
         }
-        else {
-            echo 'Verifiez les champs';
-            exit;
-        }
-
         $this->show('user/register');
     }
 
+
     //CONNEXION\\
-    //Appel de la vue de connexion
+    //Calling the connexion view
    public function login()
     {
 
         $this->show('user/login');
     }
-    //Methode de connexion
+    //Connexion method
     public function loginPost()
     {
         debug($_POST);exit;
-        //Recupération des données du POST (formulaire de connexion)
+        //Gathering POST datas (form)
         $userPseudoOrEmail = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
-        // Verification des données
+        // Data verification
         $authManager = new \W\Security\AuthentificationManager();
         $usr_id = $authManager->isValidLoginInfo($userPseudoOrEmail, $password);
         if ($usr_id === 0) {
@@ -117,12 +113,12 @@ class UsersController extends Controller
         else {
             $userManager = new \Manager\UsersManager();
 
-            // On est "loggé" et on met les infos en session
+            // We are "logged" and the infos are placed on session
             $authManager->logUserIn(
                 $userManager->find($usr_id)
             );
 
-            // Redirection vers "Home"
+            // Redirection to "Home"
             $this->redirectToRoute('home');
         }
         $this->show('user/login');

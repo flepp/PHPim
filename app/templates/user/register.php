@@ -4,17 +4,14 @@
 	<h2>Inscription</h2><br />
 
 	<form method="post" action="">
-		<h4>Email</h4>
+		<h4>* Email</h4>
 		<input type="email" name="email" value=""><br />
+		<br />
+		<h4>* mot de passe</h4>
+		<input type="password" name="password" value=""><br />
 		<br />
 		<h4>* Pseudo (minimum 3 charactères)</h4>
 		<input type="text" name="userpseudo" value=""><br />
-		<br />
-		<h4>* Mot de passe</h4>
-		<input type="password" name="password" value=""><br />
-		<br />
-		<h4>* Confirmer le mot de passe</h4>
-		<input type="password" name="password2" value=""><br />
 		<br />
 		<h4>Rue</h4>
 		<input type="text" name="street" value=""><br />
@@ -33,7 +30,7 @@
 		<br />
 
 		<h4>Photo du profil</h4>
-		<img height="80px" width="80px" src="../upload/img/avatar_0.png">
+		<img height="80px" width="80px" src="../assets/upload/img/avatar_0.png">
 
 		<!-- insertion de la photo -->
 		<input type="hidden" name="fichierSoumis" value="1">
