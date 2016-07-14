@@ -1,5 +1,4 @@
 <?php
-
 	namespace Controller;
 	use \Manager\UsersManager;
 	use \W\Controller\Controller;
@@ -8,7 +7,6 @@ class UsersController extends Controller
 {
     //INSCRIPTION\\
     //Appel de la vue d'inscription
-
     public function register()
     {
 
@@ -16,45 +14,40 @@ class UsersController extends Controller
     }
 
     //Methode d'inscription
-     public function registerPost()
+     public function registerPost($id, $token)
     {
-        //if (!empty($_GET['id'])) {
-            //$userId = $_GET['id'];
-            //print_r($studentId);
+        $extensionAutorisees = array('jpg','png','gif');
 
-            $extensionAutorisees = array('jpg','png','gif');
-
-            // Je récupère mon tableau avec les infos sur le fichier
-            foreach ($_FILES as $key => $photo) {
-                // Je teste si le fichier a été uploadé
-                if (!empty($photo) && !empty($photo['avatar'])) {
-                    print_r($photo);
-                    if ($photo['size'] <= 500000) {
-                        $filename = $photo['avatar'];
-                        $dotPos = strrpos($filename, '.');
-                        $extension = strtolower(substr($filename, $dotPos+1));
-                        // Je test si c'est pas un hack (sur l'extension)
-                        if (in_array($extension, $extensionAutorisees)) {
-                            // Je déplace le fichier uploadé au bon endroit
-                            if (move_uploaded_file($photo['tmp_name'], '../upload/'. 'avatar_156'.'.' /*.$userId.'.'*/.$extension)) {
-                                //echo 'fichier téléversé<br />';
-                            }
-                            else {
-                                echo 'une erreur est survenue<br />';
-                            }
+        // Je récupère mon tableau avec les infos sur le fichier
+        foreach ($_FILES as $key => $photo) {
+            // Je teste si le fichier a été uploadé
+            if (!empty($photo) && !empty($photo['avatar'])) {
+                print_r($photo);
+                if ($photo['size'] <= 500000) {
+                    $filename = $photo['avatar'];
+                    $dotPos = strrpos($filename, '.');
+                    $extension = strtolower(substr($filename, $dotPos+1));
+                    // Je test si c'est pas un hack (sur l'extension)
+                    if (in_array($extension, $extensionAutorisees)) {
+                        // Je déplace le fichier uploadé au bon endroit
+                        if (move_uploaded_file($photo['tmp_name'], 'public/upload/img/'. 'avatar_156'.'.' /*.$userId.'.'*/.$extension)) {
+                            //echo 'fichier téléversé<br />';
                         }
                         else {
-                            echo 'extension interdite<br />';
+                            echo 'une erreur est survenue<br />';
                         }
                     }
                     else {
-                        echo 'fichier trop lourd<br />';
+                        echo 'extension interdite<br />';
                     }
                 }
+                else {
+                    echo 'fichier trop lourd<br />';
+                }
             }
-        //}
+        }
 
-        debug($_POST);
+        //debug($_POST);
         //Recupération des données du POST (formulaire d'inscription)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
         $userpseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
@@ -72,7 +65,7 @@ class UsersController extends Controller
         if ($password != '' && $password == $password2){
             //Insertion en DB
             $userManager = new \Manager\UsersManager();
-            $userManager->insert(
+            $userManager->update(
                 array(
                     'usr_email' => $email,
                     'usr_pseudo' => $userpseudo,
@@ -95,6 +88,7 @@ class UsersController extends Controller
         else {
             echo 'Verifiez les champs';
             exit;
+        }
 
         $this->show('user/register');
     }

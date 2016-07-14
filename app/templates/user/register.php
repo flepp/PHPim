@@ -3,7 +3,7 @@
 <?php $this->start('main_content') ?>
 	<h2>Inscription</h2><br />
 
-	<form method="post" enctype="multipart/form-data" action="">
+	<form method="post" action="">
 		<h4>Email</h4>
 		<input type="email" name="email" value=""><br />
 		<br />
@@ -33,7 +33,7 @@
 		<br />
 
 		<h4>Photo du profil</h4>
-		<img height="80px" width="80px" src="../upload/avatar_0.png">
+		<img height="80px" width="80px" src="../upload/img/avatar_0.png">
 
 		<!-- insertion de la photo -->
 		<input type="hidden" name="fichierSoumis" value="1">
