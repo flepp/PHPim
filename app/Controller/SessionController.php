@@ -20,7 +20,9 @@ class SessionController extends Controller{
         $tableInsert = array();
         $sessionManager = new SessionManager;
         //debug($_POST);
-        if(isset($_POST['sessionName'])||isset($_POST['sessionStart'])||isset($_POST['sessionEnd'])){
+
+        /*¨-------------------Getting Post from Form Creation---------------------*/
+        if(isset($_POST['sessionCreate'])){
             if(!empty($_POST)){
                 $sessionName = $_POST['sessionName'];
                 $sessionStart = $_POST['sessionStart'];
@@ -39,7 +41,7 @@ class SessionController extends Controller{
                             ];
 
                             $insert = $sessionManager->insert($tableInsert);
-                            
+
                             /*--------REDIRECTION---------*/
                             $this->redirectToRoute('session_session');
                         }
@@ -55,11 +57,13 @@ class SessionController extends Controller{
                 }
             }
         }
-        else if(isset($_POST['sessionStatus'])){
+
+         /*¨-------------------Getting Post from Form Activation---------------------*/
+        if(isset($_POST['sessionOn']) || isset($_POST['sessionOff'])){
             if(!empty($_POST)){ 
                 /*-------------------Disable OR Enable  session------------*/   
                 $id = $_POST['sessionId'];
-                $sessionStauts = $_POST['sessionStatus'];
+                $sessionStatus = $_POST['sessionStatus'];
                 $tableUpdate = array();
                 $tableUpdateUser = array();
                 $userManager = new UsersManager;
@@ -80,13 +84,52 @@ class SessionController extends Controller{
                 $this->redirectToRoute('session_session');
             }
         }
-        else{
+
+        /*--------------------Getting Post from Form Delete---------------------*/
+        if(isset($_POST['sessionDelete'])){
             if(!empty($_POST)){ 
                 $id = $_POST['sessionId'];
                 $sessionManager = new SessionManager;
                 $delete = $sessionManager->delete($id);
                 /*--------REDIRECTION---------*/
                 $this->redirectToRoute('session_session');
+            }
+        }
+        /*--------------------Getting Post from Form Edit---------------------*/
+        if(isset($_POST['sessionEdit'])){
+            if(!empty($_POST)){
+                //debug($_POST);
+                $id = $_POST['sessionId'];
+                $sessionName = $_POST['sessionName'];
+                $sessionStart = $_POST['sessionStart'];
+                $sessionEnd = $_POST['sessionEnd'];
+                $sessionManager = new SessionManager;
+
+                if(strtotime($sessionStart) < strtotime($sessionEnd)){
+                    if(strip_tags($sessionName)){
+                        if(strlen(trim($sessionName)) >= 7){
+                            $tableUpdate = [
+                                'ses_name' => $sessionName,
+                                'ses_start' => $sessionStart,
+                                'ses_end' => $sessionEnd,
+                                'ses_updated' => date('Y-m-d'),
+                            ];
+
+                            $update = $sessionManager->update($tableUpdate, $id);
+
+                            /*--------REDIRECTION---------*/
+                            $this->redirectToRoute('session_session');
+                        }
+                        else{
+                            echo "Nom de session trop courte";
+                        }
+                    }
+                    else{
+                        echo "Saississez des données valides svp";
+                    }
+                }else{
+                    echo "La date de début de session ne peut pas être plus récente que la date de fin de session";
+                }
             }
         }
     }
