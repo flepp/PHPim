@@ -22,14 +22,14 @@ class AllUsersController extends Controller
     }
 
     public function details($id)
-    {   echo $id;
+    {   //echo $id;
         $detailsUser = new AllUsersManager();
         $userInfo = $detailsUser->find($id);
-        debug($userInfo);
+        //debug($userInfo);
         $this->show(
             'allusers/details',
             array(
-                'details' => $userInfo
+                'userInfo' => $userInfo
             )
         );
     }
