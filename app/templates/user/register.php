@@ -3,7 +3,7 @@
 <?php $this->start('main_content') ?>
 	<h2>Inscription</h2><br />
 
-	<form method="post" action="">
+	<form method="post" enctype="multipart/form-data" action="">
 		<h4>Email</h4>
 		<input type="email" name="email" value=""><br />
 		<br />
@@ -38,7 +38,7 @@
 		<!-- insertion de la photo -->
 		<input type="hidden" name="fichierSoumis" value="1">
 		<label for="files"><span class="btn" style="background-color:lightgrey">Parcourir</span></label>
-		<input style="visibility: hidden;" id = "files" type="file" name="fichierteleverse"><br/>
+		<input style="visibility: hidden;" id = "files" type="file" name="avatar"><br/>
 
 		<br />
 		<span>* Champs obligatoires</span>

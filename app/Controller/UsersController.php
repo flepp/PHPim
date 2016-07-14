@@ -26,17 +26,17 @@ class UsersController extends Controller
             // Je récupère mon tableau avec les infos sur le fichier
             foreach ($_FILES as $key => $photo) {
                 // Je teste si le fichier a été uploadé
-                if (!empty($photo) && !empty($photo['photo'])) {
+                if (!empty($photo) && !empty($photo['avatar'])) {
                     print_r($photo);
                     if ($photo['size'] <= 500000) {
-                        $filename = $photo['photo'];
+                        $filename = $photo['avatar'];
                         $dotPos = strrpos($filename, '.');
                         $extension = strtolower(substr($filename, $dotPos+1));
                         // Je test si c'est pas un hack (sur l'extension)
                         if (in_array($extension, $extensionAutorisees)) {
                             // Je déplace le fichier uploadé au bon endroit
-                            if (move_uploaded_file($photo['tmp_name'], 'upload/'. 'avatar_' .$userId.'.'.$extension)) {
-                                echo 'fichier téléversé<br />';
+                            if (move_uploaded_file($photo['tmp_name'], '../upload/'. 'avatar_156'.'.' /*.$userId.'.'*/.$extension)) {
+                                //echo 'fichier téléversé<br />';
                             }
                             else {
                                 echo 'une erreur est survenue<br />';
@@ -65,7 +65,7 @@ class UsersController extends Controller
         $zipcode = isset($_POST['zipcode']) ? trim($_POST['zipcode']): '';
         $country = isset($_POST['country']) ? trim($_POST['country']): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
-        $photo = isset($_POST['photo']) ? $_POST['photo']: '';
+        $photo = isset($_POST['avatar']) ? $_POST['avatar']: '';
 
         //Validation des données
         if ($password != '' && $password == $password2){
