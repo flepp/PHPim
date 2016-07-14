@@ -3,6 +3,9 @@
 <?php $this->start('main_content') ?>
 	<p>Activate Quiz</p>
 	<p>Vous avez un total de <?= count($quizList) ?> quizs.</p>
+	<p>
+		<a href="<?= $this->url('quiz_add')?>">Ajouter un quiz</a>
+	</p>
 	<?php foreach ($quizList as $key => $value): ?>
 		<div>
 			<p><?= $value['qui_day']; ?></p>
