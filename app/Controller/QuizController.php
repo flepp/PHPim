@@ -30,29 +30,22 @@ class QuizController extends Controller
                 'category_id' => $category
             );
             $quizManager->insert($data);
-            $this->redirectToRoute('quiz_activate');
+            $this->redirectToRoute('quiz_manage');
         }
     }
 
-    public function activate()
+    public function manage()
     {
-        //j'instancie le manager lié à la table quiz
         $quizManager = new QuizManager();
-        //J'appelle la methode findAll heritee de manager
-        $quizList = $quizManager->findAll($orderBy = "qui_day", $orderDir = "ASC");
-        $id = $quizList['category_id'];
-        debug($quizList);
-        $categoryManager = new CategoryManager();
-        $categoryList = $categoryManager->findCategory($id);
-        $this->show('user/admin/activateQuiz',
+        $quizList = $quizManager->findAllQuizInfo();
+        $this->show('user/admin/manageQuiz',
             array(
-                    'quizList' => $quizList,
-                    'categoryList' => $categoryList
+                    'quizList' => $quizList
             )
         );
     }
 
-    public function activatePost()
+    public function managePost()
     {
         $quizManager = new QuizManager();
         $quizList = $quizManager->findAll();
@@ -64,7 +57,7 @@ class QuizController extends Controller
                 "qui_status" => $quiStatus
             );
             $quizManager->update($data, $id, $stripTags = true);
-            $this->redirectToRoute('quiz_activate');
+            $this->redirectToRoute('quiz_manage');
         }
 
         if (isset($_POST['delete'])) {
@@ -72,7 +65,7 @@ class QuizController extends Controller
             $quizManager = new QuizManager();
             //$quizSingle = $quizManager->find($id);
             $quizDelete = $quizManager->delete($id);
-            $this->redirectToRoute('quiz_activate');
+            $this->redirectToRoute('quiz_manage');
             //$this->show('user/admin/activateQuiz', array('quizDelete' => $quizDelete));
         }
     }
@@ -81,7 +74,9 @@ class QuizController extends Controller
     {
         $quizManager = new QuizManager();
         $quizSingle = $quizManager->find($id);
-        $this->show('user/admin/modifyQuiz', array('quizSingle' => $quizSingle));
+        $categoryManager = new CategoryManager();
+        $categoryList = $categoryManager->findAll();
+        $this->show('user/admin/modifyQuiz', array('quizSingle' => $quizSingle, 'categoryList' => $categoryList));
     }
 
     public function modifyPost($id){
@@ -93,11 +88,13 @@ class QuizController extends Controller
         $quiDay = $_POST['quiDay'];
         $quiTitle = $_POST['quiTitle'];
         $quiLink = $_POST['quiLink'];
+        $category = isset($_POST['categories']) ? trim($_POST['categories']) : '';
 
         $data = array(
             "qui_day" => $quiDay,
             "qui_title" => $quiTitle,
-            "qui_link" => $quiLink
+            "qui_link" => $quiLink,
+            "category_id" => $category
         );
 
         $id = $quizSingle['id'];

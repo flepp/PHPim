@@ -27,13 +27,15 @@
 		["POST", "/administration/gestion-bdd/", "Session#databasePost", "session_database_post"],
 		["GET", "/administration/ajout-quiz/", "Quiz#add", "quiz_add"],
 		["POST", "/administration/ajout-quiz/", "Quiz#addPost", "quiz_add_post"],
-		["GET", "/administration/activation-quiz/", "Quiz#activate", "quiz_activate"],
-		["POST", "/administration/activation-quiz/", "Quiz#activatePost", "quiz_activate_post"],
+		["GET", "/administration/gestion-quiz/", "Quiz#manage", "quiz_manage"],
+		["POST", "/administration/gestion-quiz/", "Quiz#managePost", "quiz_manage_post"],
 			/* Pass quiz id as POST parameters */
+		["GET", "/administration/gestion-categorie/", "Category#manage", "category_manage"],
+		["POST", "/administration/gestion-categorie/", "Category#managePost", "category_manage_post"],
 		["GET", "/administration/modification-quiz/[i:id]/", "Quiz#modify", "quiz_modify"],
 		["POST", "/administration/modification-quiz/[i:id]/", "Quiz#modifyPost", "quiz_modify_post"],
 		["GET", "/administration/modification-categorie/[i:id]/", "Category#modify", "category_modify"],
-		["POST", "/administration/modification-categorie/[i:id]/", "Category#modifyPost", "ctegory_modify_post"],
+		["POST", "/administration/modification-categorie/[i:id]/", "Category#modifyPost", "category_modify_post"],
 		/* ----- Quiz controller ------*/
 		["GET", "/quiz/", "Quiz#quiz", "quiz_quiz"]
 
