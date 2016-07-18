@@ -79,7 +79,7 @@ class UsersController extends Controller
                     'usr_photo' => $photo,
                     'usr_status' => '1',
                     'usr_updated' => date('Y-m-d H:i:s')
-                )
+                ), $id
             );
 
             //Redirect to "LOGIN" page
@@ -98,7 +98,7 @@ class UsersController extends Controller
     //Connexion method
     public function loginPost()
     {
-        debug($_POST);exit;
+        //debug($_POST);exit;
         //Gathering POST datas (form)
         $userPseudoOrEmail = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
@@ -147,13 +147,13 @@ class UsersController extends Controller
             )
         );
     }
-
+    // Avatar/image insertion
     public function editPost($id)
     {   
         $authorizedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
         foreach ($_FILES as $key => $value) {
             if (!empty($value) && !empty($value['photo'])){
-                print_r($value);
+                //print_r($value);
                 if ($value['size'] <= 300000) {
                     $fileName = $value['photo'];
                     $dotPosition = strrpos($fileName, '.');
@@ -161,7 +161,7 @@ class UsersController extends Controller
                     /*Checking if a value exists in an array with "in_array" function*/
                     if (in_array($extension, $authorizedExtensions)) {
                         /*Moving an uploaded file to a new location*/
-                        if (move_uploaded_file($value['tmp_name'], 'public/assets/upload/img/'.'img_'.$userPseudo.'.'.$extension)) {
+                        if (move_uploaded_file($value['tmp_name'], TMP.'/assets/upload/img/img_'.$userPseudo.'.'.$extension)) {
                             // todo update photo in DB
                             echo 'fichier uploaded<br/>';
                         }

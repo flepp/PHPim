@@ -9,6 +9,8 @@
 	//rares fonctions globales
 	require("../W/globals.php");
 
+	define('TMP', dirname(__FILE__));
+
 	//instancie notre appli en lui passant la config et les routes
 	$app = new W\App($w_routes, $w_config);
 
