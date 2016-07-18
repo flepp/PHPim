@@ -1,6 +1,7 @@
 <?php
 	namespace Controller;
-	use \Manager\UsersManager;
+    use \Manager\UsersManager;
+    use \Manager\SessionManager;
 	use \W\Controller\Controller;
     use \W\Security\AuthentificationManager;
 
@@ -223,47 +224,119 @@ class UsersController extends Controller
     }
 
     public function invitations(){
-        $this->show('user/admin/invitations');
+        /*IMPORT CSV FILE AND CONVERTING TO ARRAY*/
+        $filePath = $_SESSION['filePath'];
+        $filePathReplace = str_replace(';', ',', $filePath);
+        $lines = explode(PHP_EOL, $filePathReplace);
+        $arrayStudents = array();
+        foreach ($lines as $line) {
+            $arrayStudents[] = str_getcsv($line);
+        }
+        unset($arrayStudents[count($arrayStudents)-1]);
+        debug($arrayStudents);
+        /*-------------------------Getting the list of sessions------------------*/
+        $sessionManager = new SessionManager;
+        $sessionList = $sessionManager->findAll();
+        //debug($sessionList);
+        $this->show('user/admin/invitations', ['arrayStudents'=>$arrayStudents, 'sessionList'=>$sessionList]);
     }
 
     /*-----Uploading Users list form a file and sending them an invintation to register-----*/
     public function invitationsPost(){
-        if (!empty($_POST)) {
-        debug($_POST);
-        debug($_FILES);
+        if(isset($_POST['upload'])){
+            if (!empty($_POST)) {
+                debug($_POST);
+                $extensionAutorisees = array('csv');
 
-        $extensionAutorisees = array('txt');
+                // Je récupère mon tableau avec les infos sur le fichier
+                foreach ($_FILES as $key => $fichier) {
+                    // Je teste si le fichier a été uploadé
+                    if (!empty($fichier) && !empty($fichier['name'])) {
+                        if ($fichier['size'] <= 250000) {
 
-        // Je récupère mon tableau avec les infos sur le fichier
-        foreach ($_FILES as $key => $fichier) {
-            // Je teste si le fichier a été uploadé
-            if (!empty($fichier) && !empty($fichier['name'])) {
-                print_r($fichier);
-                if ($fichier['size'] <= 250000) {
-                    $filename = $fichier['name'];
-                    $dotPos = strrpos($filename, '.');
-                    $extension = strtolower(substr($filename, $dotPos+1));
-                    // Je test si c'est pas un hack (sur l'extension)
-                    //if (substr($fichier['name'], -4) != '.php') {
-                    if (in_array($extension, $extensionAutorisees)) {
-                        // Je déplace le fichier uploadé au bon endroit
-                        if (move_uploaded_file($fichier['tmp_name'], 'C:\xampp\htdocs\PHPim\public\assets\upload\text/'.$filename)) {
-                            echo 'fichier téléversé<br />';
+                            $filename = $fichier['name'];
+                            $dotPos = strrpos($filename, '.');
+                            $extension = strtolower(substr($filename, $dotPos+1));
+                            // Je test si c'est pas un hack (sur l'extension)
+                            //if (substr($fichier['name'], -4) != '.php') {
+                            if (in_array($extension, $extensionAutorisees)) {
+                                // Je déplace le fichier uploadé au bon endroit
+                                if (move_uploaded_file($fichier['tmp_name'], PATHUPLOAD.$filename)) {
+                                    $_SESSION['filePath'] = file_get_contents(PATHUPLOAD.$filename);
+                                    
+                                    /*--------REDIRECTION---------*/
+                                   $this->redirectToRoute('user_invitations');
+                                }
+                                else {
+                                    echo 'une erreur est survenue<br />';
+                                }
+                            }
+                            else {
+                                echo 'extension interdite<br />';
+                            }
                         }
                         else {
-                            echo 'une erreur est survenue<br />';
+                            echo 'fichier trop lourd<br />';
                         }
                     }
-                    else {
-                        echo 'extension interdite<br />';
-                    }
-                }
-                else {
-                    echo 'fichier trop lourd<br />';
                 }
             }
-    }
-}
+        }
+        if(isset($_POST['sendInvitations'])){
+            if(!empty($_POST)){
+                unset($_SESSION['errorList']);               
+                unset($_SESSION['successList']);  
+                $i = 0;             
+                foreach ($_POST['student'] as $key=> $value){
+                    $name = isset($value['name']) ? trim($value['name']) : '';
+                    $firstname = isset($value['firstname']) ? trim($value['firstname']) : '';
+                    $email = isset($value['email']) ? trim($value['email']) : '';
+                    $session = isset($_POST['session']) ? trim($_POST['session']) : '';
+                    $password = time();
+                    $_SESSION['errorList'] =array();
+                    $_SESSION['successList'] =array();
+                    debug($_SESSION['errorList']);
+
+                    if(strlen(strip_tags($firstname)) >= 2){
+                    }
+                    else{
+                        $_SESSION['errorList'][] = 'Prénom invalide en ligne #'.$key.' Email non envoyé à '.$firstname.' '.$name;
+                    }
+
+                    if(strlen(strip_tags(trim($name))) >=2){
+                    }
+                    else{
+                        $_SESSION['errorList'][] = 'Nom invalide en ligne #'.$key.' Email non envoyé à '.$firstname.' '.$name;
+                    }
+                    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        
+                    }
+                    else{
+                        $_SESSION['errorList'][] = 'Email invalide en ligne #'.$key.' Email non envoyé à '.$firstname.' '.$name;
+                    }
+                    if(count($_SESSION['errorList']) == 0){
+                        $userManager = new UsersManager;
+
+                        $tableInsert = [
+                            'usr_firstname' => $firstname,
+                            'usr_name' => $name,
+                            'usr_email' => $email,
+                            'usr_password' => password_hash($password,PASSWORD_BCRYPT),
+                            'usr_role' => 'user',
+                            'session_id' => $session,
+                            'usr_status' => 0,
+                            'usr_created' => date('Y-m-d'),
+                        ];
+                        $_SESSION['successList'][$i] = 'Invitation bien envoyée à '.$firstname.' '.$name;
+                        $insert = $userManager->insert($tableInsert);
+                        $i++;
+                        debug($insert);
+                    }
+                }
+                $this->redirectToRoute('user_invitations');
+
+            }
+        }
     }
 }
 ?>
