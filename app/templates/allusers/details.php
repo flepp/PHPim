@@ -21,6 +21,6 @@
 	<!-- I'm redirecting to all users page -->
 	<a href="<?= $this->url('allusers_allUsers') ?>">OK</a>
 	<!-- I'm redirecting to edit user page -->
-	<a href="<?= $this->url('user_edit', ['id' => $userInfo['id']]) ?>">Editer</a>		
+	<a href="<?= $this->url('user_edit', ['id' => $userInfo['id']]) ?>">Editer</a>
 		
 <?php $this->stop('main_content') ?>
