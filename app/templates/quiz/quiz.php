@@ -13,7 +13,6 @@
 					<? return false; ?>
 				<?php endif ?>
 		<?php endforeach ?>
-	<?php debug($quizList); ?>
 
 <?php $this->stop('main_content') ?>
 
