@@ -27,23 +27,23 @@
 					<?= $value['cat_name']?>
 				</a>
 			</p>
-			<form action="" method="POST">
+			<form action="<?= $this->url('quiz_manage'); ?>" method="POST">
 				<input type="text" hidden value="<?= $value['id']?>" name="quiId">
 				<input type="text" value="1" name="quiStatus" hidden>
 				<button type="submit">
 					Activer
 				</button>
 			</form>
-			<form action="" method="POST">
+			<form action="<?= $this->url('quiz_manage'); ?>" method="POST">
 				<input type="text" hidden value="<?= $value['id']?>" name="quiId">
 				<input type="text" value="0" name="quiStatus" hidden>
 				<button type="submit">
 					Désactiver
 				</button>
 			</form>
-			<form action="" method="POST">
+			<form action="<?= $this->url('quiz_manage'); ?>" method="POST">
 				<input type="text" name="deleteQuiz" value="<?= $value['id'] ?>" hidden>
-				<button type="submit" name="delete" id="delete">Supprimer</button>
+				<button type="submit" name="delete" class="delete">Supprimer</button>
 			</form>
 			<a href="<?= $this->url('quiz_modify', ['id' => $value['id']])?>">Modifier</a>
 		</div>
