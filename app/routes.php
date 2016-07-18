@@ -11,8 +11,8 @@
 		["POST", "/connexion/", "Users#loginPost", "user_login_post"],
 		["GET", "/mdp-oublie/", "Users#forgot", "user_forgot"],
 		["POST", "/mdp-oublie/", "Users#forgotPost", "user_forgot_post"],
-		["GET", "/edition/", "Users#edit", "user_edit"],
-		["POST", "/edition/", "Users#editPost", "user_edit_post"],
+		["GET", "/edition/[i:id]", "Users#edit", "user_edit"],
+		["POST", "/edition/[i:id]", "Users#editPost", "user_edit_post"],
 		["GET", "/gestion-bdd/", "Users#database", "user_database"],
 		["POST", "/gestion-bdd/", "Users#databasePost", "user_database_post"],
 		/* ----- AllUsers controller ------ */
