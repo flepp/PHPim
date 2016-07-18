@@ -11,3 +11,6 @@ $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'l
 $sql = '
 	CREATE DATABASE IF NOT EXISTS `'.$username.'_sql1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
 ';
+// Gmail
+$username = 'wf3@progweb.fr';
+$password = '3aLJ=yY>';
