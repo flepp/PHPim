@@ -107,6 +107,12 @@ class QuizController extends Controller
         $this->show('user/admin/modifyQuiz', array('quizSingle' => $quizSingle));
     }
 
+     public function quizPerCat(){
+        $quizManager = new QuizManager();
+        $quizList = $quizManager->findQuizByCat();
+        $this->show('user/admin/quizPerCategory', array('quizList' => $quizList));
+    }
+
     public function quiz()
     {
         //j'instancie le manager lié à la table quiz

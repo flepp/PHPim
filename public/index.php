@@ -1,5 +1,5 @@
 <?php
-
+	
 	//autochargement des classes
 	require("../vendor/autoload.php");
 
@@ -9,7 +9,7 @@
 	//rares fonctions globales
 	require("../W/globals.php");
 
-	define('TMP', dirname(__FILE__));
+	define('PATHUPLOAD', dirname(__FILE__).'/assets/upload/text/');
 
 	//instancie notre appli en lui passant la config et les routes
 	$app = new W\App($w_routes, $w_config);

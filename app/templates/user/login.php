@@ -12,5 +12,6 @@
 	<br>
 	<input type="submit" value="Valider">
 </form>
+<a href="<?= $this->url('user_forgot')?>">Mot de passe oublié ?</a>
 <?php $this->stop('main_content') ?>
 
