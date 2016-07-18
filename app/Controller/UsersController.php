@@ -162,6 +162,7 @@ class UsersController extends Controller
                     if (in_array($extension, $authorizedExtensions)) {
                         /*Moving an uploaded file to a new location*/
                         if (move_uploaded_file($value['tmp_name'], 'public/assets/upload/img/'.'img_'.$userPseudo.'.'.$extension)) {
+                            // todo update photo in DB
                             echo 'fichier uploaded<br/>';
                         }
                         else {
@@ -197,7 +198,6 @@ class UsersController extends Controller
                     'usr_zipcode' => $zipcode,
                     'usr_country' => $country,
                     'usr_birthdate' => $birthdate,
-                    'usr_photo' => $photo,
                     'usr_updated' => date ('Y-m-d H:i:s')
                     );
         $id = $userInfo['id'];

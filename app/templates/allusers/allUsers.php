@@ -9,7 +9,7 @@
 	<?php foreach ($allUsersTable as $key => $value): ?>
 		<tbody style="display: inline-table">
 			<tr>
-				<td> <img height="178px" width="150px" src="<?= $this->assetUrl('upload/img/'.$value['usr_photo']) ?>" alt=""> </td>
+				<td><img height="178px" width="150px" src="<?= $this->assetUrl('upload/img/'.$value['usr_photo']) ?>" alt=""></td>
 				<td><a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>"><?= ' '.$value['usr_firstname'].' '.$value['usr_name'] ?></a></td>
 			</tr>
 		</tbody>

@@ -30,7 +30,7 @@
 		<input type="date" name="userbirthdate" value="<?= ' '.$userInfo['usr_birthdate'] ?>"><br />
 		<br />
 		<h4>Photo d'étudiant:</h4>
-		<img height="95px" width="80px" src="<?= $userInfo['usr_photo'] ?>">
+		<img height="95px" width="80px" src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>">
 
 		<!-- I'm inserting a new photo -->
 		<input type="hidden" name="fichierSoumis" value="1">
