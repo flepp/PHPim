@@ -1,7 +1,26 @@
 <?php $this->layout('layout', ['title' => 'Etudiants']) ?>
 
 <?php $this->start('main_content') ?>
-	<!--<p>Liste des étudiants:</p>-->
+	<!-- I'm inserting a "form", for selecting the session, which will be displayed only for "admin" statute -->
+	<br/>
+	<fieldset>
+	<legend>Sélection du session*:</legend>
+		<form action="" method="get">
+			<select name="session_id">
+				<option value="0">ajouter une session</option>
+				<?php foreach ($allSessionsList as $currentSession) : ?>
+				<option value="<?= $currentId == $currentSession['id']; ?>"<?= $currentSession['ses_name']; ?>
+				</option>
+				<?php endforeach; ?>
+			</select>
+			<input type="submit" value="OK"/>
+		</form>
+		<br/>
+		<span>* Champ à utiliser seulement par admin</span>
+	</fieldset>
+	<br/>
+
+	<!-- Here starts the part for "user" statute -->
 	<br/>
 	<h4>Liste des étudiants:</h4>
 	<br/>
