@@ -3,13 +3,14 @@
 <?php $this->start('main_content') ?>
 	<!--<p>Liste des étudiants:</p>-->
 	<br/>
-	<table style="width:10%">
-	<caption><u>Liste des étudiants:</u></caption>
+	<h4>Liste des étudiants:</h4>
+	<br/>
+	<table style="display: inline-table">
 	<?php foreach ($allUsersTable as $key => $value): ?>
-		<tbody>
+		<tbody style="display: inline-table">
 			<tr>
-				<td> <img height="120px" width="170px" src="<?= $value['usr_photo']?>" alt=""> </td>
-				<td><a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>">Details</a></td>
+				<td> <img height="178px" width="150px" src="<?= $this->assetUrl('upload/img/'.$value['usr_photo']) ?>" alt=""> </td>
+				<td><a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>"><?= ' '.$value['usr_firstname'].' '.$value['usr_name'] ?></a></td>
 			</tr>
 		</tbody>
 	<?php endforeach ?>

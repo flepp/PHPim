@@ -14,7 +14,6 @@
 				<a href="<?= $this->url('user_register') ?>">Inscription</a>
 				<a href="<?= $this->url('user_login') ?>">Connexion</a>
 				<a href="<?= $this->url('user_forgot') ?>">MDP Oubli</a>
-				<a href="<?= $this->url('user_edit') ?>">Edit</a>
 				<a href="<?= $this->url('allusers_allUsers') ?>">Etudiants</a>
 				<a href="<?= $this->url('session_session') ?>">Sessions</a>
 				<a href="<?= $this->url('user_invitations') ?>">Invits</a>
