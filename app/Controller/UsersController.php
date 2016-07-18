@@ -99,7 +99,7 @@ class UsersController extends Controller
     //Connexion method
     public function loginPost()
     {
-        //debug($_POST);exit;
+        debug($_POST);exit;
         //Gathering POST datas (form)
         $userPseudoOrEmail = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
@@ -148,13 +148,13 @@ class UsersController extends Controller
             )
         );
     }
-    // Avatar/image insertion
+
     public function editPost($id)
     {   
         $authorizedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
         foreach ($_FILES as $key => $value) {
             if (!empty($value) && !empty($value['photo'])){
-                //print_r($value);
+                print_r($value);
                 if ($value['size'] <= 300000) {
                     $fileName = $value['photo'];
                     $dotPosition = strrpos($fileName, '.');
@@ -162,8 +162,19 @@ class UsersController extends Controller
                     /*Checking if a value exists in an array with "in_array" function*/
                     if (in_array($extension, $authorizedExtensions)) {
                         /*Moving an uploaded file to a new location*/
-                        if (move_uploaded_file($value['tmp_name'], TMP.'/assets/upload/img/img_'.$userPseudo.'.'.$extension)) {
-                            // todo update photo in DB
+                        if (move_uploaded_file($value['tmp_name'], 'public/assets/upload/img/'.'img_'.$userPseudo.'.'.$extension)) {
+                            // I'm updating the photo in database
+                            //$photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
+
+                            $detailsUser = new UsersManager();
+                            $userInfo = $detailsUser->find($id);
+                            $userPhoto = array (
+                                        'usr_photo' => 'img_'.$userPseudo.'.'.$extension
+                                        );
+                            $id = $userInfo['id'];
+                            if (isset($_POST)) {
+                                $detailsUser->update($userPhoto, $id);
+                            }
                             echo 'fichier uploaded<br/>';
                         }
                         else {
@@ -175,7 +186,6 @@ class UsersController extends Controller
                     }
                 }
             }
-
         }
         //debug($_POST);
         //Inserting data from POST
@@ -205,7 +215,7 @@ class UsersController extends Controller
 
         if (isset($_POST)) {
 
-            $detailsUser->update($userData,$id);
+            $detailsUser->update($userData, $id);
             //Redirecting to allusers_details page
             $this->redirectToRoute('allusers_details', ['id' => $userInfo['id']]);
         }
