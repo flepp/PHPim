@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => 'Ajout']) ?>
+<?php $this->layout('layout', ['title' => 'Ajout de quizz']) ?>
 
 <?php $this->start('main_content') ?>
 	<p>Ajouter un quiz</p>
@@ -15,7 +15,17 @@
 		<br>
 		<input type="text" id="link" name="quiLink">
 		<br>
+		<label for="categories">Catégories : </label>
+		<br>
+		<select name="categories" id="categories">
+			<option value="0">Sélectionnez une catégorie</option>
+			<?php foreach ($categoryList as $key => $value): ?>
+				<option value="<?= $value['id']?>"><?= $value['cat_name']?></option>
+			<?php endforeach ?>
+		</select>
+		<br>
 		<button type="submit">Ajouter</button>
 	</form>
+	<a href="<?= $this->url('quiz_manage'); ?>">Retour</a>
 <?php $this->stop('main_content') ?>
 

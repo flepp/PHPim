@@ -1,5 +1,4 @@
 <?php $this->layout('layout', ['title' => 'Modify Quiz']) ?>
-
 <?php $this->start('main_content') ?>
 	<p>Modify Quiz</p>
 	<form action="" method="post">
@@ -15,9 +14,20 @@
 		<br>
 		<input type="text" id="link" name="quiLink" value="<?= $quizSingle['qui_link'] ?>">
 		<br>
+		<label for="categories">Catégories : </label>
+		<br>
+		<select name="categories" id="categories">
+			<option value="0">Sélectionnez une catégorie</option>
+		<?php foreach ($categoryList as $key => $value): ?>
+			<option value="<?= $value['id']?>" "<?= $value['id'] == $quizSingle['category_id'] ? ' selected="selected"' : '' ?>">
+				<?= $value['cat_name']?>
+			</option>
+		<?php endforeach ?>
+		</select>
+		<br>
 		<button type="submit"> Modifier </button>
 	</form>
-	<a href="<?= $this->url('quiz_activate')?>">Retour</a>
+	<a href="<?= $this->url('quiz_manage')?>">Retour</a>
 	<?php debug($quizSingle); ?>
 <?php $this->stop('main_content') ?>
 
