@@ -135,9 +135,18 @@ class UsersController extends Controller
         $forgotMail = new ForgotPass();
         $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
         if (isset($_POST)) {
-           $forgotMail->sendMail($usrMail, 'Azy Wesh','Message Test');
+           $forgotMail->sendMail($usrMail, 'Changez votre mot de passe','Message Test');
         }
         $this->redirectToRoute('user_forgot');
+    }
+
+    public function resetPass(){
+
+        $this->show('user/resetPassword');
+    }
+
+     public function resetPassPost(){
+
     }
 
     public function edit($id)
