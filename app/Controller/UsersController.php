@@ -1,10 +1,12 @@
 <?php
+
 	namespace Controller;
     use \Manager\UsersManager;
     use \Manager\SessionManager;
     use \W\Controller\Controller;
 	use \W\Manager\UserManager;
     use \W\Security\AuthentificationManager;
+    use \Functions\ForgotPwd as ForgotPass;
 
 class UsersController extends Controller
 {
@@ -18,22 +20,25 @@ class UsersController extends Controller
     //Inscription method
      public function registerPost()
     {
-        $extensionAutorisees = array('jpg','png','gif');
+        debug($_POST);
+        debug($_FILES);
+
+        /*********Photo treatment*********/
+        $extensionAutorisees = array('jpg','jpeg','png','gif');
 
         // Gathering file (photo) info table
         foreach ($_FILES as $key => $photo) {
-            // Testing upload of file
+            // Testing upload of the file
             if (!empty($photo) && !empty($photo['avatar'])) {
-                print_r($photo);
-                if ($photo['size'] <= 500000) {
+                if ($photo['size'] <= 400000) {
                     $filename = $photo['avatar'];
                     $dotPos = strrpos($filename, '.');
                     $extension = strtolower(substr($filename, $dotPos+1));
                     // Testing the extension
                     if (in_array($extension, $extensionAutorisees)) {
-                        // Moving file to the right folder
-                        if (move_uploaded_file($photo['tmp_name'], 'public/assets/upload/img/'. 'img_'.$userpseudo.'.'.$extension)) {
-                            //echo 'fichier téléversé<br />';
+                        // Moving photo to the right folder
+                        if (move_uploaded_file($photo['tmp_name'], PATHIMG.$filename)){
+                        debug($photo['tmp_name']);
                         }
                         else {
                             echo 'une erreur est survenue<br />';
@@ -49,7 +54,6 @@ class UsersController extends Controller
             }
         }
 
-        //debug($_POST);
         // Gathering POST datas (form)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
         $userpseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
@@ -59,7 +63,6 @@ class UsersController extends Controller
         $zipcode = isset($_POST['zipcode']) ? trim($_POST['zipcode']): '';
         $country = isset($_POST['country']) ? trim($_POST['country']): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
-        $photo = isset($_POST['avatar']) ? $_POST['avatar']: '';
 
         // Verification des données
         $authManager = new AuthentificationManager();
@@ -81,20 +84,32 @@ class UsersController extends Controller
                     'usr_photo' => $photo,
                     'usr_status' => '1',
                     'usr_updated' => date('Y-m-d H:i:s')
-                )
+                ), $id
             );
 
+            /*********USER DATABASE creation**********/
+           /* // Add distant access user
+             $sql = 'CREATE USER \''.$username.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
+             // Add a local access user
+             $sql = 'CREATE USER \''.$username.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
+             // Gives right to distant user on tables
+             $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'%\'';
+             //// Gives right to local user on tables
+             $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'localhost\'';
+             // Database creation for the user
+             $sql = '
+               CREATE DATABASE IF NOT EXISTS `'.$username.'_sql1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
+             ';*/
+
             //Redirect to "LOGIN" page
-            $this->redirectToRoute('user_login');
+            /*$this->redirectToRoute('user_login');*/
         }
     }
-
 
     //CONNEXION\\
     //Calling the connexion view
    public function login()
     {
-
         $this->show('user/login');
     }
     //Connexion method
@@ -125,20 +140,42 @@ class UsersController extends Controller
         $this->show('user/login');
     }
 
+    // FORGOT PASSWORD BY PHILIPPE
     public function forgot()
     {
-
         $this->show('user/forgot');
     }
 
     public function forgotPost()
     {
-
-        $this->show('user/forgot');
+        $forgotPass  = new ForgotPass();
+        $token = md5(time().'ThisShitBetterWork');
+        $userManager = new UsersManager();
+        $data = array(
+            'usr_token' => $token
+        );
+        $id = 2;
+        $userManager->update($data,$id);
+        $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
+        if (isset($_POST)) {
+           $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. Voici le token : <a href="http://localhost/PHPim/public/mdp-nouveau/'.$token.'">http://localhost/PHPim/public/mdp-nouveau/'.$token.'</a>');
+        }
+        $this->redirectToRoute('user_forgot');
     }
 
+    public function resetPass(){
+
+        $this->show('user/resetPassword');
+    }
+
+    public function resetPassPost(){
+
+    }
+
+    //---------------- PHILIPPE END
+
     public function edit($id)
-    {   
+    {
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($userInfo);
@@ -151,7 +188,7 @@ class UsersController extends Controller
     }
 
     public function editPost($id)
-    {   
+    {
         $authorizedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
         foreach ($_FILES as $key => $value) {
             if (!empty($value) && !empty($value['photo'])){
@@ -164,7 +201,18 @@ class UsersController extends Controller
                     if (in_array($extension, $authorizedExtensions)) {
                         /*Moving an uploaded file to a new location*/
                         if (move_uploaded_file($value['tmp_name'], 'public/assets/upload/img/'.'img_'.$userPseudo.'.'.$extension)) {
-                            // todo update photo in DB
+                            // I'm updating the photo in database
+                            //$photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
+
+                            $detailsUser = new UsersManager();
+                            $userInfo = $detailsUser->find($id);
+                            $userPhoto = array (
+                                        'usr_photo' => 'img_'.$userPseudo.'.'.$extension
+                                        );
+                            $id = $userInfo['id'];
+                            if (isset($_POST)) {
+                                $detailsUser->update($userPhoto, $id);
+                            }
                             echo 'fichier uploaded<br/>';
                         }
                         else {
@@ -176,7 +224,6 @@ class UsersController extends Controller
                     }
                 }
             }
-
         }
         //debug($_POST);
         //Inserting data from POST
@@ -206,7 +253,7 @@ class UsersController extends Controller
 
         if (isset($_POST)) {
 
-            $detailsUser->update($userData,$id);
+            $detailsUser->update($userData, $id);
             //Redirecting to allusers_details page
             $this->redirectToRoute('allusers_details', ['id' => $userInfo['id']]);
         }
