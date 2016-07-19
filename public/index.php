@@ -12,6 +12,8 @@
 	define('PATHUPLOAD', dirname(__FILE__).'/assets/upload/text/');
 	define('PATHIMG', dirname(__FILE__).'/assets/upload/img/');
 
+	define('IMAGEUPLOAD', dirname(__FILE__).'/assets/upload/img/');
+
 	//instancie notre appli en lui passant la config et les routes
 	$app = new W\App($w_routes, $w_config);
 

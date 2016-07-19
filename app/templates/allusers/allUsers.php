@@ -7,8 +7,8 @@
 	<legend>Sélection du session*:</legend>
 		<form action="" method="get">
 			<select name="session_id">
-				<option value="0">ajouter une session</option>
-				<?php foreach ($allSessionsList as $currentSession) : ?>
+				<option value="0">sélectionnez une session</option>
+				<?php foreach ($sessionList as $currentSession) : ?>
 				<option value="<?= $currentId == $currentSession['id']; ?>"<?= $currentSession['ses_name']; ?>
 				</option>
 				<?php endforeach; ?>
