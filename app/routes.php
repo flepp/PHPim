@@ -11,7 +11,7 @@
 		["POST", "/connexion/", "Users#loginPost", "user_login_post"],
 		["GET", "/mdp-oublie/", "Users#forgot", "user_forgot"],
 		["POST", "/mdp-oublie/", "Users#forgotPost", "user_forgot_post"],
-		["GET", "/mdp-nouveau/", "Users#resetPass", "user_reset"],
+		["GET", "/mdp-nouveau/[:]", "Users#resetPass", "user_reset"],
 		["POST", "/mdp-nouveau/", "Users#resetPassPost", "user_reset_post"],
 		["GET", "/edition/[i:id]/", "Users#edit", "user_edit"],
 		["POST", "/edition/[i:id]/", "Users#editPost", "user_edit_post"],

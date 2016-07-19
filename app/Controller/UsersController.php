@@ -90,7 +90,6 @@ class UsersController extends Controller
         }
     }
 
-
     //CONNEXION\\
     //Calling the connexion view
    public function login()
@@ -125,17 +124,25 @@ class UsersController extends Controller
         $this->show('user/login');
     }
 
+    // FORGOT PASSWORD BY PHILIPPE
     public function forgot()
     {
         $this->show('user/forgot');
     }
-    // FORGOT PASSWORD BY PHILIPPE
+
     public function forgotPost()
     {
-        $forgotMail = new ForgotPass();
+        $forgotPass  = new ForgotPass();
+        $token = md5(time().'ThisShitBetterWork');
+        $userManager = new UsersManager();
+        $data = array(
+            'usr_token' => $token
+        );
+        $id = 2;
+        $userManager->update($data,$id);
         $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
         if (isset($_POST)) {
-           $forgotMail->sendMail($usrMail, 'Changez votre mot de passe','Message Test');
+           $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. Voici le token : <a href="http://localhost/PHPim/public/mdp-nouveau/'.$token.'">http://localhost/PHPim/public/mdp-nouveau/'.$token.'</a>');
         }
         $this->redirectToRoute('user_forgot');
     }
@@ -145,9 +152,11 @@ class UsersController extends Controller
         $this->show('user/resetPassword');
     }
 
-     public function resetPassPost(){
+    public function resetPassPost(){
 
     }
+
+    //---------------- PHILIPPE END
 
     public function edit($id)
     {
@@ -163,7 +172,7 @@ class UsersController extends Controller
     }
 
     public function editPost($id)
-    {   
+    {
         $authorizedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
         foreach ($_FILES as $key => $value) {
             if (!empty($value) && !empty($value['photo'])){
