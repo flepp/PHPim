@@ -80,7 +80,7 @@ class UsersController extends Controller
                     'usr_photo' => $photo,
                     'usr_status' => '1',
                     'usr_updated' => date('Y-m-d H:i:s')
-                )
+                ), $id
             );
 
             //Redirect to "LOGIN" page
@@ -136,8 +136,7 @@ class UsersController extends Controller
         $this->show('user/forgot');
     }
 
-    public function edit($id)
-    {   
+    public function edit($id){   
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($userInfo);
@@ -149,80 +148,83 @@ class UsersController extends Controller
         );
     }
 
-    public function editPost($id)
-    {   
-        $authorizedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
-        foreach ($_FILES as $key => $value) {
-            if (!empty($value) && !empty($value['photo'])){
-                print_r($value);
-                if ($value['size'] <= 300000) {
-                    $fileName = $value['photo'];
-                    $dotPosition = strrpos($fileName, '.');
-                    $extension = strtolower(substr($fileName, $dotPosition + 1));
-                    /*Checking if a value exists in an array with "in_array" function*/
-                    if (in_array($extension, $authorizedExtensions)) {
-                        /*Moving an uploaded file to a new location*/
-                        if (move_uploaded_file($value['tmp_name'], 'public/assets/upload/img/'.'img_'.$userPseudo.'.'.$extension)) {
-                            // I'm updating the photo in database
-                            $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
-
-                            $detailsUser = new UsersManager();
-                            $userInfo = $detailsUser->find($id);
-                            $userPhoto = array (
-                                        'usr_photo' => $photo
-                                        );
-                            $id = $userInfo['id'];
-                            if (isset($_POST)) {
-                                $detailsUser->update($userPhoto, $id);
+    public function editPost($id){
+        if(isset($_POST['submitInfo'])){
+            //debug($_FILES);
+            $allowedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
+            foreach ($_FILES as $key => $value) {
+                if (!empty($value) && !empty($value['name'])){
+                    print_r($value);
+                    if ($value['size'] <= 300000) {
+                        $filename = $value['name'];
+                        $dotPosition = strrpos($filename, '.');
+                        $extension = strtolower(substr($filename, $dotPosition + 1));
+                        /*Checking if a value exists in an array with "in_array" function*/
+                        if (in_array($extension, $allowedExtensions)) {
+                            /*Moving an uploaded file to a new location*/
+                            if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD.$filename)) {
+                                $_SESSION['filePath'] = IMAGEUPLOAD.$filename;
+                                //debug($_SESSION);
+                                                                        
+                                $detailsUser = new UsersManager();
+                                $userInfo = $detailsUser->find($id);
+                                $userPhoto = array (
+                                            'usr_photo' => $filename
+                                            );
+                                $id = $userInfo['id'];
+                                if (isset($_POST)) {
+                                    $detailsUser->update($userPhoto, $id);
+                                }
+                                echo 'fichier uploaded<br/>';
+                                /*--------REDIRECTION---------*/
+                                //$this->redirectToRoute('user_invitations');
                             }
-                            echo 'fichier uploaded<br/>';
+                            else {
+                                echo 'attention, une erreur est survenue<br/>';
+                            }
                         }
                         else {
-                            echo 'attention, une erreur est survenue<br/>';
+                            echo 'pas d\'extension permise<br/>';
                         }
-                    }
-                    else {
-                        echo 'pas d\'extension permise<br/>';
                     }
                 }
             }
+            //debug($_POST);
+            //Inserting data from POST
+            $userPseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
+            $password = isset($_POST['userpassword']) ? trim($_POST['userpassword']): '';
+            $street = isset($_POST['userstreet']) ? trim($_POST['userstreet']): '';
+            $city = isset($_POST['usercity']) ? trim($_POST['usercity']): '';
+            $zipcode = isset($_POST['userzipcode']) ? trim($_POST['userzipcode']): '';
+            $country = isset($_POST['usercountry']) ? trim($_POST['usercountry']): '';
+            $birthdate = isset($_POST['userbirthdate']) ? trim($_POST['userbirthdate']): '';
+            $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
+
+            $detailsUser = new UsersManager();
+            $userInfo = $detailsUser->find($id);
+            //Inserting data in database
+            $userData =  array (
+                        'usr_pseudo' => $userPseudo,
+                        'usr_password' => $password,
+                        'usr_street' => $street,
+                        'usr_city' => $city,
+                        'usr_zipcode' => $zipcode,
+                        'usr_country' => $country,
+                        'usr_birthdate' => $birthdate,
+                        'usr_updated' => date ('Y-m-d H:i:s')
+                        );
+            $id = $userInfo['id'];
+
+            if (isset($_POST)) {
+
+                $detailsUser->update($userData, $id);
+                //Redirecting to allusers_details page
+                $this->redirectToRoute('allusers_details', ['id' => $userInfo['id']]);
+            }
+
+            $this->show('user/edit');
         }
-        //debug($_POST);
-        //Inserting data from POST
-        $userPseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
-        $password = isset($_POST['userpassword']) ? trim($_POST['userpassword']): '';
-        $street = isset($_POST['userstreet']) ? trim($_POST['userstreet']): '';
-        $city = isset($_POST['usercity']) ? trim($_POST['usercity']): '';
-        $zipcode = isset($_POST['userzipcode']) ? trim($_POST['userzipcode']): '';
-        $country = isset($_POST['usercountry']) ? trim($_POST['usercountry']): '';
-        $birthdate = isset($_POST['userbirthdate']) ? trim($_POST['userbirthdate']): '';
-        $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
-
-        $detailsUser = new UsersManager();
-        $userInfo = $detailsUser->find($id);
-        //Inserting data in database
-        $userData =  array (
-                    'usr_pseudo' => $userPseudo,
-                    'usr_password' => $password,
-                    'usr_street' => $street,
-                    'usr_city' => $city,
-                    'usr_zipcode' => $zipcode,
-                    'usr_country' => $country,
-                    'usr_birthdate' => $birthdate,
-                    'usr_updated' => date ('Y-m-d H:i:s')
-                    );
-        $id = $userInfo['id'];
-
-        if (isset($_POST)) {
-
-            $detailsUser->update($userData, $id);
-            //Redirecting to allusers_details page
-            $this->redirectToRoute('allusers_details', ['id' => $userInfo['id']]);
-        }
-
-        $this->show('user/edit');
     }
-
     public function invitations(){
         /*IMPORT CSV FILE AND CONVERTING TO ARRAY*/
         $filePath = $_SESSION['filePath'];
