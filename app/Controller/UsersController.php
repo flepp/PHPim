@@ -1,9 +1,11 @@
 <?php
+
 	namespace Controller;
     use \Manager\UsersManager;
     use \Manager\SessionManager;
 	use \W\Controller\Controller;
     use \W\Security\AuthentificationManager;
+    use \Functions\ForgotPwd as ForgotPass;
 
 class UsersController extends Controller
 {
@@ -93,7 +95,6 @@ class UsersController extends Controller
     //Calling the connexion view
    public function login()
     {
-
         $this->show('user/login');
     }
     //Connexion method
@@ -126,18 +127,21 @@ class UsersController extends Controller
 
     public function forgot()
     {
-
         $this->show('user/forgot');
     }
-
+    // FORGOT PASSWORD BY PHILIPPE
     public function forgotPost()
     {
-
-        $this->show('user/forgot');
+        $forgotMail = new ForgotPass();
+        $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
+        if (isset($_POST)) {
+           $forgotMail->sendMail($usrMail, 'Azy Wesh','Message Test');
+        }
+        $this->redirectToRoute('user_forgot');
     }
 
     public function edit($id)
-    {   
+    {
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($userInfo);
