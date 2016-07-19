@@ -18,90 +18,61 @@ class UsersController extends Controller
      public function registerPost()
     {
         debug($_POST);
-        debug($_FILES);
-
-        /*********Photo treatment*********/
-        $extensionAutorisees = array('jpg','jpeg','png','gif');
-
-        // Gathering file (photo) info table
-        foreach ($_FILES as $key => $photo) {
-            // Testing upload of the file
-            if (!empty($photo) && !empty($photo['avatar'])) {
-                if ($photo['size'] <= 400000) {
-                    $filename = $photo['avatar'];
-                    $dotPos = strrpos($filename, '.');
-                    $extension = strtolower(substr($filename, $dotPos+1));
-                    // Testing the extension
-                    if (in_array($extension, $extensionAutorisees)) {
-                        // Moving photo to the right folder
-                        if (move_uploaded_file($photo['tmp_name'], PATHIMG.$filename)){
-                        debug($photo['tmp_name']);
-                        }
-                        else {
-                            echo 'une erreur est survenue<br />';
-                        }
-                    }
-                    else {
-                        echo 'extension interdite<br />';
-                    }
-                }
-                else {
-                    echo 'fichier trop lourd<br />';
-                }
-            }
-        }
 
         // Gathering POST datas (form)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
-        $userpseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
+        $userpseudo = isset($_POST['userpseudo']) ? strip_tags(trim($_POST['userpseudo'])): '';
         $password = isset($_POST['password']) ? trim($_POST['password']): '';
-        $street = isset($_POST['street']) ? trim($_POST['street']): '';
-        $city = isset($_POST['city']) ? trim($_POST['city']): '';
-        $zipcode = isset($_POST['zipcode']) ? trim($_POST['zipcode']): '';
-        $country = isset($_POST['country']) ? trim($_POST['country']): '';
+        $street = isset($_POST['street']) ? strip_tags(trim($_POST['street'])): '';
+        $city = isset($_POST['city']) ? strip_tags(trim($_POST['city'])): '';
+        $zipcode = isset($_POST['zipcode']) ? strip_tags(trim($_POST['zipcode'])): '';
+        $country = isset($_POST['country']) ? strip_tags(trim($_POST['country'])): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
 
         // Verification des données
-        $authManager = new AuthentificationManager();
-        $id = $authManager->isValidLoginInfo($email, $password);
-        if ($id === 0) {
-            echo'Login invalide <br />';
-        }
-        else {
-            //DB insersion
-            $userManager = new \Manager\UsersManager();
-            $userManager->update(
-                array(
-                    'usr_pseudo' => $userpseudo,
-                    'usr_street' => $street,
-                    'usr_city' => $city,
-                    'usr_zipcode' => $zipcode,
-                    'usr_country' => $country,
-                    'usr_birthdate' => $birthdate,
-                    'usr_photo' => $photo,
-                    'usr_status' => '1',
-                    'usr_updated' => date('Y-m-d H:i:s')
-                ), $id
-            );
+         if (strlen($userpseudo) <= 2) {
+                 $authManager = new AuthentificationManager();
+                 $id = $authManager->isValidLoginInfo($email, $password);
+                 if ($id === 0) {
+                     echo'Login invalide <br />';
+                 }
+                 echo'entrez un pseudo <br />';
+             }
+            else {
+                //DB insersion
+                $userManager = new \Manager\UsersManager();
+                $userManager->update(
+                    array(
+                        'usr_pseudo' => $userpseudo,
+                        'usr_street' => $street,
+                        'usr_city' => $city,
+                        'usr_zipcode' => $zipcode,
+                        'usr_country' => $country,
+                        'usr_birthdate' => $birthdate,
+                        'usr_photo' => ('img_0.png'),
+                        'usr_status' => '1',
+                        'usr_updated' => date('Y-m-d H:i:s')
+                    ), $id
+                );
 
-            /*********USER DATABASE creation**********/
-           /* // Add distant access user
-             $sql = 'CREATE USER \''.$username.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
-             // Add a local access user
-             $sql = 'CREATE USER \''.$username.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
-             // Gives right to distant user on tables
-             $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'%\'';
-             //// Gives right to local user on tables
-             $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'localhost\'';
-             // Database creation for the user
-             $sql = '
-               CREATE DATABASE IF NOT EXISTS `'.$username.'_sql1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
-             ';*/
+                /*********USER DATABASE creation**********/
+               /* // Add distant access user
+                 $sql = 'CREATE USER \''.$username.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
+                 // Add a local access user
+                 $sql = 'CREATE USER \''.$username.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
+                 // Gives right to distant user on tables
+                 $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'%\'';
+                 //// Gives right to local user on tables
+                 $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'localhost\'';
+                 // Database creation for the user
+                 $sql = '
+                   CREATE DATABASE IF NOT EXISTS `'.$username.'_sql1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
+                 ';*/
 
-            //Redirect to "LOGIN" page
-            /*$this->redirectToRoute('user_login');*/
-        }
-    }
+                //Redirect to "LOGIN" page
+                /*$this->redirectToRoute('user_login');*/
+                }
+            }
 
     //CONNEXION\\
     //Calling the connexion view
