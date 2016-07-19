@@ -18,9 +18,9 @@ class UsersController extends Controller
     }
 
     //Inscription method
-     public function registerPost()
-    {
-        debug($_POST);
+     public function registerPost(){
+    
+        //debug($_POST);
 
         // Gathering POST datas (form)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
@@ -31,51 +31,62 @@ class UsersController extends Controller
         $zipcode = isset($_POST['zipcode']) ? strip_tags(trim($_POST['zipcode'])): '';
         $country = isset($_POST['country']) ? strip_tags(trim($_POST['country'])): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
+        $validPseudo = '';
+        $validLogin = '';
 
         // Verification des données
-         if (strlen($userpseudo) <= 2) {
-                 $authManager = new AuthentificationManager();
-                 $id = $authManager->isValidLoginInfo($email, $password);
-                 if ($id === 0) {
-                     echo'Login invalide <br />';
-                 }
-                 echo'entrez un pseudo <br />';
-             }
-            else {
-                //DB insersion
-                $userManager = new \Manager\UsersManager();
-                $userManager->update(
-                    array(
-                        'usr_pseudo' => $userpseudo,
-                        'usr_street' => $street,
-                        'usr_city' => $city,
-                        'usr_zipcode' => $zipcode,
-                        'usr_country' => $country,
-                        'usr_birthdate' => $birthdate,
-                        'usr_photo' => ('img_0.png'),
-                        'usr_status' => '1',
-                        'usr_updated' => date('Y-m-d H:i:s')
-                    ), $id
-                );
-
-                /*********USER DATABASE creation**********/
-               /* // Add distant access user
-                 $sql = 'CREATE USER \''.$username.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
-                 // Add a local access user
-                 $sql = 'CREATE USER \''.$username.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
-                 // Gives right to distant user on tables
-                 $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'%\'';
-                 //// Gives right to local user on tables
-                 $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'localhost\'';
-                 // Database creation for the user
-                 $sql = '
-                   CREATE DATABASE IF NOT EXISTS `'.$username.'_sql1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
-                 ';*/
-
-                //Redirect to "LOGIN" page
-                /*$this->redirectToRoute('user_login');*/
-                }
+        if(strlen($userpseudo) <= 2){
+                $_POST['errorList'][] = 'entrez un pseudo';
+                $validPseudo = false;
+            }else{
+                $validPseudo = true;
             }
+
+        $authManager = new AuthentificationManager();
+        $id = $authManager->isValidLoginInfo($email, $password);
+        if ($id === 0) {
+                $_POST['errorList'][] = 'Login invalide';
+                $validLogin = false;
+            }else{
+                $validLogin = true;
+            }
+
+        if( $validPseudo == true && $validLogin == true){
+
+            //DB insersion
+            $userManager = new \Manager\UsersManager();
+            $userManager->update(
+                array(
+                    'usr_pseudo' => $userpseudo,
+                    'usr_street' => $street,
+                    'usr_city' => $city,
+                    'usr_zipcode' => $zipcode,
+                    'usr_country' => $country,
+                    'usr_birthdate' => $birthdate,
+                    'usr_photo' => ('img_0.png'),
+                    'usr_status' => '1',
+                    'usr_updated' => date('Y-m-d H:i:s')
+                ), $id
+            );
+
+            //USER DATABASE creation
+            // Add distant access user
+             $sql = 'CREATE USER \''.$userpseudo.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
+             // Add a local access user
+             $sql = 'CREATE USER \''.$userpseudo.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
+             // Gives right to distant user on tables
+             $sql = 'GRANT ALL PRIVILEGES ON `'.$userpseudo.'\_%` .  * TO \''.$userpseudo.'\'@\'%\'';
+             //// Gives right to local user on tables
+             $sql = 'GRANT ALL PRIVILEGES ON `'.$userpseudo.'\_%` .  * TO \''.$userpseudo.'\'@\'localhost\'';
+             // Database creation for the user
+             $sql = '
+               CREATE DATABASE IF NOT EXISTS `'.$userpseudo.'_sql1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
+             ';
+
+            //Redirect to "LOGIN" page
+            /*$this->redirectToRoute('user_login');*/
+            }
+        }
 
     //CONNEXION\\
     //Calling the connexion view
@@ -86,14 +97,14 @@ class UsersController extends Controller
     //Connexion method
     public function loginPost()
     {
-        debug($_POST);exit;
+        //debug($_POST);exit;
         //Gathering POST datas (form)
-        $userPseudoOrEmail = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']) : '';
+        $usernameOrEmail = isset($_POST['userPseudoOrEmail']) ? trim($_POST['userPseudoOrEmail']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
         // Data verification
         $authManager = new \W\Security\AuthentificationManager();
-        $usr_id = $authManager->isValidLoginInfo($userPseudoOrEmail, $password);
+        $usr_id = $authManager->isValidLoginInfo($usernameOrEmail, $password);
         if ($usr_id === 0) {
             echo'Login invalide <br />';
         }
@@ -106,7 +117,7 @@ class UsersController extends Controller
             );
 
             // Redirection to "Home"
-            $this->redirectToRoute('home');
+            $this->redirectToRoute('default_home');
         }
         $this->show('user/login');
     }
