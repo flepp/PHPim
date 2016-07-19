@@ -10,6 +10,7 @@
 	require("../W/globals.php");
 
 	define('PATHUPLOAD', dirname(__FILE__).'/assets/upload/text/');
+	define('PATHIMG', dirname(__FILE__).'/assets/upload/img/');
 
 	define('IMAGEUPLOAD', dirname(__FILE__).'/assets/upload/img/');
 

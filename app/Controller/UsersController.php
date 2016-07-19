@@ -1,9 +1,12 @@
 <?php
+
 	namespace Controller;
     use \Manager\UsersManager;
     use \Manager\SessionManager;
-	use \W\Controller\Controller;
+    use \W\Controller\Controller;
+	use \W\Manager\UserManager;
     use \W\Security\AuthentificationManager;
+    use \Functions\ForgotPwd as ForgotPass;
 
 class UsersController extends Controller
 {
@@ -17,83 +20,68 @@ class UsersController extends Controller
     //Inscription method
      public function registerPost()
     {
-        $extensionAutorisees = array('jpg','png','gif');
+        debug($_POST);
 
-        // Gathering file (photo) info table
-        foreach ($_FILES as $key => $photo) {
-            // Testing upload of file
-            if (!empty($photo) && !empty($photo['avatar'])) {
-                print_r($photo);
-                if ($photo['size'] <= 500000) {
-                    $filename = $photo['avatar'];
-                    $dotPos = strrpos($filename, '.');
-                    $extension = strtolower(substr($filename, $dotPos+1));
-                    // Testing the extension
-                    if (in_array($extension, $extensionAutorisees)) {
-                        // Moving file to the right folder
-                        if (move_uploaded_file($photo['tmp_name'], 'public/assets/upload/img/'. 'img_'.$userpseudo.'.'.$extension)) {
-                            //echo 'fichier téléversé<br />';
-                        }
-                        else {
-                            echo 'une erreur est survenue<br />';
-                        }
-                    }
-                    else {
-                        echo 'extension interdite<br />';
-                    }
-                }
-                else {
-                    echo 'fichier trop lourd<br />';
-                }
-            }
-        }
-
-        //debug($_POST);
         // Gathering POST datas (form)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
-        $userpseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
+        $userpseudo = isset($_POST['userpseudo']) ? strip_tags(trim($_POST['userpseudo'])): '';
         $password = isset($_POST['password']) ? trim($_POST['password']): '';
-        $street = isset($_POST['street']) ? trim($_POST['street']): '';
-        $city = isset($_POST['city']) ? trim($_POST['city']): '';
-        $zipcode = isset($_POST['zipcode']) ? trim($_POST['zipcode']): '';
-        $country = isset($_POST['country']) ? trim($_POST['country']): '';
+        $street = isset($_POST['street']) ? strip_tags(trim($_POST['street'])): '';
+        $city = isset($_POST['city']) ? strip_tags(trim($_POST['city'])): '';
+        $zipcode = isset($_POST['zipcode']) ? strip_tags(trim($_POST['zipcode'])): '';
+        $country = isset($_POST['country']) ? strip_tags(trim($_POST['country'])): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
-        $photo = isset($_POST['avatar']) ? $_POST['avatar']: '';
 
         // Verification des données
-        $authManager = new AuthentificationManager();
-        $id = $authManager->isValidLoginInfo($email, $password);
-        if ($id === 0) {
-            echo'Login invalide <br />';
-        }
-        else {
-            //DB insersion
-            $userManager = new \Manager\UsersManager();
-            $userManager->update(
-                array(
-                    'usr_pseudo' => $userpseudo,
-                    'usr_street' => $street,
-                    'usr_city' => $city,
-                    'usr_zipcode' => $zipcode,
-                    'usr_country' => $country,
-                    'usr_birthdate' => $birthdate,
-                    'usr_photo' => $photo,
-                    'usr_status' => '1',
-                    'usr_updated' => date('Y-m-d H:i:s')
-                ), $id
-            );
 
-            //Redirect to "LOGIN" page
-            $this->redirectToRoute('user_login');
-        }
-    }
+         if (strlen($userpseudo) <= 2) {
+                 $authManager = new AuthentificationManager();
+                 $id = $authManager->isValidLoginInfo($email, $password);
+                 if ($id === 0) {
+                     echo'Login invalide <br />';
+                 }
+                 echo'entrez un pseudo <br />';
+             }
+            else {
+                //DB insersion
+                $userManager = new \Manager\UsersManager();
+                $userManager->update(
+                    array(
+                        'usr_pseudo' => $userpseudo,
+                        'usr_street' => $street,
+                        'usr_city' => $city,
+                        'usr_zipcode' => $zipcode,
+                        'usr_country' => $country,
+                        'usr_birthdate' => $birthdate,
+                        'usr_photo' => ('img_0.png'),
+                        'usr_status' => '1',
+                        'usr_updated' => date('Y-m-d H:i:s')
+                    ), $id
+                );
 
+                /*********USER DATABASE creation**********/
+               /* // Add distant access user
+                 $sql = 'CREATE USER \''.$username.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
+                 // Add a local access user
+                 $sql = 'CREATE USER \''.$username.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
+                 // Gives right to distant user on tables
+                 $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'%\'';
+                 //// Gives right to local user on tables
+                 $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'localhost\'';
+                 // Database creation for the user
+                 $sql = '
+                   CREATE DATABASE IF NOT EXISTS `'.$username.'_sql1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
+                 ';*/
+
+                //Redirect to "LOGIN" page
+                /*$this->redirectToRoute('user_login');*/
+                }
+            }
 
     //CONNEXION\\
     //Calling the connexion view
    public function login()
     {
-
         $this->show('user/login');
     }
     //Connexion method
@@ -124,19 +112,43 @@ class UsersController extends Controller
         $this->show('user/login');
     }
 
+    // FORGOT PASSWORD BY PHILIPPE
     public function forgot()
     {
-
         $this->show('user/forgot');
     }
 
     public function forgotPost()
     {
-
-        $this->show('user/forgot');
+        $forgotPass  = new ForgotPass();
+        $token = md5(time().'ThisShitBetterWork');
+        $userManager = new UsersManager();
+        $data = array(
+            'usr_token' => $token
+        );
+        $id = 2;
+        $userManager->update($data,$id);
+        $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
+        if (isset($_POST)) {
+           $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. Voici le token : <a href="http://localhost/PHPim/public/mdp-nouveau/'.$token.'">http://localhost/PHPim/public/mdp-nouveau/'.$token.'</a>');
+        }
+        $this->redirectToRoute('user_forgot');
     }
 
-    public function edit($id){   
+    public function resetPass(){
+
+        $this->show('user/resetPassword');
+    }
+
+    public function resetPassPost(){
+
+    }
+
+
+    //---------------- PHILIPPE END
+
+    public function edit($id)
+    {
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($userInfo);
@@ -226,6 +238,8 @@ class UsersController extends Controller
         }
     }
     public function invitations(){
+        //$this->allowTo(['admin']);
+
         /*IMPORT CSV FILE AND CONVERTING TO ARRAY*/
         $filePath = $_SESSION['filePath'];
         $filePathReplace = str_replace(';', ',', $filePath);
@@ -235,16 +249,24 @@ class UsersController extends Controller
             $arrayStudents[] = str_getcsv($line);
         }
         unset($arrayStudents[count($arrayStudents)-1]);
-        debug($arrayStudents);
+        $_SESSION['stuSession'] = $arrayStudents;
+        debug($_SESSION['stuSession']);
+        if(file_exists($_SESSION['chemin'])){
+            unlink($_SESSION['chemin']);
+        }
+        //debug($arrayStudents);
         /*-------------------------Getting the list of sessions------------------*/
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
         //debug($sessionList);
-        $this->show('user/admin/invitations', ['arrayStudents'=>$arrayStudents, 'sessionList'=>$sessionList]);
+
+        $this->show('user/admin/invitations', ['arrayStudents'=>$_SESSION['stuSession'], 'sessionList'=>$sessionList]);
     }
 
     /*-----Uploading Users list form a file and sending them an invintation to register-----*/
     public function invitationsPost(){
+        //$this->allowTo(['admin']);
+
         if(isset($_POST['upload'])){
             if (!empty($_POST)) {
                 debug($_POST);
@@ -265,7 +287,7 @@ class UsersController extends Controller
                                 // Je déplace le fichier uploadé au bon endroit
                                 if (move_uploaded_file($fichier['tmp_name'], PATHUPLOAD.$filename)) {
                                     $_SESSION['filePath'] = file_get_contents(PATHUPLOAD.$filename);
-                                    
+                                    $_SESSION['chemin'] = PATHUPLOAD.$filename;                                                                      
                                     /*--------REDIRECTION---------*/
                                    $this->redirectToRoute('user_invitations');
                                 }
@@ -284,39 +306,58 @@ class UsersController extends Controller
                 }
             }
         }
-        if(isset($_POST['sendInvitations'])){
+        else if(isset($_POST['sendInvitations'])){
             if(!empty($_POST)){
-                unset($_SESSION['errorList']);               
-                unset($_SESSION['successList']);  
+                if(isset($_SESSION['errorList']) || isset($_SESSION['successList'])){
+                    unset($_SESSION['errorList']);
+                    unset($_SESSION['successList']);
+                }  
                 $i = 0;             
                 foreach ($_POST['student'] as $key=> $value){
                     $name = isset($value['name']) ? trim($value['name']) : '';
                     $firstname = isset($value['firstname']) ? trim($value['firstname']) : '';
                     $email = isset($value['email']) ? trim($value['email']) : '';
                     $session = isset($_POST['session']) ? trim($_POST['session']) : '';
-                    $password = time();
-                    $_SESSION['errorList'] =array();
-                    $_SESSION['successList'] =array();
-                    debug($_SESSION['errorList']);
+                    $password = 'toto';
+                    $validFirstname = '';
+                    $validName = '';
+                    $validEmail = '';
+                    $validvalidEmail = '';
+                    //$_SESSION['errorList'] = array();
+                    //$_SESSION['successList'] = array();
+                    $emailEx = new UserManager;
+                    $emailEXist = $emailEx->emailExists($email);
+                    debug($emailEXist);
 
-                    if(strlen(strip_tags($firstname)) >= 2){
-                    }
-                    else{
-                        $_SESSION['errorList'][] = 'Prénom invalide en ligne #'.$key.' Email non envoyé à '.$firstname.' '.$name;
+                    if(strlen(strip_tags($firstname)) < 2){
+                        $_SESSION['errorList'][] = 'Prénom invalide en ligne #'.$key;
+                        $validFirstname = false;
+                    }else{
+                        $validFirstname = true;
                     }
 
-                    if(strlen(strip_tags(trim($name))) >=2){
+                    if(strlen(strip_tags(trim($name))) < 2){
+                        $_SESSION['errorList'][] = 'Nom invalide en ligne #'.$key;
+                        $validName = false;
+                    }else{
+                        $validName = true;
                     }
-                    else{
-                        $_SESSION['errorList'][] = 'Nom invalide en ligne #'.$key.' Email non envoyé à '.$firstname.' '.$name;
+
+                    if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
+                        $_SESSION['errorList'][] = 'Email invalide en ligne #'.$key;   
+                        $validEmail = false;
+                    }else{
+                        $validEmail = true;
                     }
-                    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        
+                    if($emailEXist == 1){
+                        $_SESSION['errorList'][] = 'Email '.$email.' en ligne #'.$key.' existe déja en BDD.';
+                        debug($_SESSION['errorList']);  
+                        $validemailEXist = false;
+                    }else{
+                        $validemailEXist = true;   
                     }
-                    else{
-                        $_SESSION['errorList'][] = 'Email invalide en ligne #'.$key.' Email non envoyé à '.$firstname.' '.$name;
-                    }
-                    if(count($_SESSION['errorList']) == 0){
+
+                    if($validFirstname == true && $validName == true && $validEmail == true && $validemailEXist == true){
                         $userManager = new UsersManager;
 
                         $tableInsert = [
@@ -333,10 +374,13 @@ class UsersController extends Controller
                         $insert = $userManager->insert($tableInsert);
                         $i++;
                         debug($insert);
+                        debug($_SESSION['successList']);
                     }
                 }
+                unset($_SESSION['stuSession']);
+                debug($_SESSION['stuSession']);
+                debug($_SESSION);
                 $this->redirectToRoute('user_invitations');
-
             }
         }
     }
