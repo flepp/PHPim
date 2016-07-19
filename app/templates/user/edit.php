@@ -7,8 +7,8 @@
 	<legend>Sélection du session*:</legend>
 		<form action="" method="get">
 			<select name="session_id">
-				<option value="0">ajouter une session</option>
-				<?php foreach ($allSessionsList as $currentSession) : ?>
+				<option value="0">sélectionnez une session</option>
+				<?php foreach ($sessionList as $currentSession) : ?>
 				<option value="<?= $currentId == $currentSession['id']; ?>"<?= $currentSession['ses_name']; ?>
 				</option>
 				<?php endforeach; ?>
@@ -23,7 +23,7 @@
 	<!-- Here starts the part for "user" statute -->
 	<p>Edition détails étudiant:</p>
 	<br/>
-	<form method="post" action="" style="margin-left: 20px">
+	<form method="post" action="" style="margin-left: 20px" enctype="multipart/form-data">
 		<h4>Nom:<?= ' '.$userInfo['usr_name'] ?></h4><br />
 		<h4>Prénom:<?= ' '.$userInfo['usr_firstname'] ?></h4><br />
 		<h4>Email:<?= ' '.$userInfo['usr_email'] ?></h4><br />
@@ -59,7 +59,7 @@
 		<input type="hidden" name="fichierSoumis" value="1">
 		<label for="files"><span class="btn" style="color:#2c3e50; background-color:#bdc3c7">Changer</span></label>
 		<input style="visibility: hidden;" id = "files" type="file" name="photo"><br/>
-		<input type="submit" value="Valider">
+		<input type="submit" name="submitInfo" value="Valider">
 	</form>
 
 <?php $this->stop('main_content') ?>

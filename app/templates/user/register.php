@@ -3,7 +3,7 @@
 <?php $this->start('main_content') ?>
 	<h2>Inscription</h2><br />
 
-	<form method="post" action="" enctype="multipart/form-data">
+	<form method="post" action="">
 		<h4>* Email</h4>
 		<input type="email" name="email" value=""><br />
 		<br />
@@ -28,16 +28,7 @@
 		<h4>Date de naissance</h4>
 		<input type="date" name="birthdate" value=""><br />
 		<br />
-
-		<h4>Photo du profil</h4>
-		<img height="80px" width="80px" src="../assets/upload/img/avatar_0.png">
-
-		<!-- insertion de la photo -->
-		<input type="hidden" name="fichierSoumis" value="1">
-		<label for="files"><span class="btn" style="background-color:lightgrey">Parcourir</span></label>
-		<input style="visibility: hidden;" id = "files" type="file" name="avatar"><br/>
-
-		<br />
+		
 		<span>* Champs obligatoires</span>
 		<br>
 		<input type="submit" value="Valider">
