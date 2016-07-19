@@ -3,12 +3,14 @@
 	namespace Controller;
 
     use \Manager\SessionManager;
-	use \Manager\UsersManager;
+    use \Manager\UsersManager;
 	use \W\Controller\Controller;
 
 class SessionController extends Controller{
 
     public function session(){
+        //$this->allowTo(['admin']);
+
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
         //debug($sessionList);
@@ -17,6 +19,8 @@ class SessionController extends Controller{
     }
 
     public function sessionPost(){
+        //$this->allowTo(['admin']);
+
         $tableInsert = array();
         $sessionManager = new SessionManager;
         //debug($_POST);
@@ -134,11 +138,9 @@ class SessionController extends Controller{
         }
     }
     public function database(){
+        //$this->allowTo(['admin']);
+
 
         $this->show('user/admin/database');
-    }
-    public function invitations(){
-
-        $this->show('user/admin/invitations');
     }
 }

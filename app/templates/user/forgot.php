@@ -5,7 +5,7 @@
 	<form action="" method="POST">
 		<label for="email">Adresse E-Mail : </label>
 		<br>
-		<input type="email" id="email" name="email">
+		<input type="email" id="email" name="usrMail">
 		<br>
 		<button type="submit">Envoyer</button>
 		<br>

@@ -161,7 +161,7 @@ abstract class Manager
 		if (!is_numeric($id)){
 			return false;
 		}
-		
+
 		$sql = "UPDATE " . $this->table . " SET ";
 		foreach($data as $key => $value){
 			$sql .= "$key = :$key, ";
