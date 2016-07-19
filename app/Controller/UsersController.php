@@ -342,8 +342,11 @@ class UsersController extends Controller
                     $firstname = isset($value['firstname']) ? trim($value['firstname']) : '';
                     $email = isset($value['email']) ? trim($value['email']) : '';
                     $session = isset($_POST['session']) ? trim($_POST['session']) : '';
-                    $password = time();
-                    $valid = '';
+                    $password = 'toto';
+                    $validFirstname = '';
+                    $validName = '';
+                    $validEmail = '';
+                    $validvalidEmail = '';
                     //$_SESSION['errorList'] = array();
                     //$_SESSION['successList'] = array();
                     $emailEx = new UserManager;
@@ -352,33 +355,33 @@ class UsersController extends Controller
 
                     if(strlen(strip_tags($firstname)) < 2){
                         $_SESSION['errorList'][] = 'Prénom invalide en ligne #'.$key;
-                        $valid = false;
+                        $validFirstname = false;
                     }else{
-                        $valid = true;
+                        $validFirstname = true;
                     }
 
                     if(strlen(strip_tags(trim($name))) < 2){
                         $_SESSION['errorList'][] = 'Nom invalide en ligne #'.$key;
-                        $valid = false;
+                        $validName = false;
                     }else{
-                        $valid = true;
+                        $validName = true;
                     }
 
                     if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
                         $_SESSION['errorList'][] = 'Email invalide en ligne #'.$key;   
-                        $valid = false;
+                        $validEmail = false;
                     }else{
-                        $valid = true;
+                        $validEmail = true;
                     }
                     if($emailEXist == 1){
                         $_SESSION['errorList'][] = 'Email '.$email.' en ligne #'.$key.' existe déja en BDD.';
                         debug($_SESSION['errorList']);  
-                        $valid = false;
+                        $validemailEXist = false;
                     }else{
-                        $valid = true;   
+                        $validemailEXist = true;   
                     }
 
-                    if($valid == true){
+                    if($validFirstname == true && $validName == true && $validEmail == true && $validemailEXist == true){
                         $userManager = new UsersManager;
 
                         $tableInsert = [
