@@ -17,8 +17,8 @@
 				<a href="<?= $this->url('allusers_allUsers') ?>">Etudiants</a>
 				<a href="<?= $this->url('session_session') ?>">Sessions</a>
 				<a href="<?= $this->url('user_invitations') ?>">Invits</a>
-				<a href="<?= $this->url('quiz_quiz') ?>">Quizs</a>
-				<a href="<?= $this->url('quiz_manage') ?>">Gestion Quizs</a>
+				<a href="<?= $this->url('quiz_quiz') ?>">Quiz</a>
+				<a href="<?= $this->url('quiz_manage') ?>">Gestion Quiz</a>
 				<a href="<?= $this->url('session_database') ?>">BDD Session</a>
 			</nav>
 		</header>

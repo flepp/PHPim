@@ -84,7 +84,7 @@ class UsersController extends Controller
              ';
 
             //Redirect to "LOGIN" page
-            /*$this->redirectToRoute('user_login');*/
+            $this->redirectToRoute('user_login');
             }
         }
 
@@ -115,9 +115,10 @@ class UsersController extends Controller
             $authManager->logUserIn(
                 $userManager->find($usr_id)
             );
-            debug($_SESSION);
+            //debug($_SESSION);
+
             // Redirection to "Home"
-            //$this->redirectToRoute('default_home');
+            $this->redirectToRoute('default_home');
         }
         $this->show('user/login');
     }
