@@ -6,7 +6,7 @@
     use \W\Controller\Controller;
 	use \W\Manager\UserManager;
     use \W\Security\AuthentificationManager;
-    use \Functions\ForgotPwd as ForgotPass;
+    use \Functions\SendEmail as SendEmail;
 
 class UsersController extends Controller
 {
@@ -260,11 +260,11 @@ class UsersController extends Controller
         }
         unset($arrayStudents[count($arrayStudents)-1]);
         $_SESSION['stuSession'] = $arrayStudents;
-        debug($_SESSION['stuSession']);
+        //debug($_SESSION['stuSession']);
         if(file_exists($_SESSION['chemin'])){
             unlink($_SESSION['chemin']);
         }
-        //debug($arrayStudents);
+
         /*-------------------------Getting the list of sessions------------------*/
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
@@ -279,14 +279,16 @@ class UsersController extends Controller
 
         if(isset($_POST['upload'])){
             if (!empty($_POST)) {
-                debug($_POST);
+                //unset($_SESSION['errorFile']);
+                //unset($_SESSION['successFile']);
+
                 $extensionAutorisees = array('csv');
 
                 // Je récupère mon tableau avec les infos sur le fichier
                 foreach ($_FILES as $key => $fichier) {
                     // Je teste si le fichier a été uploadé
                     if (!empty($fichier) && !empty($fichier['name'])) {
-                        if ($fichier['size'] <= 250000) {
+                        if ($fichier['size'] <= 8388608) {
 
                             $filename = $fichier['name'];
                             $dotPos = strrpos($filename, '.');
@@ -297,21 +299,24 @@ class UsersController extends Controller
                                 // Je déplace le fichier uploadé au bon endroit
                                 if (move_uploaded_file($fichier['tmp_name'], PATHUPLOAD.$filename)) {
                                     $_SESSION['filePath'] = file_get_contents(PATHUPLOAD.$filename);
-                                    $_SESSION['chemin'] = PATHUPLOAD.$filename;                                                                      
-                                    /*--------REDIRECTION---------*/
-                                   $this->redirectToRoute('user_invitations');
+                                    $_SESSION['chemin'] = PATHUPLOAD.$filename;
+
+                                    $_SESSION['successFile'][] = 'Téléchargement réussi!';                                                                      
                                 }
                                 else {
-                                    echo 'une erreur est survenue<br />';
+                                    $_SESSION['errorFile'][] = 'une erreur est survenue<br />';
                                 }
                             }
                             else {
-                                echo 'extension interdite<br />';
+                                $_SESSION['errorFile'][] = 'Cette extension n\'est pas permise, choisissez un fichier ".csv" S.V.P';
                             }
                         }
                         else {
-                            echo 'fichier trop lourd<br />';
+                            $_SESSION['errorFile'][] = 'Votre fichier est trop lourd';
                         }
+                        /*--------REDIRECTION---------*/
+                       $this->redirectToRoute('user_invitations');
+                       debug($_SESSION) ;
                     }
                 }
             }
@@ -319,8 +324,8 @@ class UsersController extends Controller
         else if(isset($_POST['sendInvitations'])){
             if(!empty($_POST)){
                 if(isset($_SESSION['errorList']) || isset($_SESSION['successList'])){
-                    unset($_SESSION['errorList']);
-                    unset($_SESSION['successList']);
+                    //unset($_SESSION['errorList']);
+                    //unset($_SESSION['successList']);
                 }  
                 $i = 0;             
                 foreach ($_POST['student'] as $key=> $value){
@@ -328,7 +333,8 @@ class UsersController extends Controller
                     $firstname = isset($value['firstname']) ? trim($value['firstname']) : '';
                     $email = isset($value['email']) ? trim($value['email']) : '';
                     $session = isset($_POST['session']) ? trim($_POST['session']) : '';
-                    $password = 'toto';
+                    $password = time();
+                    $path = '<a href="http://localhost/PHPim/public/inscription/">http://localhost/PHPim/public/inscription/</a>';
                     $validFirstname = '';
                     $validName = '';
                     $validEmail = '';
@@ -382,9 +388,15 @@ class UsersController extends Controller
                         ];
                         $_SESSION['successList'][$i] = 'Invitation bien envoyée à '.$firstname.' '.$name;
                         $insert = $userManager->insert($tableInsert);
+                        /*SENDING EMAIL to USER*/
+                        $invitations = new SendEmail;
+                        $subject = 'Inscription sur la plateforme PHPim';
+                        $message = 'Bonjour '.$firstname.'<br/> Veuillez compléter votre inscription sur '.$path.'. Vos identifiants sont: <br/> Email: '.$email.'<br/>'.'Mot de passe:'.$password.' <br/> Merci!!';
+
+                        $posting = $invitations->sendMail($email, $subject,$message);
                         $i++;
-                        debug($insert);
-                        debug($_SESSION['successList']);
+                        //debug($insert);
+                        //debug($_SESSION['successList']);
                     }
                 }
                 unset($_SESSION['stuSession']);

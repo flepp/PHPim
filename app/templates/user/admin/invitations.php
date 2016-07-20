@@ -6,6 +6,18 @@
 	<br/>
 	<h1>Ajouter une liste d'étudiant</h1>
 	<br/>
+	<?php if (isset($_SESSION['errorFile'])): ?>
+			<?php foreach ($_SESSION['errorFile'] as $error): ?>
+				<p><?= $error ?></p>			
+			<?php endforeach ?>
+			<?php unset($_SESSION['errorFile']); ?>
+		<?php endif ?>
+		<?php if (isset($_SESSION['successFile'])): ?>
+			<?php foreach ($_SESSION['successFile'] as $success): ?>
+				<p><?= $success ?></p>
+			<?php endforeach ?>
+			<?php unset($_SESSION['successFile']); ?>			
+		<?php endif ?>
 	<br/>
 	<form action="" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="fichierSoumis" value="1">
