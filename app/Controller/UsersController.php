@@ -3,8 +3,8 @@
 	namespace Controller;
     use \Manager\UsersManager;
     use \Manager\SessionManager;
-    use \W\Controller\Controller;
-	use \W\Manager\UserManager;
+	use \W\Controller\Controller;
+    use \W\Manager\UserManager;
     use \W\Security\AuthentificationManager;
     use \Functions\SendEmail as SendEmail;
 
@@ -18,9 +18,7 @@ class UsersController extends Controller
     }
 
     //Inscription method
-     public function registerPost(){
-    
-        //debug($_POST);
+    public function registerPost(){
 
         // Gathering POST datas (form)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
@@ -31,6 +29,7 @@ class UsersController extends Controller
         $zipcode = isset($_POST['zipcode']) ? strip_tags(trim($_POST['zipcode'])): '';
         $country = isset($_POST['country']) ? strip_tags(trim($_POST['country'])): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
+        $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
         $validPseudo = '';
         $validLogin = '';
 
@@ -45,21 +44,58 @@ class UsersController extends Controller
         $authManager = new AuthentificationManager();
         $id = $authManager->isValidLoginInfo($email, $password);
         if ($id === 0) {
-            $_SESSION['errorList'][] = 'Login invalide';
+            $_SESSION['errorList'][] = 'Verifiez votre email ou votre mot de passe';
             $validLogin = false;
         }else{
             $validLogin = true;
         }
 
+        
+
         if($validPseudo == true && $validLogin == true){
             $userManager = new UsersManager();
             $info = $userManager->getUsrUpdated($email);
-
             $updated = $info['usr_updated'];
             $firstname = $info['usr_firstname'];
             $password = 'webforce3';
+
             if ($updated == NULL) {
-            
+
+                // Photo manager
+                $allowedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
+                foreach ($_FILES as $key => $value) {
+                    if (!empty($value) && !empty($value['name'])){
+                        print_r($value);
+                        if ($value['size'] <= 300000) {
+                            $filename = $value['name'];
+                            $dotPosition = strrpos($filename, '.');
+                            $extension = strtolower(substr($filename, $dotPosition + 1));
+                            //Checking if a value exists in an array with "in_array" function
+                            if (in_array($extension, $allowedExtensions)) {
+                                //Moving an uploaded file to a new location
+                                if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$userpseudo.'.'.$extension)) {
+                                    $photo = 'img_'.$userpseudo.'.'.$extension;
+                                    $detailsUser = new UsersManager();
+                                    $userInfo = $detailsUser->find($id);
+                                    $userPhoto = array (
+                                                'usr_photo' => $photo
+                                                );
+                                    $id = $userInfo['id'];
+                                    if (isset($_POST)) {
+                                        $detailsUser->update($userPhoto, $id);
+                                    }
+                                }
+                                else {
+                                    $_SESSION['errorList'][] = 'Une erreur est survenue au chargement!';
+                                }
+                            }
+                            else {
+                                $_SESSION['errorList'][] = 'Une erreur est survenue au chargement!';
+                            }
+                        }
+                    }
+                }
+
                 //DB insersion
                 $userManager = new \Manager\UsersManager();
                 $userManager->update(
@@ -70,11 +106,11 @@ class UsersController extends Controller
                         'usr_zipcode' => $zipcode,
                         'usr_country' => $country,
                         'usr_birthdate' => $birthdate,
-                        'usr_photo' => ('img_0.png'),
                         'usr_status' => '1',
                         'usr_updated' => date('Y-m-d H:i:s')
                     ), $id
                 );
+
                 $AllUsersManager = new UsersManager;
 
                 //USER DATABASE creation
@@ -94,13 +130,17 @@ class UsersController extends Controller
                     $sql = 'CREATE DATABASE IF NOT EXISTS `'.$firstname.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
                 }
+                // Redirection to "Home"
+                $this->redirectToRoute('user_login');
             }
             else {
                 $_SESSION['errorList'][] = 'Vous êtes déjà inscrit!';
-                debug($_SESSION['errorList']);
-            }   
+            }
         }
+        // Redirection to "Home"
+        $this->redirectToRoute('user_register');
     }
+
     //CONNEXION\\
     //Calling the connexion view
    public function login()
@@ -119,7 +159,7 @@ class UsersController extends Controller
         $authManager = new \W\Security\AuthentificationManager();
         $usr_id = $authManager->isValidLoginInfo($usernameOrEmail, $password);
         if ($usr_id === 0) {
-            echo'Login invalide <br />';
+            $_SESSION['errorList'][] = 'Verifiez votre email ou votre mot de passe';
         }
         else {
             $userManager = new \Manager\UsersManager();
@@ -128,8 +168,6 @@ class UsersController extends Controller
             $authManager->logUserIn(
                 $userManager->find($usr_id)
             );
-            //debug($_SESSION);
-
             // Redirection to "Home"
             $this->redirectToRoute('default_home');
         }
@@ -139,40 +177,79 @@ class UsersController extends Controller
     // FORGOT PASSWORD BY PHILIPPE
     public function forgot()
     {
-        $this->show('user/forgot');
+        $userManager = new UsersManager();
+        $userList = $userManager->findAll();
+        $this->show('user/forgot', array('userList' => $userList));
     }
 
-    public function forgotPost()
+     public function forgotPost()
     {
         $forgotPass  = new ForgotPass();
-        $token = md5(time().'ThisShitBetterWork');
-        $userManager = new UsersManager();
-        $data = array(
-            'usr_token' => $token
-        );
-        $id = 2;
-        $userManager->update($data,$id);
-        $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
+        $userManager = new UserManager();
+        $userList    = new UsersManager();
+        $controller  = new \W\Controller\Controller;
         if (isset($_POST)) {
-           $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. Voici le token : <a href="http://localhost/PHPim/public/mdp-nouveau/'.$token.'">http://localhost/PHPim/public/mdp-nouveau/'.$token.'</a>');
+            $token = md5(time().'ThisShitBetterWork');
+            $data = array(
+                'usr_token' => $token
+            );
+            $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
+            $emailExists = $userManager->emailExists($usrMail);
+            if ($emailExists == 1) {
+                $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. <a href="http://localhost'.$controller->generateUrl('user_reset').'?token='.$token.'">Je réinitialise mon mot de passe</a>.');
+                $userList->updateToken($data,$usrMail);
+            }
+            else{
+                echo 'Vous n\'êtes pas dans la base de données. Vous n\'avez donc pas pu oublier votre mot de passe. Vilain pas beau!';
+            }
         }
-        $this->redirectToRoute('user_forgot');
+         $this->redirectToRoute('user_forgot');
     }
 
     public function resetPass(){
-
         $this->show('user/resetPassword');
     }
 
     public function resetPassPost(){
 
+        if (isset($_GET['token'])) {
+
+            $token = $_GET['token'];
+            debug($token);
+
+            $userManager = new UsersManager();
+            $id = $userManager->getIdFromToken($token);
+
+            if (isset($_POST)){
+
+                $newPass = isset($_POST['password']) ? $_POST['password'] : '';
+                $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
+                $data = array(
+                    'usr_password' => $newPass,
+                    'usr_token'    => ''
+                );
+
+                if (!empty($newPass)) {
+                    if ($newPass == $newPassConfirm) {
+                        $userManager->initPass($data,$id['id']);
+                        echo 'Votre mot de passe a été réinitialisé';
+                    }
+                    else{
+                        echo 'Vos mots de passe sont différents';
+                    }
+                }
+                else{
+                    echo 'Pas de mot de passe entré';
+                }
+            debug($_POST);
+            }
+        }
     }
 
 
     //---------------- PHILIPPE END
 
-    public function edit($id)
-    {
+    public function edit($id){
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($userInfo);
@@ -212,8 +289,6 @@ class UsersController extends Controller
                                     $detailsUser->update($userPhoto, $id);
                                 }
                                 echo 'fichier uploaded<br/>';
-                                /*--------REDIRECTION---------*/
-                                //$this->redirectToRoute('user_invitations');
                             }
                             else {
                                 echo 'attention, une erreur est survenue<br/>';
@@ -226,7 +301,7 @@ class UsersController extends Controller
                 }
             }
             //debug($_POST);
-            //Inserting data from POST
+            //Inserting data from POST for "user" statute use
             $userPseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
             $password = isset($_POST['userpassword']) ? trim($_POST['userpassword']): '';
             $street = isset($_POST['userstreet']) ? trim($_POST['userstreet']): '';
@@ -235,6 +310,12 @@ class UsersController extends Controller
             $country = isset($_POST['usercountry']) ? trim($_POST['usercountry']): '';
             $birthdate = isset($_POST['userbirthdate']) ? trim($_POST['userbirthdate']): '';
             $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
+
+            //Inserting data from POST for "admin" statute use
+            $userName = isset($_POST['username']) ? trim($_POST['username']): '';
+            $userFirstName = isset($_POST['userfirstname']) ? trim($_POST['userfirstname']): '';
+            $userEmail = isset($_POST['useremail']) ? trim($_POST['useremail']): '';
+            //$sessionName = isset($_POST['sessionname']) ? trim($_POST['sessionname']): '';
 
             $detailsUser = new UsersManager();
             $userInfo = $detailsUser->find($id);
@@ -247,6 +328,9 @@ class UsersController extends Controller
                         'usr_zipcode' => $zipcode,
                         'usr_country' => $country,
                         'usr_birthdate' => $birthdate,
+                        'usr_name' => $userName,
+                        'usr_firstname' => $userFirstName,
+                        'usr_email' => $userEmail,
                         'usr_updated' => date ('Y-m-d H:i:s')
                         );
             $id = $userInfo['id'];
@@ -261,6 +345,8 @@ class UsersController extends Controller
             $this->show('user/edit');
         }
     }
+//                       'ses_name' => $sessionName
+
     public function invitations(){
         $this->allowTo(['admin']);
 
