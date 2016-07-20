@@ -11,7 +11,7 @@ class AllUsersController extends Controller
 
     public function allUsers()
     {   
-        debug($_SESSION);
+        //debug($_SESSION);
         //I'm getting the list of all sessions
         $sessionManager = new SessionManager();
         $sessionList = $sessionManager->findAll();
@@ -23,9 +23,9 @@ class AllUsersController extends Controller
         //debug($allUsersTable);
         $this->show(
             'allusers/allUsers',
-            array(
+            /*array(
                 'sessionList' => $sessionList
-            ),
+            ),*/
             array(
                 'allUsersTable' => $allUsersTable
             )
@@ -44,7 +44,6 @@ class AllUsersController extends Controller
             )
         );
     }
-
 }
 
 ?>
