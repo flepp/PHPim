@@ -4,6 +4,7 @@
     use \Manager\UsersManager;
     use \Manager\SessionManager;
 	use \W\Controller\Controller;
+    use \W\Manager\UserManager;
     use \W\Security\AuthentificationManager;
     use \Functions\ForgotPwd as ForgotPass;
 
@@ -142,33 +143,73 @@ class UsersController extends Controller
     // FORGOT PASSWORD BY PHILIPPE
     public function forgot()
     {
-        $this->show('user/forgot');
+        $userManager = new UsersManager();
+        $userList = $userManager->findAll();
+        $this->show('user/forgot', array('userList' => $userList));
     }
 
-    public function forgotPost()
+     public function forgotPost()
     {
         $forgotPass  = new ForgotPass();
-        $token = md5(time().'ThisShitBetterWork');
-        $userManager = new UsersManager();
-        $data = array(
-            'usr_token' => $token
-        );
-        $id = 2;
-        $userManager->update($data,$id);
-        $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
+        $userManager = new UserManager();
+        $userList    = new UsersManager();
+        $controller  = new \W\Controller\Controller;
         if (isset($_POST)) {
-           $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. Voici le token : <a href="http://localhost/PHPim/public/mdp-nouveau/'.$token.'">http://localhost/PHPim/public/mdp-nouveau/'.$token.'</a>');
+            $token = md5(time().'ThisShitBetterWork');
+            $data = array(
+                'usr_token' => $token
+            );
+            $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
+            $emailExists = $userManager->emailExists($usrMail);
+            if ($emailExists == 1) {
+                $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. <a href="http://localhost'.$controller->generateUrl('user_reset').'?token='.$token.'">Je réinitialise mon mot de passe</a>.');
+                $userList->updateToken($data,$usrMail);
+            }
+            else{
+                echo 'Vous n\'êtes pas dans la base de données. Vous n\'avez donc pas pu oublier votre mot de passe. Vilain pas beau!';
+            }
         }
-        $this->redirectToRoute('user_forgot');
+         $this->redirectToRoute('user_forgot');
     }
 
     public function resetPass(){
-
         $this->show('user/resetPassword');
     }
 
     public function resetPassPost(){
 
+        if (isset($_GET['token'])) {
+
+            $token = $_GET['token'];
+            debug($token);
+
+            $userManager = new UsersManager();
+            $id = $userManager->getIdFromToken($token);
+
+            if (isset($_POST)){
+
+                $newPass = isset($_POST['password']) ? $_POST['password'] : '';
+                $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
+                $data = array(
+                    'usr_password' => $newPass,
+                    'usr_token'    => ''
+                );
+
+                if (!empty($newPass)) {
+                    if ($newPass == $newPassConfirm) {
+                        $userManager->initPass($data,$id['id']);
+                        echo 'Votre mot de passe a été réinitialisé';
+                    }
+                    else{
+                        echo 'Vos mots de passe sont différents';
+                    }
+                }
+                else{
+                    echo 'Pas de mot de passe entré';
+                }
+            debug($_POST);
+            }
+        }
     }
 
     //---------------- PHILIPPE END
