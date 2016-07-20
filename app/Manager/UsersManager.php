@@ -15,7 +15,6 @@ class UsersManager extends \W\Manager\Manager{
 		if (!is_numeric($id)){
 			return false;
 		}
-		
 		$sql = "UPDATE " . $this->table . " SET ";
 		foreach($data as $key => $value){
 			$sql .= "$key = :$key, ";
@@ -40,7 +39,6 @@ class UsersManager extends \W\Manager\Manager{
 
 		return $sth->fetchAll();
 	}
-
 	public function connectionToDatabase($sql){
 		$sth = $this->dbh->prepare($sql);
 		$sth->execute();

@@ -8,6 +8,5 @@
 		</p>
 		- Projet PHPim - <br>
 		<a href="<?= $this->url('quiz_quiz') ?>">Quiz</a>
-		<a href="<?= $this->url('session_database') ?>">BDD Session</a><br>
 	</section>
 <?php $this->stop('main_content') ?>

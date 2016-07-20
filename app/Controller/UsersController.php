@@ -18,9 +18,7 @@ class UsersController extends Controller
     }
 
     //Inscription method
-     public function registerPost(){
-    
-        //debug($_POST);
+    public function registerPost(){
 
         // Gathering POST datas (form)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
@@ -31,6 +29,7 @@ class UsersController extends Controller
         $zipcode = isset($_POST['zipcode']) ? strip_tags(trim($_POST['zipcode'])): '';
         $country = isset($_POST['country']) ? strip_tags(trim($_POST['country'])): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
+        $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
         $validPseudo = '';
         $validLogin = '';
 
@@ -45,21 +44,58 @@ class UsersController extends Controller
         $authManager = new AuthentificationManager();
         $id = $authManager->isValidLoginInfo($email, $password);
         if ($id === 0) {
-            $_SESSION['errorList'][] = 'Login invalide';
+            $_SESSION['errorList'][] = 'Verifiez votre email ou votre mot de passe';
             $validLogin = false;
         }else{
             $validLogin = true;
         }
 
+        
+
         if($validPseudo == true && $validLogin == true){
             $userManager = new UsersManager();
             $info = $userManager->getUsrUpdated($email);
-
             $updated = $info['usr_updated'];
             $firstname = $info['usr_firstname'];
             $password = 'webforce3';
+
             if ($updated == NULL) {
-            
+
+                // Photo manager
+                $allowedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
+                foreach ($_FILES as $key => $value) {
+                    if (!empty($value) && !empty($value['name'])){
+                        print_r($value);
+                        if ($value['size'] <= 300000) {
+                            $filename = $value['name'];
+                            $dotPosition = strrpos($filename, '.');
+                            $extension = strtolower(substr($filename, $dotPosition + 1));
+                            //Checking if a value exists in an array with "in_array" function
+                            if (in_array($extension, $allowedExtensions)) {
+                                //Moving an uploaded file to a new location
+                                if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$userpseudo.'.'.$extension)) {
+                                    $photo = 'img_'.$userpseudo.'.'.$extension;
+                                    $detailsUser = new UsersManager();
+                                    $userInfo = $detailsUser->find($id);
+                                    $userPhoto = array (
+                                                'usr_photo' => $photo
+                                                );
+                                    $id = $userInfo['id'];
+                                    if (isset($_POST)) {
+                                        $detailsUser->update($userPhoto, $id);
+                                    }
+                                }
+                                else {
+                                    $_SESSION['errorList'][] = 'Une erreur est survenue au chargement!';
+                                }
+                            }
+                            else {
+                                $_SESSION['errorList'][] = 'Une erreur est survenue au chargement!';
+                            }
+                        }
+                    }
+                }
+
                 //DB insersion
                 $userManager = new \Manager\UsersManager();
                 $userManager->update(
@@ -70,11 +106,11 @@ class UsersController extends Controller
                         'usr_zipcode' => $zipcode,
                         'usr_country' => $country,
                         'usr_birthdate' => $birthdate,
-                        'usr_photo' => ('img_0.png'),
                         'usr_status' => '1',
                         'usr_updated' => date('Y-m-d H:i:s')
                     ), $id
                 );
+
                 $AllUsersManager = new UsersManager;
 
                 //USER DATABASE creation
@@ -94,13 +130,17 @@ class UsersController extends Controller
                     $sql = 'CREATE DATABASE IF NOT EXISTS `'.$firstname.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
                 }
+                // Redirection to "Home"
+                $this->redirectToRoute('user_login');
             }
             else {
                 $_SESSION['errorList'][] = 'Vous êtes déjà inscrit!';
-                debug($_SESSION['errorList']);
-            }   
+            }
         }
+        // Redirection to "Home"
+        $this->redirectToRoute('user_register');
     }
+
     //CONNEXION\\
     //Calling the connexion view
    public function login()
@@ -119,7 +159,7 @@ class UsersController extends Controller
         $authManager = new \W\Security\AuthentificationManager();
         $usr_id = $authManager->isValidLoginInfo($usernameOrEmail, $password);
         if ($usr_id === 0) {
-            echo'Login invalide <br />';
+            $_SESSION['errorList'][] = 'Verifiez votre email ou votre mot de passe';
         }
         else {
             $userManager = new \Manager\UsersManager();
@@ -128,8 +168,6 @@ class UsersController extends Controller
             $authManager->logUserIn(
                 $userManager->find($usr_id)
             );
-            //debug($_SESSION);
-
             // Redirection to "Home"
             $this->redirectToRoute('default_home');
         }
