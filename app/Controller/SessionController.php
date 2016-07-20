@@ -4,7 +4,7 @@
 
     use \Manager\SessionManager;
     use \Manager\UsersManager;
-	use \W\Controller\Controller;
+    use \W\Controller\Controller;
 
 class SessionController extends Controller{
 
@@ -139,8 +139,60 @@ class SessionController extends Controller{
     }
     public function database(){
         //$this->allowTo(['admin']);
+        $sessionManager = new SessionManager;
+        $sessionList = $sessionManager->findAll();
 
+        $this->show('user/admin/database',['sessionList'=>$sessionList]);
+    }
+    public function databasePost(){
+        if(isset($_POST)){
+            if(!empty($_POST['suffixe'])){
+                $suffixe = $_POST['suffixe'];
+                $session = $_POST['session'];
+                if(strlen(strip_tags(trim($suffixe))) >= 4){
+                    $AllUsersManager = new UsersManager;
+                    $getAllBySession = $AllUsersManager->getAllBySession($session);
+                    debug($getAllBySession);
+                    foreach($getAllBySession as $key=>$value){
+                        $id = $value['id'];
+                        $username = $value['usr_firstname'];
+                        $name = $value['usr_name'];
+                        $password = 'webforce3';
+                        $status = $value['usr_status'];
 
-        $this->show('user/admin/database');
+                        /*
+                        $sql = 'CREATE USER \''.$username.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
+                        $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                        $sql = 'CREATE USER \''.$username.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
+                        $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                        $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'%\'';
+                        $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                        $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'localhost\'';
+                        $sth = $AllUsersManager->connectionToDatabase($sql);
+                            for(i=0; i<4; i++){
+                                $sql = 'CREATE DATABASE IF NOT EXISTS `'.$username.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                            $sth = $AllUsersManager->connectionToDatabase($sql);
+                            }
+                        */
+                        if($status == 1){
+                            $sql = 'CREATE DATABASE IF NOT EXISTS `'.$username.'_'.$suffixe.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                            $sth = $AllUsersManager->connectionToDatabase($sql);
+                            $_SESSION['successList'][] = 'Création réussie pour '.$username.' '.$name.'.';
+                        }
+                        else{
+                            $_SESSION['errorList'][] = $username.' '.$name.' est désactivé(e), impossible de lui affecter une nouvelle base de données';
+                        }
+                    }
+                }
+                else{
+                    $_SESSION['errorList'][] = 'Suffixe trop court ou invalide!';
+                }
+                /*--------REDIRECTION---------*/
+                $this->redirectToRoute('session_database');
+            }
+        }
     }
 }

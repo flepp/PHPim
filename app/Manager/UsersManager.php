@@ -31,4 +31,18 @@ class UsersManager extends \W\Manager\Manager{
 		$sth->bindValue(":id", $id);
 		return $sth->execute();
 	}
+	public function getAllBySession($session){
+
+		$sql = "SELECT id, usr_firstname, usr_name, usr_status FROM " . $this->table . " WHERE session_id = :session ";
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindValue(":session", $session);
+		$sth->execute();
+
+		return $sth->fetchAll();
+	}
+
+	public function connectionToDatabase($sql){
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute();
+	}
 }
