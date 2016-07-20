@@ -184,7 +184,7 @@ class UsersController extends Controller
 
      public function forgotPost()
     {
-        $forgotPass  = new ForgotPass();
+        $forgotPass  = new SendEmail();
         $userManager = new UserManager();
         $userList    = new UsersManager();
         $controller  = new \W\Controller\Controller;
@@ -215,27 +215,26 @@ class UsersController extends Controller
         if (isset($_GET['token'])) {
 
             $token = $_GET['token'];
-            debug($token);
 
             $userManager = new UsersManager();
             $id = $userManager->getIdFromToken($token);
 
             if (isset($_POST)){
-
+                $_SESSION['errorList'] = array();
                 $newPass = isset($_POST['password']) ? $_POST['password'] : '';
                 $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
                 $data = array(
                     'usr_password' => $newPass,
                     'usr_token'    => ''
                 );
-
                 if (!empty($newPass)) {
                     if ($newPass == $newPassConfirm) {
-                        $userManager->initPass($data,$id['id']);
+                        $userManager->update($data,$id['id']);
                         echo 'Votre mot de passe a été réinitialisé';
                     }
                     else{
-                        echo 'Vos mots de passe sont différents';
+                         $_SESSION['errorList'][] = 'Vos mots de passe sont différents';
+                         debug($_SESSION['errorList']);
                     }
                 }
                 else{
