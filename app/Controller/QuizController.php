@@ -23,15 +23,23 @@ class QuizController extends Controller
         $category = isset($_POST['categories']) ? trim($_POST['categories']) : '';
 
         if (isset($_POST)) {
-            $data = array(
-                'qui_day' => $day,
-                'qui_title' => $title,
-                'qui_link' => $link,
-                'category_id' => $category
-            );
-            $quizManager->insert($data);
-            $this->redirectToRoute('quiz_manage');
+            if (strlen($day) > 1) {
+                $data = array(
+                    'qui_day' => $day,
+                    'qui_title' => $title,
+                    'qui_link' => $link,
+                    'category_id' => $category
+                );
+                $quizManager->insert($data);
+                $_SESSION['successList'][] = 'Le quiz a bien été ajouté!';
+            }
+            else{
+                $_SESSION['errorList'][] = 'Une erreur s\'est produite, veuillez recommencer.';
+            }
+            debug($_SESSION);
+            $this->redirectToRoute('quiz_add');
         }
+
     }
 
     public function manage()
@@ -65,6 +73,9 @@ class QuizController extends Controller
             $quizManager = new QuizManager();
             //$quizSingle = $quizManager->find($id);
             $quizDelete = $quizManager->delete($id);
+            $quizName = $_POST['quizName'];
+            $_SESSION['successList'][] = 'Le quiz '.$quizName.' a bien été supprimé!';
+            debug($quizList);
             $this->redirectToRoute('quiz_manage');
             //$this->show('user/admin/activateQuiz', array('quizDelete' => $quizDelete));
         }
@@ -100,7 +111,13 @@ class QuizController extends Controller
         $id = $quizSingle['id'];
 
         if(isset($_POST)){
-            $quizUpdate = $quizManager->update($data, $id, $stripTags = true);
+            if (strlen($quiTitle) > 3) {
+                $quizUpdate = $quizManager->update($data, $id, $stripTags = true);
+                $_SESSION['successList'][] = 'Le quiz a bien été modifié!';
+            }
+            else{
+                $_SESSION['errorList'][] = 'Une erreur s\'est produite, veuillez recommencer.';
+            }
             $this->redirectToRoute('quiz_modify', ['id' => $quizSingle[id]]);
         }
 

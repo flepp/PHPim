@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title><?= $this->e($title) ?></title>
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/reset.css') ?>">
+	<link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
 </head>
 <body>
 	<div class="container">
@@ -13,7 +14,6 @@
 				<a href="<?= $this->url('default_about') ?>">About</a>
 				<a href="<?= $this->url('user_register') ?>">Inscription</a>
 				<a href="<?= $this->url('user_login') ?>">Connexion</a>
-				<a href="<?= $this->url('user_reset') ?>">Nouveau MDP</a>
 				<a href="<?= $this->url('allusers_allUsers') ?>">Etudiants</a>
 				<a href="<?= $this->url('session_session') ?>">Sessions</a>
 				<a href="<?= $this->url('session_database') ?>">Créer BDD pour une session</a>
@@ -25,6 +25,7 @@
 		</header>
 
 		<section>
+			<?php $this->insert('partials/notifications') ?>
 			<?= $this->section('main_content') ?>
 		</section>
 

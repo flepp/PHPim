@@ -43,6 +43,7 @@
 			</form>
 			<form action="<?= $this->url('quiz_manage'); ?>" method="POST">
 				<input type="text" name="deleteQuiz" value="<?= $value['id'] ?>" hidden>
+				<input type="text" name="quizName" value="<?= $value['qui_title'] ?>" hidden>
 				<button type="submit" name="delete" class="delete">Supprimer</button>
 			</form>
 			<a href="<?= $this->url('quiz_modify', ['id' => $value['id']])?>">Modifier</a>

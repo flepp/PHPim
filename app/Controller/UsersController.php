@@ -50,8 +50,6 @@ class UsersController extends Controller
             $validLogin = true;
         }
 
-        
-
         if($validPseudo == true && $validLogin == true){
             $userManager = new UsersManager();
             $info = $userManager->getUsrUpdated($email);
@@ -198,9 +196,10 @@ class UsersController extends Controller
             if ($emailExists == 1) {
                 $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. <a href="http://localhost'.$controller->generateUrl('user_reset').'?token='.$token.'">Je réinitialise mon mot de passe</a>.');
                 $userList->updateToken($data,$usrMail);
+                $_SESSION['successList'][] = 'Un email contenant un lien pour la réinitialisation de votre mot de passe vous a été envoyé.';
             }
             else{
-                echo 'Vous n\'êtes pas dans la base de données. Vous n\'avez donc pas pu oublier votre mot de passe. Vilain pas beau!';
+                $_SESSION['errorList'][] = 'Votre adresse email n\'est pas dans la base de données. Inscrivez-vous ou contactez votre formateur.';
             }
         }
          $this->redirectToRoute('user_forgot');
@@ -220,7 +219,6 @@ class UsersController extends Controller
             $id = $userManager->getIdFromToken($token);
 
             if (isset($_POST)){
-                $_SESSION['errorList'] = array();
                 $newPass = isset($_POST['password']) ? $_POST['password'] : '';
                 $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
                 $data = array(

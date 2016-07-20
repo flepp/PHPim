@@ -14,7 +14,7 @@
 		<input type="text" value="<?= $value['id']?>" name="catId" hidden>
 		<input type="text" value="<?= $value['cat_name']?>" name="catName">
 		<button type="submit" name="modify">Modifier</button>
-		<button type="submit" name="delete" id="delete">Supprimer</button>
+		<button type="submit" name="delete" class="delete">Supprimer</button>
 		<br>
 	</form>
 	<?php endforeach ?>
