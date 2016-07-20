@@ -3,6 +3,7 @@
 namespace Manager;
 
 use \Controller\UsersController;
+use \ConnectionManager;
 
 class UsersManager extends \W\Manager\Manager{
 	
@@ -53,5 +54,21 @@ class UsersManager extends \W\Manager\Manager{
 		$sth->execute();
 
 		return $sth->fetch();
+	}
+	public function getAllDatabases(){
+		$sql = "SHOW DATABASES";
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute();
+		return $sth->fetchAll();
+	}
+	public function deleteDatabase($name){
+		$sql = 'DROP DATABASE IF EXISTS `:name`';
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindValue(':name', $name);
+		if($sth->execute()){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }

@@ -64,6 +64,7 @@
 					<input type="email" name="student[<?= $key ?>][email]" value="<?=$students['2'] ?>">
 				</div>
 			<?php endforeach ?>
+			<?php unset($arrayStudents); ?>
 		<?php endif ?>
 		<br>
 		<br>

@@ -8,17 +8,17 @@
 		<br>
 		<br/>
 		<?php if (isset($_SESSION['errorList'])): ?>
-				<?php foreach ($_SESSION['errorList'] as $error): ?>
-					<p><?= $error ?></p>			
-				<?php endforeach ?>
-				<?php unset($_SESSION['errorList']); ?>
+			<?php foreach ($_SESSION['errorList'] as $error): ?>
+				<p><?= $error ?></p>			
+			<?php endforeach ?>
+			<?php unset($_SESSION['errorList']); ?>
 			<?php endif ?>
-			<?php if (isset($_SESSION['successList'])): ?>
-				<?php foreach ($_SESSION['successList'] as $success): ?>
-					<p><?= $success ?></p>
-				<?php endforeach ?>
-				<?php unset($_SESSION['successList']); ?>			
-			<?php endif ?>
+		<?php if (isset($_SESSION['successList'])): ?>
+			<?php foreach ($_SESSION['successList'] as $success): ?>
+				<p><?= $success ?></p>
+			<?php endforeach ?>
+			<?php unset($_SESSION['successList']); ?>			
+		<?php endif ?>
 		<br/> 
 		<br/> 
 		<select name="session">

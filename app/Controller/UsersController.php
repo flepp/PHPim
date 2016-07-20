@@ -262,7 +262,7 @@ class UsersController extends Controller
         }
     }
     public function invitations(){
-        //$this->allowTo(['admin']);
+        $this->allowTo(['admin']);
 
         /*IMPORT CSV FILE AND CONVERTING TO ARRAY*/
         $filePath = $_SESSION['filePath'];
@@ -289,9 +289,13 @@ class UsersController extends Controller
 
     /*-----Uploading Users list form a file and sending them an invintation to register-----*/
     public function invitationsPost(){
-        //$this->allowTo(['admin']);
+        $this->allowTo(['admin']);
 
         if(isset($_POST['upload'])){
+            debug($_FILES);
+            if($_FILES['fichierteleverse']['error'] >0 ){
+                $_SESSION['errorFile'][] = 'Ajoutez un fichier d\'abord.';
+            }
             if (!empty($_POST)) {
                 //unset($_SESSION['errorFile']);
                 //unset($_SESSION['successFile']);
@@ -318,7 +322,7 @@ class UsersController extends Controller
                                     $_SESSION['successFile'][] = 'Téléchargement réussi!';                                                                      
                                 }
                                 else {
-                                    $_SESSION['errorFile'][] = 'une erreur est survenue<br />';
+                                    $_SESSION['errorFile'][] = 'Une erreur est survenue<br />';
                                 }
                             }
                             else {
@@ -328,19 +332,17 @@ class UsersController extends Controller
                         else {
                             $_SESSION['errorFile'][] = 'Votre fichier est trop lourd';
                         }
-                        /*--------REDIRECTION---------*/
-                       $this->redirectToRoute('user_invitations');
+                        
+                       //$this->redirectToRoute('user_invitations');
                        debug($_SESSION) ;
                     }
                 }
             }
+            /*--------REDIRECTION---------*/
+            $this->redirectToRoute('user_invitations');   
         }
         else if(isset($_POST['sendInvitations'])){
-            if(!empty($_POST)){
-                if(isset($_SESSION['errorList']) || isset($_SESSION['successList'])){
-                    //unset($_SESSION['errorList']);
-                    //unset($_SESSION['successList']);
-                }  
+            if(!empty($_POST)){ 
                 $i = 0;             
                 foreach ($_POST['student'] as $key=> $value){
                     $name = isset($value['name']) ? trim($value['name']) : '';
@@ -413,11 +415,52 @@ class UsersController extends Controller
                         //debug($_SESSION['successList']);
                     }
                 }
-                unset($_SESSION['stuSession']);
-                debug($_SESSION['stuSession']);
-                debug($_SESSION);
                 $this->redirectToRoute('user_invitations');
             }
+        }
+    }
+    public function database(){
+        $database = new UsersManager();
+        $allDatabases = $database->getAllDatabases();
+        $this->show('user/database',['allDatabases'=>$allDatabases]);
+    }
+    public function databasePost(){
+        if(isset($_POST['deleteDatabase'])){
+            if(!empty($_POST)){
+                debug($_POST);
+                $databaseName = $_POST['databaseName'];
+                $delete = new UsersManager();
+                $deleteDatabase = $delete->deleteDatabase($databaseName);
+                debug($deleteDatabase);
+                if($deleteDatabase == true){
+                    $_SESSION['successList'][] = 'Suppression de `'.$databaseName.'` réussie!';
+                }
+                else{
+                    $_SESSION['errorList'][] = 'Suppression de `'.$databaseName.'` impossible, appelle Ben ;)!';
+                }    
+            }
+            /*--------REDIRECTION---------*/
+            $this->redirectToRoute('user_database');
+        }
+        if(isset($_POST['createDatabase'])){
+            if(!empty($_POST['databaseName'])){
+                debug($_POST);
+                $databaseName = $_POST['databaseName'];
+                if(strlen(strip_tags(trim($databaseName))) >= 3){
+                    $AllUsersManager = new UsersManager;
+                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$databaseName.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    $sth = $AllUsersManager->connectionToDatabase($sql);
+                    $_SESSION['successList2'][] = '`'.$databaseName.'` a été crée avec succés';
+                }
+                else{
+                    $_SESSION['errorList2'][] = 'Nom trop court ou invalide!';
+                }
+            }
+            else{
+                $_SESSION['errorList2'][] = 'Le champs est vide!';
+            }
+            /*--------REDIRECTION---------*/
+            $this->redirectToRoute('user_database');
         }
     }
 }
