@@ -115,9 +115,9 @@ class UsersController extends Controller
             $authManager->logUserIn(
                 $userManager->find($usr_id)
             );
-
+            debug($_SESSION);
             // Redirection to "Home"
-            $this->redirectToRoute('default_home');
+            //$this->redirectToRoute('default_home');
         }
         $this->show('user/login');
     }
