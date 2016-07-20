@@ -147,8 +147,7 @@ class UsersController extends Controller
 
     //---------------- PHILIPPE END
 
-    public function edit($id)
-    {
+    public function edit($id){
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($userInfo);
@@ -188,8 +187,6 @@ class UsersController extends Controller
                                     $detailsUser->update($userPhoto, $id);
                                 }
                                 echo 'fichier uploaded<br/>';
-                                /*--------REDIRECTION---------*/
-                                //$this->redirectToRoute('user_invitations');
                             }
                             else {
                                 echo 'attention, une erreur est survenue<br/>';
@@ -202,7 +199,7 @@ class UsersController extends Controller
                 }
             }
             //debug($_POST);
-            //Inserting data from POST
+            //Inserting data from POST for "user" statute use
             $userPseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
             $password = isset($_POST['userpassword']) ? trim($_POST['userpassword']): '';
             $street = isset($_POST['userstreet']) ? trim($_POST['userstreet']): '';
@@ -211,6 +208,12 @@ class UsersController extends Controller
             $country = isset($_POST['usercountry']) ? trim($_POST['usercountry']): '';
             $birthdate = isset($_POST['userbirthdate']) ? trim($_POST['userbirthdate']): '';
             $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
+
+            //Inserting data from POST for "admin" statute use
+            $userName = isset($_POST['username']) ? trim($_POST['username']): '';
+            $userFirstName = isset($_POST['userfirstname']) ? trim($_POST['userfirstname']): '';
+            $userEmail = isset($_POST['useremail']) ? trim($_POST['useremail']): '';
+            //$sessionName = isset($_POST['sessionname']) ? trim($_POST['sessionname']): '';
 
             $detailsUser = new UsersManager();
             $userInfo = $detailsUser->find($id);
@@ -223,6 +226,9 @@ class UsersController extends Controller
                         'usr_zipcode' => $zipcode,
                         'usr_country' => $country,
                         'usr_birthdate' => $birthdate,
+                        'usr_name' => $userName,
+                        'usr_firstname' => $userFirstName,
+                        'usr_email' => $userEmail,
                         'usr_updated' => date ('Y-m-d H:i:s')
                         );
             $id = $userInfo['id'];
@@ -237,6 +243,8 @@ class UsersController extends Controller
             $this->show('user/edit');
         }
     }
+//                       'ses_name' => $sessionName
+
     public function invitations(){
         //$this->allowTo(['admin']);
 
