@@ -36,7 +36,7 @@ class UsersController extends Controller
 
         // Verification des données
         if(strlen($userpseudo) <= 2){
-                $_POST['errorList'][] = 'entrez un pseudo';
+                $_SESSION['errorList'][] = 'entrez un pseudo';
                 $validPseudo = false;
             }else{
                 $validPseudo = true;
@@ -45,49 +45,62 @@ class UsersController extends Controller
         $authManager = new AuthentificationManager();
         $id = $authManager->isValidLoginInfo($email, $password);
         if ($id === 0) {
-                $_POST['errorList'][] = 'Login invalide';
-                $validLogin = false;
-            }else{
-                $validLogin = true;
-            }
-
-        if( $validPseudo == true && $validLogin == true){
-
-            //DB insersion
-            $userManager = new \Manager\UsersManager();
-            $userManager->update(
-                array(
-                    'usr_pseudo' => $userpseudo,
-                    'usr_street' => $street,
-                    'usr_city' => $city,
-                    'usr_zipcode' => $zipcode,
-                    'usr_country' => $country,
-                    'usr_birthdate' => $birthdate,
-                    'usr_photo' => ('img_0.png'),
-                    'usr_status' => '1',
-                    'usr_updated' => date('Y-m-d H:i:s')
-                ), $id
-            );
-
-            //USER DATABASE creation
-            // Add distant access user
-             $sql = 'CREATE USER \''.$userpseudo.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
-             // Add a local access user
-             $sql = 'CREATE USER \''.$userpseudo.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
-             // Gives right to distant user on tables
-             $sql = 'GRANT ALL PRIVILEGES ON `'.$userpseudo.'\_%` .  * TO \''.$userpseudo.'\'@\'%\'';
-             //// Gives right to local user on tables
-             $sql = 'GRANT ALL PRIVILEGES ON `'.$userpseudo.'\_%` .  * TO \''.$userpseudo.'\'@\'localhost\'';
-             // Database creation for the user
-             $sql = '
-               CREATE DATABASE IF NOT EXISTS `'.$userpseudo.'_sql1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
-             ';
-
-            //Redirect to "LOGIN" page
-            $this->redirectToRoute('user_login');
-            }
+            $_SESSION['errorList'][] = 'Login invalide';
+            $validLogin = false;
+        }else{
+            $validLogin = true;
         }
 
+        if($validPseudo == true && $validLogin == true){
+            $userManager = new UsersManager();
+            $info = $userManager->getUsrUpdated($email);
+
+            $updated = $info['usr_updated'];
+            $firstname = $info['usr_firstname'];
+            $password = 'webforce3';
+            if ($updated == NULL) {
+            
+                //DB insersion
+                $userManager = new \Manager\UsersManager();
+                $userManager->update(
+                    array(
+                        'usr_pseudo' => $userpseudo,
+                        'usr_street' => $street,
+                        'usr_city' => $city,
+                        'usr_zipcode' => $zipcode,
+                        'usr_country' => $country,
+                        'usr_birthdate' => $birthdate,
+                        'usr_photo' => ('img_0.png'),
+                        'usr_status' => '1',
+                        'usr_updated' => date('Y-m-d H:i:s')
+                    ), $id
+                );
+                $AllUsersManager = new UsersManager;
+
+                //USER DATABASE creation
+                // Add distant access user
+                $sql = 'CREATE USER \''.$firstname.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
+                $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                $sql = 'CREATE USER \''.$firstname.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
+                $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                $sql = 'GRANT ALL PRIVILEGES ON `'.$firstname.'\_%` .  * TO \''.$firstname.'\'@\'%\'';
+                $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                $sql = 'GRANT ALL PRIVILEGES ON `'.$firstname.'\_%` .  * TO \''.$firstname.'\'@\'localhost\'';
+                $sth = $AllUsersManager->connectionToDatabase($sql);
+                for($i=0; $i<4; $i++){
+                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$firstname.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    $sth = $AllUsersManager->connectionToDatabase($sql);
+                }
+            }
+            else {
+                $_SESSION['errorList'][] = 'Vous êtes déjà inscrit!';
+                debug($_SESSION['errorList']);
+            }   
+        }
+    }
     //CONNEXION\\
     //Calling the connexion view
    public function login()

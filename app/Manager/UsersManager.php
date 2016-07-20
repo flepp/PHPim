@@ -45,4 +45,13 @@ class UsersManager extends \W\Manager\Manager{
 		$sth = $this->dbh->prepare($sql);
 		$sth->execute();
 	}
+	public function getUsrUpdated($email){
+
+		$sql = "SELECT usr_firstname, usr_updated FROM " . $this->table . " WHERE usr_email = :email ";
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindValue(":email", $email);
+		$sth->execute();
+
+		return $sth->fetch();
+	}
 }
