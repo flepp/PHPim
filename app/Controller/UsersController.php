@@ -6,7 +6,7 @@
     use \W\Controller\Controller;
 	use \W\Manager\UserManager;
     use \W\Security\AuthentificationManager;
-    use \Functions\ForgotPwd as ForgotPass;
+    use \Functions\SendEmail as SendEmail;
 
 class UsersController extends Controller
 {
@@ -18,9 +18,9 @@ class UsersController extends Controller
     }
 
     //Inscription method
-     public function registerPost()
-    {
-        debug($_POST);
+     public function registerPost(){
+    
+        //debug($_POST);
 
         // Gathering POST datas (form)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
@@ -31,18 +31,35 @@ class UsersController extends Controller
         $zipcode = isset($_POST['zipcode']) ? strip_tags(trim($_POST['zipcode'])): '';
         $country = isset($_POST['country']) ? strip_tags(trim($_POST['country'])): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
+        $validPseudo = '';
+        $validLogin = '';
 
         // Verification des données
+        if(strlen($userpseudo) <= 2){
+                $_SESSION['errorList'][] = 'entrez un pseudo';
+                $validPseudo = false;
+            }else{
+                $validPseudo = true;
+            }
 
-         if (strlen($userpseudo) <= 2) {
-                 $authManager = new AuthentificationManager();
-                 $id = $authManager->isValidLoginInfo($email, $password);
-                 if ($id === 0) {
-                     echo'Login invalide <br />';
-                 }
-                 echo'entrez un pseudo <br />';
-             }
-            else {
+        $authManager = new AuthentificationManager();
+        $id = $authManager->isValidLoginInfo($email, $password);
+        if ($id === 0) {
+            $_SESSION['errorList'][] = 'Login invalide';
+            $validLogin = false;
+        }else{
+            $validLogin = true;
+        }
+
+        if($validPseudo == true && $validLogin == true){
+            $userManager = new UsersManager();
+            $info = $userManager->getUsrUpdated($email);
+
+            $updated = $info['usr_updated'];
+            $firstname = $info['usr_firstname'];
+            $password = 'webforce3';
+            if ($updated == NULL) {
+            
                 //DB insersion
                 $userManager = new \Manager\UsersManager();
                 $userManager->update(
@@ -58,26 +75,32 @@ class UsersController extends Controller
                         'usr_updated' => date('Y-m-d H:i:s')
                     ), $id
                 );
+                $AllUsersManager = new UsersManager;
 
-                /*********USER DATABASE creation**********/
-               /* // Add distant access user
-                 $sql = 'CREATE USER \''.$username.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
-                 // Add a local access user
-                 $sql = 'CREATE USER \''.$username.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
-                 // Gives right to distant user on tables
-                 $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'%\'';
-                 //// Gives right to local user on tables
-                 $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'localhost\'';
-                 // Database creation for the user
-                 $sql = '
-                   CREATE DATABASE IF NOT EXISTS `'.$username.'_sql1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
-                 ';*/
+                //USER DATABASE creation
+                // Add distant access user
+                $sql = 'CREATE USER \''.$firstname.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
+                $sth = $AllUsersManager->connectionToDatabase($sql);
 
-                //Redirect to "LOGIN" page
-                /*$this->redirectToRoute('user_login');*/
+                $sql = 'CREATE USER \''.$firstname.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
+                $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                $sql = 'GRANT ALL PRIVILEGES ON `'.$firstname.'\_%` .  * TO \''.$firstname.'\'@\'%\'';
+                $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                $sql = 'GRANT ALL PRIVILEGES ON `'.$firstname.'\_%` .  * TO \''.$firstname.'\'@\'localhost\'';
+                $sth = $AllUsersManager->connectionToDatabase($sql);
+                for($i=0; $i<4; $i++){
+                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$firstname.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    $sth = $AllUsersManager->connectionToDatabase($sql);
                 }
             }
-
+            else {
+                $_SESSION['errorList'][] = 'Vous êtes déjà inscrit!';
+                debug($_SESSION['errorList']);
+            }   
+        }
+    }
     //CONNEXION\\
     //Calling the connexion view
    public function login()
@@ -87,14 +110,14 @@ class UsersController extends Controller
     //Connexion method
     public function loginPost()
     {
-        debug($_POST);exit;
+        //debug($_POST);exit;
         //Gathering POST datas (form)
-        $userPseudoOrEmail = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']) : '';
+        $usernameOrEmail = isset($_POST['userPseudoOrEmail']) ? trim($_POST['userPseudoOrEmail']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
         // Data verification
         $authManager = new \W\Security\AuthentificationManager();
-        $usr_id = $authManager->isValidLoginInfo($userPseudoOrEmail, $password);
+        $usr_id = $authManager->isValidLoginInfo($usernameOrEmail, $password);
         if ($usr_id === 0) {
             echo'Login invalide <br />';
         }
@@ -105,9 +128,10 @@ class UsersController extends Controller
             $authManager->logUserIn(
                 $userManager->find($usr_id)
             );
+            //debug($_SESSION);
 
             // Redirection to "Home"
-            $this->redirectToRoute('home');
+            $this->redirectToRoute('default_home');
         }
         $this->show('user/login');
     }
@@ -258,11 +282,11 @@ class UsersController extends Controller
         }
         unset($arrayStudents[count($arrayStudents)-1]);
         $_SESSION['stuSession'] = $arrayStudents;
-        debug($_SESSION['stuSession']);
+        //debug($_SESSION['stuSession']);
         if(file_exists($_SESSION['chemin'])){
             unlink($_SESSION['chemin']);
         }
-        //debug($arrayStudents);
+
         /*-------------------------Getting the list of sessions------------------*/
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
@@ -277,14 +301,16 @@ class UsersController extends Controller
 
         if(isset($_POST['upload'])){
             if (!empty($_POST)) {
-                debug($_POST);
+                //unset($_SESSION['errorFile']);
+                //unset($_SESSION['successFile']);
+
                 $extensionAutorisees = array('csv');
 
                 // Je récupère mon tableau avec les infos sur le fichier
                 foreach ($_FILES as $key => $fichier) {
                     // Je teste si le fichier a été uploadé
                     if (!empty($fichier) && !empty($fichier['name'])) {
-                        if ($fichier['size'] <= 250000) {
+                        if ($fichier['size'] <= 8388608) {
 
                             $filename = $fichier['name'];
                             $dotPos = strrpos($filename, '.');
@@ -295,21 +321,24 @@ class UsersController extends Controller
                                 // Je déplace le fichier uploadé au bon endroit
                                 if (move_uploaded_file($fichier['tmp_name'], PATHUPLOAD.$filename)) {
                                     $_SESSION['filePath'] = file_get_contents(PATHUPLOAD.$filename);
-                                    $_SESSION['chemin'] = PATHUPLOAD.$filename;                                                                      
-                                    /*--------REDIRECTION---------*/
-                                   $this->redirectToRoute('user_invitations');
+                                    $_SESSION['chemin'] = PATHUPLOAD.$filename;
+
+                                    $_SESSION['successFile'][] = 'Téléchargement réussi!';                                                                      
                                 }
                                 else {
-                                    echo 'une erreur est survenue<br />';
+                                    $_SESSION['errorFile'][] = 'une erreur est survenue<br />';
                                 }
                             }
                             else {
-                                echo 'extension interdite<br />';
+                                $_SESSION['errorFile'][] = 'Cette extension n\'est pas permise, choisissez un fichier ".csv" S.V.P';
                             }
                         }
                         else {
-                            echo 'fichier trop lourd<br />';
+                            $_SESSION['errorFile'][] = 'Votre fichier est trop lourd';
                         }
+                        /*--------REDIRECTION---------*/
+                       $this->redirectToRoute('user_invitations');
+                       debug($_SESSION) ;
                     }
                 }
             }
@@ -317,8 +346,8 @@ class UsersController extends Controller
         else if(isset($_POST['sendInvitations'])){
             if(!empty($_POST)){
                 if(isset($_SESSION['errorList']) || isset($_SESSION['successList'])){
-                    unset($_SESSION['errorList']);
-                    unset($_SESSION['successList']);
+                    //unset($_SESSION['errorList']);
+                    //unset($_SESSION['successList']);
                 }  
                 $i = 0;             
                 foreach ($_POST['student'] as $key=> $value){
@@ -326,7 +355,8 @@ class UsersController extends Controller
                     $firstname = isset($value['firstname']) ? trim($value['firstname']) : '';
                     $email = isset($value['email']) ? trim($value['email']) : '';
                     $session = isset($_POST['session']) ? trim($_POST['session']) : '';
-                    $password = 'toto';
+                    $password = time();
+                    $path = '<a href="http://localhost/PHPim/public/inscription/">http://localhost/PHPim/public/inscription/</a>';
                     $validFirstname = '';
                     $validName = '';
                     $validEmail = '';
@@ -380,9 +410,15 @@ class UsersController extends Controller
                         ];
                         $_SESSION['successList'][$i] = 'Invitation bien envoyée à '.$firstname.' '.$name;
                         $insert = $userManager->insert($tableInsert);
+                        /*SENDING EMAIL to USER*/
+                        $invitations = new SendEmail;
+                        $subject = 'Inscription sur la plateforme PHPim';
+                        $message = 'Bonjour '.$firstname.'<br/> Veuillez compléter votre inscription sur '.$path.'. Vos identifiants sont: <br/> Email: '.$email.'<br/>'.'Mot de passe:'.$password.' <br/> Merci!!';
+
+                        $posting = $invitations->sendMail($email, $subject,$message);
                         $i++;
-                        debug($insert);
-                        debug($_SESSION['successList']);
+                        //debug($insert);
+                        //debug($_SESSION['successList']);
                     }
                 }
                 unset($_SESSION['stuSession']);

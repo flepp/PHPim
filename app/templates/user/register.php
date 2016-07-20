@@ -3,7 +3,7 @@
 <?php $this->start('main_content') ?>
 	<h2>Inscription</h2><br />
 
-	<form method="post" action="" enctype="multipart/form-data">
+	<form method="post" action="">
 		<h4>* Email</h4>
 		<input type="email" name="email" value=""><br />
 		<br />
