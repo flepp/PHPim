@@ -15,7 +15,6 @@ class UsersManager extends \W\Manager\Manager{
 		if (!is_numeric($id)){
 			return false;
 		}
-		
 		$sql = "UPDATE " . $this->table . " SET ";
 		foreach($data as $key => $value){
 			$sql .= "$key = :$key, ";
@@ -57,20 +56,30 @@ class UsersManager extends \W\Manager\Manager{
 		$sql = "SELECT id FROM " . $this->table . " WHERE usr_token = :token LIMIT 1";
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindValue(":token", $token);
+	}
+
+	public function getAllBySession($session){
+
+		$sql = "SELECT id, usr_firstname, usr_name, usr_status FROM " . $this->table . " WHERE session_id = :session ";
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindValue(":session", $session);
+		$sth->execute();
+
+		return $sth->fetchAll();
+	}
+	public function connectionToDatabase($sql){
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute();
+	}
+	public function getUsrUpdated($email){
+
+		$sql = "SELECT usr_firstname, usr_updated FROM " . $this->table . " WHERE usr_email = :email ";
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindValue(":email", $email);
 		$sth->execute();
 
 		return $sth->fetch();
 	}
-
-	// public function initPass($newPass)
-	// {
-
-	// 	$sqlPass = 'UPDATE users SET usr_password = :newPass, usr_token = "" WHERE id = 3';
-	// 	$sth = $this->dbh->prepare($sqlPass);
-	// 	$sth->bindValue(':newPass', password_hash($newPass, PASSWORD_BCRYPT));
-	// 	//$sth->bindValue(':id', $id);
-	// 	return $sth->execute();
-	// }
 
 	public function initPass(array $data, $id, $stripTags = true)
 	{
@@ -95,3 +104,4 @@ class UsersManager extends \W\Manager\Manager{
 	}
 
 }
+

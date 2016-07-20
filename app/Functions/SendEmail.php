@@ -1,7 +1,8 @@
 <?php
 
 namespace Functions;
-class ForgotPwd{
+
+class SendEmail{
 	public function sendMail($to, $subject, $body='', $attach=''){
 	    $mail = new \PHPMailer;
 	    $mail->isSMTP();                                      // Set mailer to use SMTP

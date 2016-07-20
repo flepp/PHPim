@@ -3,6 +3,21 @@
 <?php $this->start('main_content') ?>
 	<h2>Inscription</h2><br />
 
+	<div>
+		<?php if (isset($_SESSION['errorList'])): ?>
+			<?php foreach ($_SESSION['errorList'] as $error): ?>
+				<p><?= $error ?></p>			
+			<?php endforeach ?>
+			<?php unset($_SESSION['errorList']); ?>
+		<?php endif ?>
+		
+		<?php if (isset($_SESSION['successList'])): ?>
+			<?php foreach ($_SESSION['successList'] as $success): ?>
+				<p><?= $success ?></p>
+			<?php endforeach ?>
+			<?php unset($_SESSION['successList']); ?>			
+		<?php endif ?><br><br>
+	</div>
 	<form method="post" action="" enctype="multipart/form-data">
 		<h4>* Email</h4>
 		<input type="email" name="email" value=""><br />
@@ -28,16 +43,13 @@
 		<h4>Date de naissance</h4>
 		<input type="date" name="birthdate" value=""><br />
 		<br />
+		
+		<img height="90px" width="90px" src="<?= $this->assetUrl('upload/img/avatar_0.png') ?>"><br />
 
-		<h4>Photo du profil</h4>
-		<img height="80px" width="80px" src="../assets/upload/img/avatar_0.png">
-
-		<!-- insertion de la photo -->
 		<input type="hidden" name="fichierSoumis" value="1">
-		<label for="files"><span class="btn" style="background-color:lightgrey">Parcourir</span></label>
-		<input style="visibility: hidden;" id = "files" type="file" name="avatar"><br/>
+		<label for="files">Ajouter une photo</label>
+		<input style="visibility: hidden;" id = "files" type="file" name="photo"><br />
 
-		<br />
 		<span>* Champs obligatoires</span>
 		<br>
 		<input type="submit" value="Valider">

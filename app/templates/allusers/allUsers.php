@@ -5,13 +5,13 @@
 	<br/>
 	<fieldset>
 	<legend>Sélection du session*:</legend>
-		<form action="" method="get">
-			<select name="session_id">
-				<option value="0">ajouter une session</option>
-				<?php foreach ($allSessionsList as $currentSession) : ?>
-				<option value="<?= $currentId == $currentSession['id']; ?>"<?= $currentSession['ses_name']; ?>
+		<form action="" method="">
+			<select name="session">
+				<option value="">nom du session</option>
+			<?php foreach ($sessionList as $key => $value) : ?>
+				<option value="<?= $value['id'] ?>"><?= $value['ses_name'] ?>
 				</option>
-				<?php endforeach; ?>
+			<?php endforeach; ?>
 			</select>
 			<input type="submit" value="OK"/>
 		</form>
