@@ -22,13 +22,9 @@
 	<section>
 		<h1>Créer une base de données</h1>
 		<br> 
-		<br> 
-		<br>
-		<br>
-		<br>
 		<br>
 		<form method="post" action="">
-			<input type="text" name="databaseName">
+			<span><?= $_SESSION['user']['usr_pseudo'].'_' ?></span><input type="text" name="databaseName">
 			<button type="submit" name="createDatabase">Créer</button>
 		</form>
 	</section>

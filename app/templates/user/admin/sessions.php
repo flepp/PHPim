@@ -56,7 +56,7 @@
 				<input type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 				<input type="date" name="sessionStart" value="<?= $value['ses_start'] ?>">
 				<input type="date" name="sessionEnd" value="<?= $value['ses_end'] ?>">
-				<button type="submit" name="sessionEdit">Éditer</button>
+				<button type="submit" name="sessionEdit">Modifier</button>
 			</form>
 			<br>
 			<br>
