@@ -30,6 +30,34 @@ class UsersManager extends \W\Manager\Manager{
 		$sth->bindValue(":id", $id);
 		return $sth->execute();
 	}
+
+	public function updateToken(array $data, $email, $stripTags = true)
+	{
+
+		$sql = "UPDATE " . $this->table . " SET ";
+		foreach($data as $key => $value){
+			$sql .= "$key = :$key, ";
+		}
+		$sql = substr($sql, 0, -2);
+		$sql .= " WHERE usr_email = :email";
+
+		$sth = $this->dbh->prepare($sql);
+		foreach($data as $key => $value){
+			$value = ($stripTags) ? strip_tags($value) : $value;
+			$sth->bindValue(":".$key, $value);
+		}
+		$sth->bindValue(":email", $email);
+		return $sth->execute();
+	}
+
+	public function getIdFromToken($token)
+	{
+
+		$sql = "SELECT id FROM " . $this->table . " WHERE usr_token = :token LIMIT 1";
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindValue(":token", $token);
+	}
+
 	public function getAllBySession($session){
 
 		$sql = "SELECT id, usr_firstname, usr_name, usr_status FROM " . $this->table . " WHERE session_id = :session ";
@@ -52,4 +80,28 @@ class UsersManager extends \W\Manager\Manager{
 
 		return $sth->fetch();
 	}
+
+	public function initPass(array $data, $id, $stripTags = true)
+	{
+		if (!is_numeric($id)){
+			return false;
+		}
+
+		$sql = "UPDATE " . $this->table . " SET ";
+		foreach($data as $key => $value){
+			$sql .= "$key = :$key, ";
+		}
+		$sql = substr($sql, 0, -2);
+		$sql .= " WHERE id = :id";
+
+		$sth = $this->dbh->prepare($sql);
+		foreach($data as $key => $value){
+			$value = ($stripTags) ? strip_tags($value) : $value;
+			$sth->bindValue(":".$key, $value);
+		}
+		$sth->bindValue(":id", $id);
+		return $sth->execute();
+	}
+
 }
+
