@@ -501,6 +501,8 @@ class UsersController extends Controller
                         //debug($_SESSION['successList']);
                     }
                 }
+                unset($_SESSION['filePath']);
+                //debug($_SESSION);
                 $this->redirectToRoute('user_invitations');
             }
         }

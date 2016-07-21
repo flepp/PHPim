@@ -5,7 +5,22 @@
 <br/>
 <br/>
 <br/>
-<h1>Créer une session </h1><br/><br/><br/>
+<h1>Créer une session </h1>
+<br/>
+<br/>
+	<?php if (isset($_SESSION['errorCreation'])): ?>
+			<?php foreach ($_SESSION['errorCreation'] as $error): ?>
+				<p><?= $error ?></p>			
+			<?php endforeach ?>
+			<?php unset($_SESSION['errorCreation']); ?>
+		<?php endif ?>
+		<?php if (isset($_SESSION['successCreation'])): ?>
+			<?php foreach ($_SESSION['successCreation'] as $success): ?>
+				<p><?= $success ?></p>
+			<?php endforeach ?>
+			<?php unset($_SESSION['successCreation']); ?>			
+		<?php endif ?>
+	<br/>
 <section>
 	<form method="POST" action="">
 		<fieldset>
@@ -25,6 +40,20 @@
 	<h2>Liste des sessions:</h2>
 	<br/>
 	<br/>
+	<?php if (isset($_SESSION['success'])): ?>
+		<?php foreach ($_SESSION['success'] as $error): ?>
+			<p><?= $error ?></p>			
+		<?php endforeach ?>
+		<?php unset($_SESSION['success']); ?>
+	<?php endif ?>
+	<?php if (isset($_SESSION['errorUpdated'])): ?>
+		<?php foreach ($_SESSION['errorUpdated'] as $error): ?>
+			<p><?= $error ?></p>			
+		<?php endforeach ?>
+		<?php unset($_SESSION['errorUpdated']); ?>
+	<?php endif ?>
+	<br/>
+	<br/>
 	<ul>
 		<?php foreach($sessionList as $key => $value) : ?>
 		<li style="display:inline"><?= $value['ses_name'] ?> du <?= $value['ses_start'] ?> au <?= $value['ses_end'] ?> status(<?= $value['ses_status'] ?>)</li> 
@@ -41,10 +70,12 @@
 			</form>
 		</div>
 		<form method="POST" action="" style="display:inline">
+			<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 			<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
 			<button type="submit" name="sessionDelete">Supprimer</button>
 		</form>
 		<form method="POST" action="">
+			<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 			<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
 			<input type="text" name="sessionName" placeholder="<?= $value['ses_name'] ?>">
 			<input type="date" name="sessionStart" placeholder="<?= $value['ses_start'] ?>">
@@ -58,4 +89,3 @@
 	</ul>
 </section>
 <?php $this->stop('main_content') ?>
-

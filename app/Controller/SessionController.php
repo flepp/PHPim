@@ -31,34 +31,41 @@ class SessionController extends Controller{
                 $sessionName = $_POST['sessionName'];
                 $sessionStart = $_POST['sessionStart'];
                 $sessionEnd = $_POST['sessionEnd'];
+                $valdate = '';
+                $valLenght = '';
 
                 if(strtotime($sessionStart) < strtotime($sessionEnd)){
-                    if(strip_tags($sessionName)){
-                        if(strlen(trim($sessionName)) >= 7){
-                            $tableInsert = [
-                                'ses_name' => $sessionName,
-                                'ses_start' => $sessionStart,
-                                'ses_end' => $sessionEnd,
-                                'ses_status' => 1,
-                                'ses_created' => date('Y-m-d'),
-                                'ses_updated' => date('Y-m-d'),
-                            ];
-
-                            $insert = $sessionManager->insert($tableInsert);
-
-                            /*--------REDIRECTION---------*/
-                            $this->redirectToRoute('session_session');
-                        }
-                        else{
-                            echo "Nom de session trop courte";
-                        }
-                    }
-                    else{
-                        echo "Saississez des données valides svp";
-                    }
-                }else{
-                    echo "La date de début de session ne peut pas être plus récente que la date de fin de session";
+                    $valdate = true;
                 }
+                else{
+                    $_SESSION['errorCreation'][] = "La date de début de session ne peut pas être plus récente que la date de fin de session";
+                    $valdate = false;
+                }
+                
+                if(strlen(trim(strip_tags($sessionName))) >= 7){
+                    $valLenght = true;
+
+                }
+                else{
+                    $_SESSION['errorCreation'][] = "Nom de session trop courte";
+                    $valLenght = false;
+                }
+                if($valdate == true && $valLenght == true){
+                    $tableInsert = [
+                        'ses_name' => $sessionName,
+                        'ses_start' => $sessionStart,
+                        'ses_end' => $sessionEnd,
+                        'ses_status' => 1,
+                        'ses_created' => date('Y-m-d'),
+                        'ses_updated' => date('Y-m-d'),
+                    ];
+
+                    $insert = $sessionManager->insert($tableInsert);
+                    $_SESSION['successCreation'][] = "Création réussie!";
+                }
+
+                /*--------REDIRECTION---------*/
+                $this->redirectToRoute('session_session');
             }
         }
 
@@ -93,8 +100,10 @@ class SessionController extends Controller{
         if(isset($_POST['sessionDelete'])){
             if(!empty($_POST)){ 
                 $id = $_POST['sessionId'];
-                $sessionManager = new SessionManager;
+                $name = $_POST['sessionName'];
                 $delete = $sessionManager->delete($id);
+                $_SESSION['success'][] = $name." a été supprimée avec succés!";
+
                 /*--------REDIRECTION---------*/
                 $this->redirectToRoute('session_session');
             }
@@ -104,36 +113,42 @@ class SessionController extends Controller{
             if(!empty($_POST)){
                 //debug($_POST);
                 $id = $_POST['sessionId'];
+                $name = $_POST['sessionName'];
                 $sessionName = $_POST['sessionName'];
                 $sessionStart = $_POST['sessionStart'];
                 $sessionEnd = $_POST['sessionEnd'];
-                $sessionManager = new SessionManager;
+                $valdate = '';
+                $valLenght = '';
 
                 if(strtotime($sessionStart) < strtotime($sessionEnd)){
-                    if(strip_tags($sessionName)){
-                        if(strlen(trim($sessionName)) >= 7){
-                            $tableUpdate = [
-                                'ses_name' => $sessionName,
-                                'ses_start' => $sessionStart,
-                                'ses_end' => $sessionEnd,
-                                'ses_updated' => date('Y-m-d'),
-                            ];
-
-                            $update = $sessionManager->update($tableUpdate, $id);
-
-                            /*--------REDIRECTION---------*/
-                            $this->redirectToRoute('session_session');
-                        }
-                        else{
-                            echo "Nom de session trop courte";
-                        }
-                    }
-                    else{
-                        echo "Saississez des données valides svp";
-                    }
-                }else{
-                    echo "La date de début de session ne peut pas être plus récente que la date de fin de session";
+                    $valdate = true;
                 }
+                else{
+                    $_SESSION['errorUpdated'][] = "La date de début de session ne peut pas être plus récente que la date de fin de session";
+                    $valdate = false;
+                }
+                
+                if(strlen(trim(strip_tags($sessionName))) >= 7){
+                    $valLenght = true;
+
+                }
+                else{
+                    $_SESSION['errorUpdated'][] = "Nom de session trop courte";
+                    $valLenght = false;
+                }
+                if($valdate == true && $valLenght == true){
+                    $tableUpdate = [
+                        'ses_name' => $sessionName,
+                        'ses_start' => $sessionStart,
+                        'ses_end' => $sessionEnd,
+                        'ses_updated' => date('Y-m-d'),
+                    ];
+
+                    $update = $sessionManager->update($tableUpdate, $id);
+                    $_SESSION['success'][] = $name." a été mis à jour avec succés!";
+                }
+                /*--------REDIRECTION---------*/
+                $this->redirectToRoute('session_session');
             }
         }
     }

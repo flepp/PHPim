@@ -89,14 +89,8 @@ class UsersManager extends \W\Manager\Manager{
 		return $sth->fetchAll();
 	}
 	public function deleteDatabase($name){
-		$sql = 'DROP DATABASE IF EXISTS `:name`';
-		$sth = $this->dbh->prepare($sql);
-		$sth->bindValue(':name', $name);
-		if($sth->execute()){
-			return true;
-		}else{
-			return false;
-		}
+		$sql = 'DROP DATABASE IF EXISTS `'.$name.'`';
+		$sth = $this->dbh->exec($sql);
 	}
 
 	public function initPass(array $data, $id, $stripTags = true)
