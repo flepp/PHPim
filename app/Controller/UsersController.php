@@ -172,6 +172,16 @@ class UsersController extends Controller
         $this->show('user/login');
     }
 
+    //DECONNEXION\\
+    // Déconnecte un utilisateur
+    public function logout(){
+        //Suppress current user
+        $authManager = new \W\Security\AuthentificationManager();
+        $authManager->logUserOut();
+        // Redirection to "Home"
+        $this->redirectToRoute('default_home');
+    }
+
     // FORGOT PASSWORD BY PHILIPPE
     public function forgot()
     {
