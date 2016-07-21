@@ -3,9 +3,10 @@
 namespace Manager;
 
 use \Controller\UsersController;
+use \ConnectionManager;
 
 class UsersManager extends \W\Manager\Manager{
-	
+
 	function __construct(){
 		parent::__construct();
 		$this->setTable('users');
@@ -51,12 +52,15 @@ class UsersManager extends \W\Manager\Manager{
 	}
 
 	public function getIdFromToken($token)
-	{
+    {
 
-		$sql = "SELECT id FROM " . $this->table . " WHERE usr_token = :token LIMIT 1";
-		$sth = $this->dbh->prepare($sql);
-		$sth->bindValue(":token", $token);
-	}
+        $sql = "SELECT id FROM " . $this->table . " WHERE usr_token = :token LIMIT 1";
+        $sth = $this->dbh->prepare($sql);
+        $sth->bindValue(":token", $token);
+        $sth->execute();
+
+        return $sth->fetch();
+    }
 
 	public function getAllBySession($session){
 
@@ -67,10 +71,12 @@ class UsersManager extends \W\Manager\Manager{
 
 		return $sth->fetchAll();
 	}
+
 	public function connectionToDatabase($sql){
 		$sth = $this->dbh->prepare($sql);
 		$sth->execute();
 	}
+
 	public function getUsrUpdated($email){
 
 		$sql = "SELECT usr_firstname, usr_updated FROM " . $this->table . " WHERE usr_email = :email ";
@@ -81,27 +87,16 @@ class UsersManager extends \W\Manager\Manager{
 		return $sth->fetch();
 	}
 
-	public function initPass(array $data, $id, $stripTags = true)
-	{
-		if (!is_numeric($id)){
-			return false;
-		}
-
-		$sql = "UPDATE " . $this->table . " SET ";
-		foreach($data as $key => $value){
-			$sql .= "$key = :$key, ";
-		}
-		$sql = substr($sql, 0, -2);
-		$sql .= " WHERE id = :id";
-
+	public function getAllDatabases(){
+		$sql = "SHOW DATABASES";
 		$sth = $this->dbh->prepare($sql);
-		foreach($data as $key => $value){
-			$value = ($stripTags) ? strip_tags($value) : $value;
-			$sth->bindValue(":".$key, $value);
-		}
-		$sth->bindValue(":id", $id);
-		return $sth->execute();
+		$sth->execute();
+		return $sth->fetchAll();
 	}
-
+	public function deleteDatabase($name){
+		$sql = 'DROP DATABASE IF EXISTS `'.$name.'`';
+		$sth = $this->dbh->exec($sql);
+	}
 }
+
 

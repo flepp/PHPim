@@ -1,0 +1,35 @@
+*{
+
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* Styles notifications */
+
+.error-message,
+.success-message{
+
+	padding: 12px;
+	margin: 10px;
+	color: #fff;
+	font-family: sans-serif;
+	position: relative;
+}
+
+.error-message{
+
+	background-color: #e53935;
+}
+
+.success-message{
+
+	background-color: #43A047;
+}
+
+.close{
+
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+}

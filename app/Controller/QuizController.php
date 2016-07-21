@@ -20,18 +20,28 @@ class QuizController extends Controller
         $day = isset($_POST['quiDay']) ? trim($_POST['quiDay']) : '';
         $title = isset($_POST['quiTitle']) ? trim($_POST['quiTitle']) : '';
         $link = isset($_POST['quiLink']) ? trim($_POST['quiLink']) : '';
+        $text = isset($_POST['quiText']) ? trim($_POST['quiText']) : '';
         $category = isset($_POST['categories']) ? trim($_POST['categories']) : '';
 
         if (isset($_POST)) {
-            $data = array(
-                'qui_day' => $day,
-                'qui_title' => $title,
-                'qui_link' => $link,
-                'category_id' => $category
-            );
-            $quizManager->insert($data);
-            $this->redirectToRoute('quiz_manage');
+            if (strlen($day) > 1) {
+                $data = array(
+                    'qui_day' => $day,
+                    'qui_title' => $title,
+                    'qui_link' => $link,
+                    'qui_text' => $text,
+                    'category_id' => $category
+                );
+                $quizManager->insert($data);
+                $_SESSION['successList'][] = 'Le quiz a bien été ajouté!';
+            }
+            else{
+                $_SESSION['errorList'][] = 'Une erreur s\'est produite, veuillez recommencer.';
+            }
+            debug($_SESSION);
+            $this->redirectToRoute('quiz_add');
         }
+
     }
 
     public function manage()
@@ -65,6 +75,9 @@ class QuizController extends Controller
             $quizManager = new QuizManager();
             //$quizSingle = $quizManager->find($id);
             $quizDelete = $quizManager->delete($id);
+            $quizName = $_POST['quizName'];
+            $_SESSION['successList'][] = 'Le quiz '.$quizName.' a bien été supprimé!';
+            debug($quizList);
             $this->redirectToRoute('quiz_manage');
             //$this->show('user/admin/activateQuiz', array('quizDelete' => $quizDelete));
         }
@@ -88,19 +101,27 @@ class QuizController extends Controller
         $quiDay = $_POST['quiDay'];
         $quiTitle = $_POST['quiTitle'];
         $quiLink = $_POST['quiLink'];
+        $quiText = $_POST['quiText'];
         $category = isset($_POST['categories']) ? trim($_POST['categories']) : '';
 
         $data = array(
             "qui_day" => $quiDay,
             "qui_title" => $quiTitle,
             "qui_link" => $quiLink,
+            "qui_text" => $quiText,
             "category_id" => $category
         );
 
         $id = $quizSingle['id'];
 
         if(isset($_POST)){
-            $quizUpdate = $quizManager->update($data, $id, $stripTags = true);
+            if (strlen($quiTitle) > 3) {
+                $quizUpdate = $quizManager->update($data, $id, $stripTags = true);
+                $_SESSION['successList'][] = 'Le quiz a bien été modifié!';
+            }
+            else{
+                $_SESSION['errorList'][] = 'Une erreur s\'est produite, veuillez recommencer.';
+            }
             $this->redirectToRoute('quiz_modify', ['id' => $quizSingle[id]]);
         }
 

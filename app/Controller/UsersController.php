@@ -50,8 +50,6 @@ class UsersController extends Controller
             $validLogin = true;
         }
 
-        
-
         if($validPseudo == true && $validLogin == true){
             $userManager = new UsersManager();
             $info = $userManager->getUsrUpdated($email);
@@ -194,7 +192,7 @@ class UsersController extends Controller
 
      public function forgotPost()
     {
-        $forgotPass  = new ForgotPass();
+        $forgotPass  = new SendEmail();
         $userManager = new UserManager();
         $userList    = new UsersManager();
         $controller  = new \W\Controller\Controller;
@@ -208,9 +206,10 @@ class UsersController extends Controller
             if ($emailExists == 1) {
                 $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. <a href="http://localhost'.$controller->generateUrl('user_reset').'?token='.$token.'">Je réinitialise mon mot de passe</a>.');
                 $userList->updateToken($data,$usrMail);
+                $_SESSION['successList'][] = 'Un email contenant un lien pour la réinitialisation de votre mot de passe vous a été envoyé.';
             }
             else{
-                echo 'Vous n\'êtes pas dans la base de données. Vous n\'avez donc pas pu oublier votre mot de passe. Vilain pas beau!';
+                $_SESSION['errorList'][] = 'Votre adresse email n\'est pas dans la base de données. Inscrivez-vous ou contactez votre formateur.';
             }
         }
          $this->redirectToRoute('user_forgot');
@@ -225,27 +224,25 @@ class UsersController extends Controller
         if (isset($_GET['token'])) {
 
             $token = $_GET['token'];
-            debug($token);
 
             $userManager = new UsersManager();
             $id = $userManager->getIdFromToken($token);
 
             if (isset($_POST)){
-
                 $newPass = isset($_POST['password']) ? $_POST['password'] : '';
                 $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
                 $data = array(
                     'usr_password' => $newPass,
                     'usr_token'    => ''
                 );
-
                 if (!empty($newPass)) {
                     if ($newPass == $newPassConfirm) {
-                        $userManager->initPass($data,$id['id']);
+                        $userManager->update($data,$id['id']);
                         echo 'Votre mot de passe a été réinitialisé';
                     }
                     else{
-                        echo 'Vos mots de passe sont différents';
+                         $_SESSION['errorList'][] = 'Vos mots de passe sont différents';
+                         debug($_SESSION['errorList']);
                     }
                 }
                 else{
@@ -358,10 +355,10 @@ class UsersController extends Controller
 //                       'ses_name' => $sessionName
 
     public function invitations(){
-        //$this->allowTo(['admin']);
+        $this->allowTo(['admin']);
 
         /*IMPORT CSV FILE AND CONVERTING TO ARRAY*/
-        $filePath = $_SESSION['filePath'];
+        $filePath = isset($_SESSION['filePath']) ? $_SESSION['filePath']: '';
         $filePathReplace = str_replace(';', ',', $filePath);
         $lines = explode(PHP_EOL, $filePathReplace);
         $arrayStudents = array();
@@ -385,9 +382,13 @@ class UsersController extends Controller
 
     /*-----Uploading Users list form a file and sending them an invintation to register-----*/
     public function invitationsPost(){
-        //$this->allowTo(['admin']);
+        $this->allowTo(['admin']);
 
         if(isset($_POST['upload'])){
+            debug($_FILES);
+            if($_FILES['fichierteleverse']['error'] >0 ){
+                $_SESSION['errorFile'][] = 'Ajoutez un fichier d\'abord.';
+            }
             if (!empty($_POST)) {
                 //unset($_SESSION['errorFile']);
                 //unset($_SESSION['successFile']);
@@ -414,7 +415,7 @@ class UsersController extends Controller
                                     $_SESSION['successFile'][] = 'Téléchargement réussi!';                                                                      
                                 }
                                 else {
-                                    $_SESSION['errorFile'][] = 'une erreur est survenue<br />';
+                                    $_SESSION['errorFile'][] = 'Une erreur est survenue<br />';
                                 }
                             }
                             else {
@@ -424,19 +425,17 @@ class UsersController extends Controller
                         else {
                             $_SESSION['errorFile'][] = 'Votre fichier est trop lourd';
                         }
-                        /*--------REDIRECTION---------*/
-                       $this->redirectToRoute('user_invitations');
+                        
+                       //$this->redirectToRoute('user_invitations');
                        debug($_SESSION) ;
                     }
                 }
             }
+            /*--------REDIRECTION---------*/
+            $this->redirectToRoute('user_invitations');   
         }
         else if(isset($_POST['sendInvitations'])){
-            if(!empty($_POST)){
-                if(isset($_SESSION['errorList']) || isset($_SESSION['successList'])){
-                    //unset($_SESSION['errorList']);
-                    //unset($_SESSION['successList']);
-                }  
+            if(!empty($_POST)){ 
                 $i = 0;             
                 foreach ($_POST['student'] as $key=> $value){
                     $name = isset($value['name']) ? trim($value['name']) : '';
@@ -505,15 +504,50 @@ class UsersController extends Controller
 
                         $posting = $invitations->sendMail($email, $subject,$message);
                         $i++;
-                        //debug($insert);
-                        //debug($_SESSION['successList']);
                     }
                 }
-                unset($_SESSION['stuSession']);
-                debug($_SESSION['stuSession']);
-                debug($_SESSION);
+                unset($_SESSION['filePath']);
+                $_SESSION['errorList'][] = 'Aucun étudiant sélectionné';
                 $this->redirectToRoute('user_invitations');
             }
+        }
+    }
+    public function database(){
+        $database = new UsersManager();
+        $allDatabases = $database->getAllDatabases();
+        $this->show('user/database',['allDatabases'=>$allDatabases]);
+    }
+    public function databasePost(){
+        if(isset($_POST['deleteDatabase'])){
+            if(!empty($_POST)){
+                debug($_POST);
+                $databaseName = $_POST['databaseName'];
+                $delete = new UsersManager();
+                $deleteDatabase = $delete->deleteDatabase($databaseName);
+                $_SESSION['successList'][] = 'Suppression de `'.$databaseName.'` réussie!';  
+            }
+            /*--------REDIRECTION---------*/
+            $this->redirectToRoute('user_database');
+        }
+        if(isset($_POST['createDatabase'])){
+            if(!empty($_POST['databaseName'])){
+                debug($_POST);
+                $databaseName = $_POST['databaseName'];
+                if(strlen(strip_tags(trim($databaseName))) >= 3){
+                    $AllUsersManager = new UsersManager;
+                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$databaseName.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    $sth = $AllUsersManager->connectionToDatabase($sql);
+                    $_SESSION['successList2'][] = '`'.$databaseName.'` a été crée avec succés';
+                }
+                else{
+                    $_SESSION['errorList2'][] = 'Nom trop court ou invalide!';
+                }
+            }
+            else{
+                $_SESSION['errorList2'][] = 'Le champs est vide!';
+            }
+            /*--------REDIRECTION---------*/
+            $this->redirectToRoute('user_database');
         }
     }
 }

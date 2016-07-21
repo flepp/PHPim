@@ -6,18 +6,7 @@
 	<br/>
 	<h1>Ajouter une liste d'étudiant</h1>
 	<br/>
-	<?php if (isset($_SESSION['errorFile'])): ?>
-			<?php foreach ($_SESSION['errorFile'] as $error): ?>
-				<p><?= $error ?></p>			
-			<?php endforeach ?>
-			<?php unset($_SESSION['errorFile']); ?>
-		<?php endif ?>
-		<?php if (isset($_SESSION['successFile'])): ?>
-			<?php foreach ($_SESSION['successFile'] as $success): ?>
-				<p><?= $success ?></p>
-			<?php endforeach ?>
-			<?php unset($_SESSION['successFile']); ?>			
-		<?php endif ?>
+	
 	<br/>
 	<form action="" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="fichierSoumis" value="1">
@@ -30,7 +19,7 @@
 	<br/>
 	<br/>
 	<form method="POST" action="">
-		<p>Choississez une la sesion</p>
+		<p>Choisissez une session</p>
 		<br> 
 		<select name="session">
 		<?php foreach ($sessionList as $key => $value): ?>
@@ -38,19 +27,7 @@
 		<?php endforeach ?>
 		</select>
 		<br> 
-		<br> 
-		<?php if (isset($_SESSION['errorList'])): ?>
-			<?php foreach ($_SESSION['errorList'] as $error): ?>
-				<p><?= $error ?></p>			
-			<?php endforeach ?>
-			<?php unset($_SESSION['errorList']); ?>
-		<?php endif ?>
-		<?php if (isset($_SESSION['successList'])): ?>
-			<?php foreach ($_SESSION['successList'] as $success): ?>
-				<p><?= $success ?></p>
-			<?php endforeach ?>
-			<?php unset($_SESSION['successList']); ?>			
-		<?php endif ?>
+		<br>
 		<br>
 		<br>
 		<?php if (isset($arrayStudents) && sizeof($arrayStudents) > 0): ?>
@@ -65,8 +42,6 @@
 				</div>
 			<?php endforeach ?>
 		<?php endif ?>
-		<br>
-		<br>
 		<br>
 		<button type="submit" name="sendInvitations">Envoyez les invitations!</button>
 	</form>
