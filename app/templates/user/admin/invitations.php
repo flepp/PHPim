@@ -54,6 +54,19 @@
 	<br> 
 	<br> 
 	<br> 
+	<p>Se connecter en tant que:</p>
+	<br> 
+	<br>
+	<form method="post" action="">
+		<select name="userInfo">
+			<?php foreach ($usersList as $key => $info): ?>
+				<option value="<?= $info['id'] ?>"><?= $info['usr_name'].' ' ?><?= $info['usr_firstname'] ?></option>
+			<?php endforeach ?>
+		</select>
+		<button type="sumit" name="troll">Troll Me!</button>
+	</form>
+	<br> 
+	<br>
 
 <?php $this->stop('main_content') ?>
 
