@@ -250,10 +250,17 @@ class UsersController extends Controller
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($userInfo);
+        //debug($_SESSION);
+        //I'm getting the list of all sessions
+        $sessionManager = new SessionManager();
+        $sessionList = $sessionManager->findAll();
+        //debug($sessionList);
         $this->show(
             'user/edit',
             array(
                 'userInfo' => $userInfo,
+                'sessionList' => $sessionList,
+                'id_session' => isset($_GET['session']) ? trim($_GET['session']): ''
             )
         );
     }
@@ -312,8 +319,7 @@ class UsersController extends Controller
             $userName = isset($_POST['username']) ? trim($_POST['username']): '';
             $userFirstName = isset($_POST['userfirstname']) ? trim($_POST['userfirstname']): '';
             $userEmail = isset($_POST['useremail']) ? trim($_POST['useremail']): '';
-            //$sessionName = isset($_POST['sessionname']) ? trim($_POST['sessionname']): '';
-
+            
             $detailsUser = new UsersManager();
             $userInfo = $detailsUser->find($id);
             //Inserting data in database
@@ -339,10 +345,11 @@ class UsersController extends Controller
                 $this->redirectToRoute('allusers_details', ['id' => $userInfo['id']]);
             }
 
-            $this->show('user/edit');
+            $this->show(
+                'user/edit'
+            );
         }
     }
-//                       'ses_name' => $sessionName
 
     public function invitations(){
         $this->allowTo(['admin']);

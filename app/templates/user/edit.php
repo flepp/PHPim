@@ -8,7 +8,7 @@
 		<form action="" method="">
 			<select name="session">
 			<?php foreach ($sessionList as $key => $value) : ?>
-				<option value="<?= $value['id'] ?>"><?= $value['ses_name'] ?>
+				<option value="<?= $value['id']  ?>" <?php if ($id_session == $value['id']) : ?>selected="selected"<?php endif; ?>><?= $value['ses_name'] ?>
 				</option>
 			<?php endforeach; ?>
 			</select>
@@ -26,6 +26,7 @@
 		<h4>Nom:<?= ' '.$userInfo['usr_name'] ?></h4><br />
 		<h4>Prénom:<?= ' '.$userInfo['usr_firstname'] ?></h4><br />
 		<h4>Email:<?= ' '.$userInfo['usr_email'] ?></h4><br />
+		<h4>Pseudo:<?= ' '.$userInfo['usr_pseudo'] ?></h4><br />
 		<!-- I'm inserting a "div" which will be displayed only for "admin"-->
 		<div>
 			<h4>Nom*:</h4>
