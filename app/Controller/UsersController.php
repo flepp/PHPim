@@ -130,10 +130,20 @@ class UsersController extends Controller
     }
 
     //CONNEXION\\
+    //Not allowed if allready connected
+
+        
+
     //Calling the connexion view
-   public function login()
+    public function login()
     {
+        $isLogged = $this->getUser();
+        if ($isLogged != 0) {
+            $this->showForbidden();
+        }
+        else{
         $this->show('user/login');
+        }
     }
     //Connexion method
     public function loginPost()
