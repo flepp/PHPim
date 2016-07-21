@@ -19,6 +19,7 @@
 				<a href="<?= $this->url('quiz_quiz') ?>">Quiz</a>
 				<a href="<?= $this->url('quiz_manage') ?>">Gestion Quiz</a>
 				<a href="<?= $this->url('session_database') ?>">BDD Session</a>
+				<a href="<?= $this->url('allusers_details', ['id' => $_SESSION['user']['id']]) ?>">Mon Profil</a>
 
 				<?php if (isset($w_user) && is_array($w_user)) :?>
 					Bonjour <?= ' '.$w_user['usr_pseudo'] ?>
