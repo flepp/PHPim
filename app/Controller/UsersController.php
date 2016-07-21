@@ -196,12 +196,12 @@ class UsersController extends Controller
         $userManager = new UserManager();
         $userList    = new UsersManager();
         $controller  = new \W\Controller\Controller;
-        if (isset($_POST)) {
+        if (!empty($_POST)) {
             $token = md5(time().'ThisShitBetterWork');
             $data = array(
                 'usr_token' => $token
             );
-            $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
+            $usrMail = isset($_POST['usrMail']) ? htmlspecialchars(trim($_POST['usrMail'])) : '';
             $emailExists = $userManager->emailExists($usrMail);
             if ($emailExists == 1) {
                 $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. <a href="http://localhost'.$controller->generateUrl('user_reset').'?token='.$token.'">Je réinitialise mon mot de passe</a>.');
@@ -212,7 +212,11 @@ class UsersController extends Controller
                 $_SESSION['errorList'][] = 'Votre adresse email n\'est pas dans la base de données. Inscrivez-vous ou contactez votre formateur.';
             }
         }
-         $this->redirectToRoute('user_forgot');
+        else{
+            $_SESSION['errorList'][] = 'Veuillez compléter le champ.';
+        }
+
+        $this->redirectToRoute('user_forgot');
     }
 
     public function resetPass(){
@@ -232,23 +236,31 @@ class UsersController extends Controller
                 $newPass = isset($_POST['password']) ? $_POST['password'] : '';
                 $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
                 $data = array(
-                    'usr_password' => $newPass,
+                    'usr_password' => password_hash($newPass, PASSWORD_BCRYPT),
                     'usr_token'    => ''
                 );
                 if (!empty($newPass)) {
-                    if ($newPass == $newPassConfirm) {
-                        $userManager->update($data,$id['id']);
-                        echo 'Votre mot de passe a été réinitialisé';
+                    if (strlen(trim($newPass)) > 8) {
+                        if ($newPass == $newPassConfirm) {
+                            $userManager->update($data,$id['id']);
+                            $_SESSION['successList'][] = 'Votre mot de passe a été réinitialisé';
+                            $this->redirectToRoute('user_login');
+                        }
+                        else{
+                             $_SESSION['errorList'][] = 'Vos mots de passe sont différents';
+                             $this->redirectToRoute('user_reset');
+                        }
                     }
                     else{
-                         $_SESSION['errorList'][] = 'Vos mots de passe sont différents';
-                         debug($_SESSION['errorList']);
+
+                        $_SESSION['errorList'][] = 'Votre mot de passe doit comporter au moins huits caractères';
                     }
                 }
                 else{
-                    echo 'Pas de mot de passe entré';
+                    $_SESSION['errorList'][] = 'Pas de mot de passe entré';
+                    $this->redirectToRoute('user_reset');
                 }
-            debug($_POST);
+
             }
         }
     }
@@ -257,6 +269,8 @@ class UsersController extends Controller
     //---------------- PHILIPPE END
 
     public function edit($id){
+
+        $this->allowTo(['admin','user']);
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($userInfo);
@@ -509,7 +523,7 @@ class UsersController extends Controller
                         /*SENDING EMAIL to USER*/
                         $invitations = new SendEmail;
                         $subject = 'Inscription sur la plateforme PHPim';
-                        $message = 'Bonjour '.$firstname.'<br/> Veuillez compléter votre inscription sur '.$path.'. Vos identifiants sont: <br/> Email: '.$email.'<br/>'.'Mot de passe:'.$password.' <br/> Merci!!';
+                        $message = 'Bonjour '.$firstname.'<br/> Veuillez compléter votre inscription sur '.$path.'. Vos identifiants sont: <br/> Email: '.$email.'<br/> Pseudo: '.$pseudo.'<br/> Mot de passe: '.$password.'<br/> Merci!!';
 
                         $posting = $invitations->sendMail($email, $subject,$message);
                         $i++;
@@ -524,8 +538,15 @@ class UsersController extends Controller
         }
     }
     public function database(){
+        $this->allowTo(['admin','user']);
         $database = new UsersManager();
-        $allDatabases = $database->getAllDatabases();
+        $pseudo = $_SESSION['user']['usr_pseudo'];
+        $allDatabase = $database->getAllDatabases($pseudo);
+        $allDatabases = array();
+        $index = 'Database ('.$_SESSION['user']['usr_pseudo'].'%)';
+        foreach ($allDatabase as $key => $value) {
+            $allDatabases[]['Database'] = $value[$index];
+        }
         $this->show('user/database',['allDatabases'=>$allDatabases]);
     }
     public function databasePost(){
@@ -546,7 +567,7 @@ class UsersController extends Controller
                 $databaseName = $_POST['databaseName'];
                 if(strlen(strip_tags(trim($databaseName))) >= 3){
                     $AllUsersManager = new UsersManager;
-                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$databaseName.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$_SESSION['user']['usr_pseudo'].'_'.$databaseName.'_sql` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
                     $_SESSION['successList2'][] = '`'.$databaseName.'` a été crée avec succés';
                 }

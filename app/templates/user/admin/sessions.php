@@ -53,9 +53,9 @@
 			<form method="POST" action="">
 				<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 				<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
-				<input type="text" name="sessionName" placeholder="<?= $value['ses_name'] ?>">
-				<input type="date" name="sessionStart" placeholder="<?= $value['ses_start'] ?>">
-				<input type="date" name="sessionEnd" placeholder="<?= $value['ses_end'] ?>">
+				<input type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
+				<input type="date" name="sessionStart" value="<?= $value['ses_start'] ?>">
+				<input type="date" name="sessionEnd" value="<?= $value['ses_end'] ?>">
 				<button type="submit" name="sessionEdit">Éditer</button>
 			</form>
 			<br>

@@ -7,7 +7,6 @@
 	<legend>Sélection du session*:</legend>
 		<form action="" method="">
 			<select name="session">
-				<option value="">nom du session</option>
 			<?php foreach ($sessionList as $key => $value) : ?>
 				<option value="<?= $value['id'] ?>"><?= $value['ses_name'] ?>
 				</option>
@@ -35,11 +34,11 @@
 			<input type="text" name="userfirstname" value="<?= ' '.$userInfo['usr_firstname'] ?>"><br /><br />
 			<h4>Email*:</h4>
 			<input type="email" name="useremail" value="<?= ' '.$userInfo['usr_email'] ?>"><br /><br />
+			<h4>Pseudo (min. 3 charactères):</h4>
+			<input type="text" name="userpseudo" value="<?= ' '.$userInfo['usr_pseudo'] ?>"><br /><br />
 			<span>* Champs à éditer seulement par admin</span>
 		</div><br />
 		
-		<h4>Pseudo (min. 3 charactères):</h4>
-		<input type="text" name="userpseudo" value="<?= ' '.$userInfo['usr_pseudo'] ?>"><br /><br />
 		<h4>Mot de passe:</h4>
 		<input type="password" name="userpassword" value="<?= ' '.$userInfo['usr_password'] ?>"><br /><br />
 		<h4>Adresse:</h4>

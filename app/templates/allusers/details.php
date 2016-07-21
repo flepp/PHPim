@@ -12,6 +12,7 @@
 		<li>Nom:<?= ' '.$userInfo['usr_name'] ?></li><br/>
 		<li>Prénom:<?= ' '.$userInfo['usr_firstname'] ?></li><br/>
 		<li>Email:<?= ' '.$userInfo['usr_email'] ?></li><br/>
+		<li>Pseudo:<?= ' '.$userInfo['usr_pseudo'] ?></li><br/>
 		<li>Date de naissance:<?= ' '.$userInfo['usr_birthdate'] ?></li><br/>
 		<li>Ville:<?= ' '.$userInfo['usr_city'] ?></li><br/>
 		<li>Pays:<?= ' '.$userInfo['usr_country'] ?></li><br/>
