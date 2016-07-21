@@ -24,7 +24,7 @@
 					<a href="<?= $this->url('user_database') ?>">BDD utilisateur</a>
 					<a href="<?= $this->url('allusers_details', ['id' => $_SESSION['user']['id']]) ?>">Mon Profil</a>
 					<a href="<?php echo $this->url('user_logout'); ?>">Déconnexion</a>
-					<p>Bonjour <?= ' '.$w_user['usr_pseudo'] ?></p>
+					<span>Bonjour <?= ' '.$w_user['usr_pseudo'] ?></span><img src="?"/>
 				<?php else : ?>
 					<a href="<?= $this->url('default_home') ?>">Home</a>
 					<a href="<?= $this->url('default_about') ?>">About</a>
