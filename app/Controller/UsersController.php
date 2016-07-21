@@ -222,23 +222,25 @@ class UsersController extends Controller
                 $newPass = isset($_POST['password']) ? $_POST['password'] : '';
                 $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
                 $data = array(
-                    'usr_password' => $newPass,
+                    'usr_password' => password_hash($newPass, PASSWORD_BCRYPT),
                     'usr_token'    => ''
                 );
                 if (!empty($newPass)) {
                     if ($newPass == $newPassConfirm) {
                         $userManager->update($data,$id['id']);
-                        echo 'Votre mot de passe a été réinitialisé';
+                        $_SESSION['successList'][] = 'Votre mot de passe a été réinitialisé';
+                        $this->redirectToRoute('user_login');
                     }
                     else{
                          $_SESSION['errorList'][] = 'Vos mots de passe sont différents';
-                         debug($_SESSION['errorList']);
+                         $this->redirectToRoute('user_reset');
                     }
                 }
                 else{
-                    echo 'Pas de mot de passe entré';
+                    $_SESSION['errorList'][] = 'Pas de mot de passe entré';
+                    $this->redirectToRoute('user_reset');
                 }
-            debug($_POST);
+
             }
         }
     }

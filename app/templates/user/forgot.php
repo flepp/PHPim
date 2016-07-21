@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => 'Login']) ?>
+<?php $this->layout('layout', ['title' => 'Mot de passe oublié']) ?>
 
 <?php $this->start('main_content') ?>
 	<p>User forgot</p>
