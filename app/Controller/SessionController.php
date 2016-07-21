@@ -173,7 +173,7 @@ class SessionController extends Controller{
                     if($test > 0){
                         foreach($getAllBySession as $key=>$value){
                             $id = $value['id'];
-                            $username = $value['usr_firstname'];
+                            $username = $value['usr_pseudo'];
                             $name = $value['usr_name'];
                             $password = 'webforce3';
                             $status = $value['usr_status'];
