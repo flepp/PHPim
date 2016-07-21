@@ -348,7 +348,7 @@ class UsersController extends Controller
         $this->allowTo(['admin']);
 
         /*IMPORT CSV FILE AND CONVERTING TO ARRAY*/
-        $filePath = $_SESSION['filePath'];
+        $filePath = isset($_SESSION['filePath']) ? $_SESSION['filePath']: '';
         $filePathReplace = str_replace(';', ',', $filePath);
         $lines = explode(PHP_EOL, $filePathReplace);
         $arrayStudents = array();
@@ -494,12 +494,10 @@ class UsersController extends Controller
 
                         $posting = $invitations->sendMail($email, $subject,$message);
                         $i++;
-                        //debug($insert);
-                        //debug($_SESSION['successList']);
                     }
                 }
                 unset($_SESSION['filePath']);
-                //debug($_SESSION);
+                $_SESSION['errorList'][] = 'Aucun étudiant sélectionné';
                 $this->redirectToRoute('user_invitations');
             }
         }
@@ -516,13 +514,7 @@ class UsersController extends Controller
                 $databaseName = $_POST['databaseName'];
                 $delete = new UsersManager();
                 $deleteDatabase = $delete->deleteDatabase($databaseName);
-                debug($deleteDatabase);
-                if($deleteDatabase == true){
-                    $_SESSION['successList'][] = 'Suppression de `'.$databaseName.'` réussie!';
-                }
-                else{
-                    $_SESSION['errorList'][] = 'Suppression de `'.$databaseName.'` impossible, appelle Ben ;)!';
-                }    
+                $_SESSION['successList'][] = 'Suppression de `'.$databaseName.'` réussie!';  
             }
             /*--------REDIRECTION---------*/
             $this->redirectToRoute('user_database');
