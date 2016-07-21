@@ -430,12 +430,14 @@ class UsersController extends Controller
                 foreach ($_POST['student'] as $key=> $value){
                     $name = isset($value['name']) ? trim($value['name']) : '';
                     $firstname = isset($value['firstname']) ? trim($value['firstname']) : '';
+                    $pseudo = isset($value['pseudo']) ? trim($value['pseudo']) : '';
                     $email = isset($value['email']) ? trim($value['email']) : '';
                     $session = isset($_POST['session']) ? trim($_POST['session']) : '';
                     $password = time();
                     $path = '<a href="http://localhost/PHPim/public/inscription/">http://localhost/PHPim/public/inscription/</a>';
                     $validFirstname = '';
                     $validName = '';
+                    $validPseudo = '';
                     $validEmail = '';
                     $validvalidEmail = '';
                     //$_SESSION['errorList'] = array();
@@ -457,6 +459,12 @@ class UsersController extends Controller
                     }else{
                         $validName = true;
                     }
+                    if(strlen(strip_tags(trim($pseudo))) < 2){
+                        $_SESSION['errorList'][] = 'Pseudo invalide en ligne #'.$key;
+                        $validPseudo = false;
+                    }else{
+                        $validPseudo = true;
+                    }
 
                     if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
                         $_SESSION['errorList'][] = 'Email invalide en ligne #'.$key;   
@@ -472,13 +480,14 @@ class UsersController extends Controller
                         $validemailEXist = true;   
                     }
 
-                    if($validFirstname == true && $validName == true && $validEmail == true && $validemailEXist == true){
+                    if($validFirstname == true && $validName == true && $validEmail == true && $validemailEXist == true && validPseudo == true){
                         $userManager = new UsersManager;
 
                         $tableInsert = [
                             'usr_firstname' => $firstname,
                             'usr_name' => $name,
                             'usr_email' => $email,
+                            'usr_pseudo' => $pseudo,
                             'usr_password' => password_hash($password,PASSWORD_BCRYPT),
                             'usr_role' => 'user',
                             'session_id' => $session,
@@ -497,7 +506,9 @@ class UsersController extends Controller
                     }
                 }
                 unset($_SESSION['filePath']);
-                $_SESSION['errorList'][] = 'Aucun étudiant sélectionné';
+                if(isset($_SESSION['errorList']) && count($_SESSION['errorList']) == 0){
+                    $_SESSION['errorList'][] = 'Aucun étudiant sélectionné';
+                }
                 $this->redirectToRoute('user_invitations');
             }
         }
