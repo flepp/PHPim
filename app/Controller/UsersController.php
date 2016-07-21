@@ -222,33 +222,24 @@ class UsersController extends Controller
             $userManager = new UsersManager();
             $id = $userManager->getIdFromToken($token);
 
-            if (isset($_POST)){
+            if (!empty($_POST)){
                 $newPass = isset($_POST['password']) ? $_POST['password'] : '';
                 $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
                 $data = array(
                     'usr_password' => password_hash($newPass, PASSWORD_BCRYPT),
                     'usr_token'    => ''
                 );
-                if (!empty($newPass)) {
-                    if (strlen(trim($newPass)) > 8) {
-                        if ($newPass == $newPassConfirm) {
-                            $userManager->update($data,$id['id']);
-                            $_SESSION['successList'][] = 'Votre mot de passe a été réinitialisé';
-                            $this->redirectToRoute('user_login');
-                        }
-                        else{
-                             $_SESSION['errorList'][] = 'Vos mots de passe sont différents';
-                             $this->redirectToRoute('user_reset');
-                        }
-                    }
-                    else{
-
-                        $_SESSION['errorList'][] = 'Votre mot de passe doit comporter au moins huits caractères';
-                    }
+                if(empty($newPass)) {
+                    $_SESSION['errorList'][] = 'Le mot de passe ne peut être vide.';
                 }
-                else{
-                    $_SESSION['errorList'][] = 'Pas de mot de passe entré';
-                    $this->redirectToRoute('user_reset');
+               
+                if(!empty($_SESSION['errorList'])){
+                    $this->redirectToRoute('user_reset'.$_SESSION['token']);
+                }
+                if(empty($_SESSION['errorList'])){
+                    $userManager->update($data,$id['id']);
+                    $_SESSION['successList'][] = 'Votre mot de passe a bien été réinitialisé!';
+                    $this->redirectToRoute('user_login');
                 }
 
             }
