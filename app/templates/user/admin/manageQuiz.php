@@ -21,7 +21,11 @@
 				?>
 				</span>
 			</p>
-			<p><a href="<?= $value['qui_link'] ?>"><?= $value['qui_link'] ?></a></p>
+			<p>
+				<a href="<?= $value['qui_link'] ?>">
+					<?= $value['qui_text'] ?>
+				</a>
+			</p>
 			<p>Categories :
 				<a href="<?= $this->url('quiz_category', ['cat' => strtolower($value['cat_name'])] )?>">
 					<?= $value['cat_name']?>
@@ -43,6 +47,7 @@
 			</form>
 			<form action="<?= $this->url('quiz_manage'); ?>" method="POST">
 				<input type="text" name="deleteQuiz" value="<?= $value['id'] ?>" hidden>
+				<input type="text" name="quizName" value="<?= $value['qui_title'] ?>" hidden>
 				<button type="submit" name="delete" class="delete">Supprimer</button>
 			</form>
 			<a href="<?= $this->url('quiz_modify', ['id' => $value['id']])?>">Modifier</a>
