@@ -6,21 +6,21 @@
 <div>Ibrahima
 <img height="297px" width="250px" src="<?=$this->assetUrl('upload/img/Ibrahima-THIELO.jpg')?>">
 nom: Ibrahima Thiello
-SENEGAL</div>
+<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_sen.png')?>"></div>
 
 <div>Michel
 <img height="297px" width="250px" src="<?= $this->assetUrl('upload/img/Michel-CAVRO.jpg') ?>">
 nom: Michel Cavro
-FRANCE</div>
+<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_pir.png')?>"></div>
 
 <div>Paul
 <img height="297px" width="250px" src="<?= $this->assetUrl('upload/img/Paul-IOANID.jpg') ?>">
 nom: Paul Ioanid
-ROUMANIE</div>
+<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_rom.png')?>"></div>
 
 <div>Philippe
 <img height="297px" width="250px" src="<?= $this->assetUrl('upload/img/Philippe-TASCH.jpg') ?>">
 nom: Philippe Tasch
-LUXEMBOURG</div>
+<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_lux.png')?>"></div>
 
 <?php $this->stop('main_content') ?>
