@@ -186,12 +186,12 @@ class UsersController extends Controller
         $userManager = new UserManager();
         $userList    = new UsersManager();
         $controller  = new \W\Controller\Controller;
-        if (isset($_POST)) {
+        if (!empty($_POST)) {
             $token = md5(time().'ThisShitBetterWork');
             $data = array(
                 'usr_token' => $token
             );
-            $usrMail = isset($_POST['usrMail']) ? $_POST['usrMail'] : '';
+            $usrMail = isset($_POST['usrMail']) ? htmlspecialchars(trim($_POST['usrMail'])) : '';
             $emailExists = $userManager->emailExists($usrMail);
             if ($emailExists == 1) {
                 $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. <a href="http://localhost'.$controller->generateUrl('user_reset').'?token='.$token.'">Je réinitialise mon mot de passe</a>.');
@@ -202,7 +202,11 @@ class UsersController extends Controller
                 $_SESSION['errorList'][] = 'Votre adresse email n\'est pas dans la base de données. Inscrivez-vous ou contactez votre formateur.';
             }
         }
-         $this->redirectToRoute('user_forgot');
+        else{
+            $_SESSION['errorList'][] = 'Veuillez compléter le champ.';
+        }
+
+        $this->redirectToRoute('user_forgot');
     }
 
     public function resetPass(){
@@ -226,14 +230,20 @@ class UsersController extends Controller
                     'usr_token'    => ''
                 );
                 if (!empty($newPass)) {
-                    if ($newPass == $newPassConfirm) {
-                        $userManager->update($data,$id['id']);
-                        $_SESSION['successList'][] = 'Votre mot de passe a été réinitialisé';
-                        $this->redirectToRoute('user_login');
+                    if (strlen(trim($newPass)) > 8) {
+                        if ($newPass == $newPassConfirm) {
+                            $userManager->update($data,$id['id']);
+                            $_SESSION['successList'][] = 'Votre mot de passe a été réinitialisé';
+                            $this->redirectToRoute('user_login');
+                        }
+                        else{
+                             $_SESSION['errorList'][] = 'Vos mots de passe sont différents';
+                             $this->redirectToRoute('user_reset');
+                        }
                     }
                     else{
-                         $_SESSION['errorList'][] = 'Vos mots de passe sont différents';
-                         $this->redirectToRoute('user_reset');
+
+                        $_SESSION['errorList'][] = 'Votre mot de passe doit comporter au moins huits caractères';
                     }
                 }
                 else{
@@ -249,6 +259,8 @@ class UsersController extends Controller
     //---------------- PHILIPPE END
 
     public function edit($id){
+
+        $this->allowTo(['admin','user']);
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($userInfo);
@@ -516,6 +528,7 @@ class UsersController extends Controller
         }
     }
     public function database(){
+        $this->allowTo(['admin','user']);
         $database = new UsersManager();
         $allDatabases = $database->getAllDatabases();
         $this->show('user/database',['allDatabases'=>$allDatabases]);
