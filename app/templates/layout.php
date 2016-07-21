@@ -21,6 +21,7 @@
 				<a href="<?= $this->url('session_database') ?>">BDD Session</a>
 
 				<?php if (isset($w_user) && is_array($w_user)) :?>
+					Bonjour <?= ' '.$w_user['usr_pseudo'] ?>
 					<a href="<?php echo $this->url('user_logout'); ?>">Déconnexion</a>
 				<?php else : ?>
 					<a href="<?php echo $this->url('user_register'); ?>">Inscription</a>
