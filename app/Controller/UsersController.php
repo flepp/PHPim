@@ -499,7 +499,7 @@ class UsersController extends Controller
                         /*SENDING EMAIL to USER*/
                         $invitations = new SendEmail;
                         $subject = 'Inscription sur la plateforme PHPim';
-                        $message = 'Bonjour '.$firstname.'<br/> Veuillez compléter votre inscription sur '.$path.'. Vos identifiants sont: <br/> Email: '.$email.'<br/>'.'Mot de passe:'.$password.' <br/> Merci!!';
+                        $message = 'Bonjour '.$firstname.'<br/> Veuillez compléter votre inscription sur '.$path.'. Vos identifiants sont: <br/> Email: '.$email.'<br/> Pseudo: '.$pseudo.'<br/> Mot de passe: '.$password.'<br/> Merci!!';
 
                         $posting = $invitations->sendMail($email, $subject,$message);
                         $i++;
@@ -515,7 +515,13 @@ class UsersController extends Controller
     }
     public function database(){
         $database = new UsersManager();
-        $allDatabases = $database->getAllDatabases();
+        $pseudo = $_SESSION['user']['usr_pseudo'];
+        $allDatabase = $database->getAllDatabases($pseudo);
+        $allDatabases = array();
+        $index = 'Database ('.$_SESSION['user']['usr_pseudo'].'%)';
+        foreach ($allDatabase as $key => $value) {
+            $allDatabases[]['Database'] = $value[$index];
+        }
         $this->show('user/database',['allDatabases'=>$allDatabases]);
     }
     public function databasePost(){
@@ -536,7 +542,7 @@ class UsersController extends Controller
                 $databaseName = $_POST['databaseName'];
                 if(strlen(strip_tags(trim($databaseName))) >= 3){
                     $AllUsersManager = new UsersManager;
-                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$databaseName.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$_SESSION['user']['usr_pseudo'].'_'.$databaseName.'_sql` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
                     $_SESSION['successList2'][] = '`'.$databaseName.'` a été crée avec succés';
                 }

@@ -173,18 +173,19 @@ class SessionController extends Controller{
                     if($test > 0){
                         foreach($getAllBySession as $key=>$value){
                             $id = $value['id'];
-                            $username = $value['usr_pseudo'];
+                            $firstname = $value['usr_firstname'];
+                            $pseudo = $value['usr_pseudo'];
                             $name = $value['usr_name'];
                             $password = 'webforce3';
                             $status = $value['usr_status'];
 
                             if($status == 1){
-                                $sql = 'CREATE DATABASE IF NOT EXISTS `'.$username.'_'.$suffixe.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                                $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_'.$suffixe.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                                 $sth = $AllUsersManager->connectionToDatabase($sql);
-                                $_SESSION['successList'][] = 'Création réussie pour '.$username.' '.$name.'.';
+                                $_SESSION['successList'][] = 'Création réussie pour '.$firstname.' '.$name.'.';
                             }
                             else{
-                                $_SESSION['errorList'][] = $username.' '.$name.' est désactivé(e), impossible de lui affecter une nouvelle base de données';
+                                $_SESSION['errorList'][] = $firstname.' '.$name.' est désactivé(e), impossible de lui affecter une nouvelle base de données';
                             }
                         }
                     }
