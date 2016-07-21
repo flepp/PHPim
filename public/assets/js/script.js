@@ -11,6 +11,6 @@ $(document).ready(function(){
     // close notifications
     var closeMsg = $("span.close");
     closeMsg.click(function(){
-    	$(this).parent().remove();
+    	$(this).parent().fadeOut('slow');
     });
 });

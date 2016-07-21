@@ -14,6 +14,10 @@
 		<br>
 		<input type="text" id="link" name="quiLink" value="<?= $quizSingle['qui_link'] ?>">
 		<br>
+		<label for="text">Texte : </label>
+		<br>
+		<input type="text" id="text" name="quiText" value="<?= $quizSingle['qui_text'] ?>">
+		<br>
 		<label for="categories">Catégories : </label>
 		<br>
 		<select name="categories" id="categories">

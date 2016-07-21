@@ -21,7 +21,11 @@
 				?>
 				</span>
 			</p>
-			<p><a href="<?= $value['qui_link'] ?>"><?= $value['qui_link'] ?></a></p>
+			<p>
+				<a href="<?= $value['qui_link'] ?>">
+					<?= $value['qui_text'] ?>
+				</a>
+			</p>
 			<p>Categories :
 				<a href="<?= $this->url('quiz_category', ['cat' => strtolower($value['cat_name'])] )?>">
 					<?= $value['cat_name']?>

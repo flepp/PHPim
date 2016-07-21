@@ -20,6 +20,7 @@ class QuizController extends Controller
         $day = isset($_POST['quiDay']) ? trim($_POST['quiDay']) : '';
         $title = isset($_POST['quiTitle']) ? trim($_POST['quiTitle']) : '';
         $link = isset($_POST['quiLink']) ? trim($_POST['quiLink']) : '';
+        $text = isset($_POST['quiText']) ? trim($_POST['quiText']) : '';
         $category = isset($_POST['categories']) ? trim($_POST['categories']) : '';
 
         if (isset($_POST)) {
@@ -28,6 +29,7 @@ class QuizController extends Controller
                     'qui_day' => $day,
                     'qui_title' => $title,
                     'qui_link' => $link,
+                    'qui_text' => $text,
                     'category_id' => $category
                 );
                 $quizManager->insert($data);
@@ -99,12 +101,14 @@ class QuizController extends Controller
         $quiDay = $_POST['quiDay'];
         $quiTitle = $_POST['quiTitle'];
         $quiLink = $_POST['quiLink'];
+        $quiText = $_POST['quiText'];
         $category = isset($_POST['categories']) ? trim($_POST['categories']) : '';
 
         $data = array(
             "qui_day" => $quiDay,
             "qui_title" => $quiTitle,
             "qui_link" => $quiLink,
+            "qui_text" => $quiText,
             "category_id" => $category
         );
 
