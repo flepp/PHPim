@@ -41,6 +41,6 @@
 		// ["POST", "/administration/modification-categorie/[i:id]/", "Category#modifyPost", "category_modify_post"],
 		/* ----- Quiz controller ------*/
 		["GET", "/quiz/", "Quiz#quiz", "quiz_quiz"],
-		['GET', '/logout/', 'User#logout', 'user_logout']
+		['POST', '/logout/', 'User#logout', 'user_logout']
 
 	);

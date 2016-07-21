@@ -22,7 +22,6 @@ class UsersController extends Controller
 
         // Gathering POST datas (form)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
-        $userpseudo = isset($_POST['userpseudo']) ? strip_tags(trim($_POST['userpseudo'])): '';
         $password = isset($_POST['password']) ? trim($_POST['password']): '';
         $street = isset($_POST['street']) ? strip_tags(trim($_POST['street'])): '';
         $city = isset($_POST['city']) ? strip_tags(trim($_POST['city'])): '';
@@ -30,17 +29,9 @@ class UsersController extends Controller
         $country = isset($_POST['country']) ? strip_tags(trim($_POST['country'])): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
         $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
-        $validPseudo = '';
         $validLogin = '';
 
         // Verification des données
-        if(strlen($userpseudo) <= 2){
-                $_SESSION['errorList'][] = 'entrez un pseudo';
-                $validPseudo = false;
-            }else{
-                $validPseudo = true;
-            }
-
         $authManager = new AuthentificationManager();
         $id = $authManager->isValidLoginInfo($email, $password);
         if ($id === 0) {
@@ -50,11 +41,11 @@ class UsersController extends Controller
             $validLogin = true;
         }
 
-        if($validPseudo == true && $validLogin == true){
+        if($validLogin == true){
             $userManager = new UsersManager();
             $info = $userManager->getUsrUpdated($email);
             $updated = $info['usr_updated'];
-            $firstname = $info['usr_firstname'];
+            $pseudo = $info['usr_pseudo'];
             $password = 'webforce3';
 
             if ($updated == NULL) {
@@ -71,8 +62,8 @@ class UsersController extends Controller
                             //Checking if a value exists in an array with "in_array" function
                             if (in_array($extension, $allowedExtensions)) {
                                 //Moving an uploaded file to a new location
-                                if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$userpseudo.'.'.$extension)) {
-                                    $photo = 'img_'.$userpseudo.'.'.$extension;
+                                if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$pseudo.'.'.$extension)) {
+                                    $photo = 'img_'.$pseudo.'.'.$extension;
                                     $detailsUser = new UsersManager();
                                     $userInfo = $detailsUser->find($id);
                                     $userPhoto = array (
@@ -98,7 +89,6 @@ class UsersController extends Controller
                 $userManager = new \Manager\UsersManager();
                 $userManager->update(
                     array(
-                        'usr_pseudo' => $userpseudo,
                         'usr_street' => $street,
                         'usr_city' => $city,
                         'usr_zipcode' => $zipcode,
@@ -113,19 +103,19 @@ class UsersController extends Controller
 
                 //USER DATABASE creation
                 // Add distant access user
-                $sql = 'CREATE USER \''.$firstname.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
+                $sql = 'CREATE USER \''.$pseudo.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
                 $sth = $AllUsersManager->connectionToDatabase($sql);
 
-                $sql = 'CREATE USER \''.$firstname.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
+                $sql = 'CREATE USER \''.$pseudo.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
                 $sth = $AllUsersManager->connectionToDatabase($sql);
 
-                $sql = 'GRANT ALL PRIVILEGES ON `'.$firstname.'\_%` .  * TO \''.$firstname.'\'@\'%\'';
+                $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'%\'';
                 $sth = $AllUsersManager->connectionToDatabase($sql);
 
-                $sql = 'GRANT ALL PRIVILEGES ON `'.$firstname.'\_%` .  * TO \''.$firstname.'\'@\'localhost\'';
+                $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'localhost\'';
                 $sth = $AllUsersManager->connectionToDatabase($sql);
                 for($i=0; $i<4; $i++){
-                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$firstname.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
                 }
                 // Redirection to "Home"
