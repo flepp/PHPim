@@ -366,12 +366,49 @@ class UsersController extends Controller
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
         //debug($sessionList);
+        /*------------------------TO DROP------------------------------------------------------*/
+        /*------------------------TO DROP------------------------------------------------------*/
+        $usersManager = new UsersManager;
+        $usersList = $usersManager->findAllUsersAndSort();
+        /*------------------------TO DROP------------------------------------------------------*/
+        /*------------------------TO DROP------------------------------------------------------*/
 
-        $this->show('user/admin/invitations', ['arrayStudents'=>$_SESSION['stuSession'], 'sessionList'=>$sessionList]);
+        $this->show('user/admin/invitations', ['arrayStudents'=>$_SESSION['stuSession'], 'sessionList'=>$sessionList, 'usersList'=>$usersList]);
     }
 
     /*-----Uploading Users list form a file and sending them an invintation to register-----*/
     public function invitationsPost(){
+        /*------------------------TO DROP------------------------------------------------------*/
+        /*------------------------TO DROP------------------------------------------------------*/
+        if(isset($_POST['troll'])){
+            if(!empty($_POST)){
+                $id = $_POST['userInfo'];
+                $userinfo = new UsersManager;
+                $infos = $userinfo->find($id);
+                debug($infos);
+                $_SESSION['user']['id'] = $infos['id'];
+                $_SESSION['user']['session_id'] = $infos['session_id'];
+                $_SESSION['user']['usr_name'] = $infos['usr_name'];
+                $_SESSION['user']['usr_firstname'] = $infos['usr_firstname'];
+                $_SESSION['user']['usr_password'] = $infos['usr_password'];
+                $_SESSION['user']['usr_email'] = $infos['usr_email'];
+                $_SESSION['user']['usr_birthdate'] = $infos['usr_birthdate'];
+                $_SESSION['user']['usr_photo'] = $infos['usr_photo'];
+                $_SESSION['user']['usr_pseudo'] = $infos['usr_pseudo'];
+                $_SESSION['user']['usr_status'] = $infos['usr_status'];
+                $_SESSION['user']['usr_zipcode'] = $infos['usr_zipcode'];
+                $_SESSION['user']['usr_street'] = $infos['usr_street'];
+                $_SESSION['user']['usr_city'] = $infos['usr_city'];
+                $_SESSION['user']['usr_country'] = $infos['usr_country'];
+                $_SESSION['user']['usr_created'] = $infos['usr_created'];
+                $_SESSION['user']['usr_updated'] = $infos['usr_updated'];
+                debug($_SESSION['user']);
+            /*--------REDIRECTION---------*/
+            $this->redirectToRoute('user_invitations');  
+            }
+        }
+        /*------------------------TO DROP------------------------------------------------------*/
+        /*------------------------TO DROP------------------------------------------------------*/
         $this->allowTo(['admin']);
 
         if(isset($_POST['upload'])){
