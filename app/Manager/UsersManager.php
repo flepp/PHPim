@@ -64,7 +64,7 @@ class UsersManager extends \W\Manager\Manager{
 
 	public function getAllBySession($session){
 
-		$sql = "SELECT id, usr_firstname, usr_name, usr_status FROM " . $this->table . " WHERE session_id = :session ";
+		$sql = "SELECT id, usr_pseudo, usr_firstname, usr_name, usr_status FROM " . $this->table . " WHERE session_id = :session ";
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindValue(":session", $session);
 		$sth->execute();
@@ -87,8 +87,8 @@ class UsersManager extends \W\Manager\Manager{
 		return $sth->fetch();
 	}
 
-	public function getAllDatabases(){
-		$sql = "SHOW DATABASES";
+	public function getAllDatabases($pseudo){
+		$sql = 'SHOW DATABASES LIKE "'.$pseudo.'%"';
 		$sth = $this->dbh->prepare($sql);
 		$sth->execute();
 		return $sth->fetchAll();

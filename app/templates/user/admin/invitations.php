@@ -10,7 +10,11 @@
 	<br/>
 	<form action="" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="fichierSoumis" value="1">
-		<input type="file" name="fichierteleverse"><br/><br/>
+		<input type="file" name="fichierteleverse">
+		<br/>
+		<p>*extension permise: .csv / Séparateur ',' ou ';'</p>
+		<p>Ordre: Prénom/Nom/Email/Pseudo</p>
+		<br/>
 		<button type="submit" name="upload">Téléverser</button>
 	</form>
 	<br/>

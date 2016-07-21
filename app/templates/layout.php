@@ -20,8 +20,9 @@
 					<a href="<?= $this->url('quiz_manage') ?>">Gestion Quiz</a>
 					<a href="<?= $this->url('session_database') ?>">BDD Session</a>
 					<?php endif ?>
-					<a href="<?= $this->url('user_database') ?>">BDD utilisateur</a>
 					<a href="<?= $this->url('quiz_quiz') ?>">Quiz</a>
+					<a href="<?= $this->url('user_database') ?>">BDD utilisateur</a>
+					<a href="<?= $this->url('allusers_details', ['id' => $_SESSION['user']['id']]) ?>">Mon Profil</a>
 					<a href="<?php echo $this->url('user_logout'); ?>">Déconnexion</a>
 					Bonjour <?= ' '.$w_user['usr_pseudo'] ?>
 				<?php else : ?>

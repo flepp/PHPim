@@ -7,9 +7,8 @@
 	<legend>Sélection du session*:</legend>
 		<form action="" method="">
 			<select name="session">
-				<option value="">nom du session</option>
 			<?php foreach ($sessionList as $key => $value) : ?>
-				<option value="<?= $value['id'] ?>"><?= $value['ses_name'] ?>
+				<option value="<?= $value['id']  ?>" <?php if ($id_session == $value['id']) : ?>selected="selected"<?php endif; ?>><?= $value['ses_name'] ?>
 				</option>
 			<?php endforeach; ?>
 			</select>
@@ -21,6 +20,7 @@
 	<br/>
 
 	<!-- Here starts the part for "user" statute -->
+	<?php if(count($allUsersTable) > 0) : ?>
 	<br/>
 	<h4>Liste des étudiants:</h4>
 	<br/>
@@ -34,5 +34,7 @@
 		</tbody>
 	<?php endforeach ?>
 	</table>
+	<?php endif ?>
 
 <?php $this->stop('main_content') ?>
+
