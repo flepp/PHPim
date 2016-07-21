@@ -9,7 +9,7 @@
 class SessionController extends Controller{
 
     public function session(){
-        //$this->allowTo(['admin']);
+        $this->allowTo(['admin']);
 
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
@@ -19,7 +19,7 @@ class SessionController extends Controller{
     }
 
     public function sessionPost(){
-        //$this->allowTo(['admin']);
+        $this->allowTo(['admin']);
 
         $tableInsert = array();
         $sessionManager = new SessionManager;
@@ -31,34 +31,41 @@ class SessionController extends Controller{
                 $sessionName = $_POST['sessionName'];
                 $sessionStart = $_POST['sessionStart'];
                 $sessionEnd = $_POST['sessionEnd'];
+                $valdate = '';
+                $valLenght = '';
 
                 if(strtotime($sessionStart) < strtotime($sessionEnd)){
-                    if(strip_tags($sessionName)){
-                        if(strlen(trim($sessionName)) >= 7){
-                            $tableInsert = [
-                                'ses_name' => $sessionName,
-                                'ses_start' => $sessionStart,
-                                'ses_end' => $sessionEnd,
-                                'ses_status' => 1,
-                                'ses_created' => date('Y-m-d'),
-                                'ses_updated' => date('Y-m-d'),
-                            ];
-
-                            $insert = $sessionManager->insert($tableInsert);
-
-                            /*--------REDIRECTION---------*/
-                            $this->redirectToRoute('session_session');
-                        }
-                        else{
-                            echo "Nom de session trop courte";
-                        }
-                    }
-                    else{
-                        echo "Saississez des données valides svp";
-                    }
-                }else{
-                    echo "La date de début de session ne peut pas être plus récente que la date de fin de session";
+                    $valdate = true;
                 }
+                else{
+                    $_SESSION['errorCreation'][] = "La date de début de session ne peut pas être plus récente que la date de fin de session";
+                    $valdate = false;
+                }
+                
+                if(strlen(trim(strip_tags($sessionName))) >= 7){
+                    $valLenght = true;
+
+                }
+                else{
+                    $_SESSION['errorCreation'][] = "Nom de session trop courte";
+                    $valLenght = false;
+                }
+                if($valdate == true && $valLenght == true){
+                    $tableInsert = [
+                        'ses_name' => $sessionName,
+                        'ses_start' => $sessionStart,
+                        'ses_end' => $sessionEnd,
+                        'ses_status' => 1,
+                        'ses_created' => date('Y-m-d'),
+                        'ses_updated' => date('Y-m-d'),
+                    ];
+
+                    $insert = $sessionManager->insert($tableInsert);
+                    $_SESSION['successCreation'][] = "Création réussie!";
+                }
+
+                /*--------REDIRECTION---------*/
+                $this->redirectToRoute('session_session');
             }
         }
 
@@ -93,8 +100,10 @@ class SessionController extends Controller{
         if(isset($_POST['sessionDelete'])){
             if(!empty($_POST)){ 
                 $id = $_POST['sessionId'];
-                $sessionManager = new SessionManager;
+                $name = $_POST['sessionName'];
                 $delete = $sessionManager->delete($id);
+                $_SESSION['success'][] = $name." a été supprimée avec succés!";
+
                 /*--------REDIRECTION---------*/
                 $this->redirectToRoute('session_session');
             }
@@ -104,87 +113,84 @@ class SessionController extends Controller{
             if(!empty($_POST)){
                 //debug($_POST);
                 $id = $_POST['sessionId'];
+                $name = $_POST['sessionName'];
                 $sessionName = $_POST['sessionName'];
                 $sessionStart = $_POST['sessionStart'];
                 $sessionEnd = $_POST['sessionEnd'];
-                $sessionManager = new SessionManager;
+                $valdate = '';
+                $valLenght = '';
 
                 if(strtotime($sessionStart) < strtotime($sessionEnd)){
-                    if(strip_tags($sessionName)){
-                        if(strlen(trim($sessionName)) >= 7){
-                            $tableUpdate = [
-                                'ses_name' => $sessionName,
-                                'ses_start' => $sessionStart,
-                                'ses_end' => $sessionEnd,
-                                'ses_updated' => date('Y-m-d'),
-                            ];
-
-                            $update = $sessionManager->update($tableUpdate, $id);
-
-                            /*--------REDIRECTION---------*/
-                            $this->redirectToRoute('session_session');
-                        }
-                        else{
-                            echo "Nom de session trop courte";
-                        }
-                    }
-                    else{
-                        echo "Saississez des données valides svp";
-                    }
-                }else{
-                    echo "La date de début de session ne peut pas être plus récente que la date de fin de session";
+                    $valdate = true;
                 }
+                else{
+                    $_SESSION['errorUpdated'][] = "La date de début de session ne peut pas être plus récente que la date de fin de session";
+                    $valdate = false;
+                }
+                
+                if(strlen(trim(strip_tags($sessionName))) >= 7){
+                    $valLenght = true;
+
+                }
+                else{
+                    $_SESSION['errorUpdated'][] = "Nom de session trop courte";
+                    $valLenght = false;
+                }
+                if($valdate == true && $valLenght == true){
+                    $tableUpdate = [
+                        'ses_name' => $sessionName,
+                        'ses_start' => $sessionStart,
+                        'ses_end' => $sessionEnd,
+                        'ses_updated' => date('Y-m-d'),
+                    ];
+
+                    $update = $sessionManager->update($tableUpdate, $id);
+                    $_SESSION['success'][] = $name." a été mis à jour avec succés!";
+                }
+                /*--------REDIRECTION---------*/
+                $this->redirectToRoute('session_session');
             }
         }
     }
     public function database(){
-        //$this->allowTo(['admin']);
+        $this->allowTo(['admin']);
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
 
         $this->show('user/admin/database',['sessionList'=>$sessionList]);
     }
     public function databasePost(){
-        if(isset($_POST)){
-            if(!empty($_POST['suffixe'])){
+        if(isset($_POST['suffixe'])){
+            if(!empty($_POST)){
+                debug($_POST);
                 $suffixe = $_POST['suffixe'];
                 $session = $_POST['session'];
                 if(strlen(strip_tags(trim($suffixe))) >= 4){
                     $AllUsersManager = new UsersManager;
                     $getAllBySession = $AllUsersManager->getAllBySession($session);
-                    debug($getAllBySession);
-                    foreach($getAllBySession as $key=>$value){
-                        $id = $value['id'];
-                        $username = $value['usr_firstname'];
-                        $name = $value['usr_name'];
-                        $password = 'webforce3';
-                        $status = $value['usr_status'];
+                    $test = count($getAllBySession);
 
-                        /*
-                        $sql = 'CREATE USER \''.$username.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
-                        $sth = $AllUsersManager->connectionToDatabase($sql);
+                    if($test > 0){
+                        foreach($getAllBySession as $key=>$value){
+                            $id = $value['id'];
+                            $firstname = $value['usr_firstname'];
+                            $pseudo = $value['usr_pseudo'];
+                            $name = $value['usr_name'];
+                            $password = 'webforce3';
+                            $status = $value['usr_status'];
 
-                        $sql = 'CREATE USER \''.$username.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
-                        $sth = $AllUsersManager->connectionToDatabase($sql);
-
-                        $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'%\'';
-                        $sth = $AllUsersManager->connectionToDatabase($sql);
-
-                        $sql = 'GRANT ALL PRIVILEGES ON `'.$username.'\_%` .  * TO \''.$username.'\'@\'localhost\'';
-                        $sth = $AllUsersManager->connectionToDatabase($sql);
-                            for(i=0; i<4; i++){
-                                $sql = 'CREATE DATABASE IF NOT EXISTS `'.$username.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
-                            $sth = $AllUsersManager->connectionToDatabase($sql);
+                            if($status == 1){
+                                $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_'.$suffixe.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                                $sth = $AllUsersManager->connectionToDatabase($sql);
+                                $_SESSION['successList'][] = 'Création réussie pour '.$firstname.' '.$name.'.';
                             }
-                        */
-                        if($status == 1){
-                            $sql = 'CREATE DATABASE IF NOT EXISTS `'.$username.'_'.$suffixe.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
-                            $sth = $AllUsersManager->connectionToDatabase($sql);
-                            $_SESSION['successList'][] = 'Création réussie pour '.$username.' '.$name.'.';
+                            else{
+                                $_SESSION['errorList'][] = $firstname.' '.$name.' est désactivé(e), impossible de lui affecter une nouvelle base de données';
+                            }
                         }
-                        else{
-                            $_SESSION['errorList'][] = $username.' '.$name.' est désactivé(e), impossible de lui affecter une nouvelle base de données';
-                        }
+                    }
+                    else{
+                        $_SESSION['errorList'][] = 'Cette session ne comporte pas d\'étudiant, veuillez la remplir avant tout!';
                     }
                 }
                 else{

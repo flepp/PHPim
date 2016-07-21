@@ -16,16 +16,30 @@ class CategoryController extends Controller
         $catName = $_POST['catName'];
         $data = array('cat_name' => $catName);
         if (isset($_POST['add'])) {
-            $categoryManager->insert($data);
+            if (strlen($catName) > 3) {
+                $categoryManager->insert($data);
+                $_SESSION['successList'][] = 'Catégorie '.$catName.' ajoutée!';
+            }
+            else{
+                $_SESSION['errorList'][] = 'Une erreur s\'est produite lors de l\'ajout.';
+            }
             $this->redirectToRoute('category_manage');
         }
         $id = $_POST['catId'];
         if (isset($_POST['delete'])) {
             $categoryManager->delete($id);
+            $catName = $_POST['catName'];
+            $_SESSION['successList'][] = 'Catégorie '.$catName.' supprimée!';
             $this->redirectToRoute('category_manage');
         }
          if (isset($_POST['modify'])) {
-            $categoryManager->update($data,$id);
+                if (strlen($catName) > 3) {
+                    $_SESSION['successList'][] = 'Catégorie '.$catName.' modifiée!';
+                    $categoryManager->update($data,$id);
+                }
+                else{
+                    $_SESSION['errorList'][] = 'Une erreur s\'est produite lors de la modification.';
+                }
             $this->redirectToRoute('category_manage');
         }
     }

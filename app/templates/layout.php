@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title><?= $this->e($title) ?></title>
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/reset.css') ?>">
+	<link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
 </head>
 <body>
 	<div class="container">
@@ -11,20 +12,26 @@
 			<nav>
 				<a href="<?= $this->url('default_home') ?>">Home</a>
 				<a href="<?= $this->url('default_about') ?>">About</a>
-				<a href="<?= $this->url('user_register') ?>">Inscription</a>
-				<a href="<?= $this->url('user_login') ?>">Connexion</a>
-				<a href="<?= $this->url('user_reset') ?>">Nouveau MDP</a>
 				<a href="<?= $this->url('allusers_allUsers') ?>">Etudiants</a>
 				<a href="<?= $this->url('session_session') ?>">Sessions</a>
-				<a href="<?= $this->url('session_database') ?>">Créer BDD pour une session</a>
+				<a href="<?= $this->url('user_database') ?>">BDD utilisateur</a>
 				<a href="<?= $this->url('user_invitations') ?>">Invits</a>
 				<a href="<?= $this->url('quiz_quiz') ?>">Quiz</a>
 				<a href="<?= $this->url('quiz_manage') ?>">Gestion Quiz</a>
 				<a href="<?= $this->url('session_database') ?>">BDD Session</a>
+
+				<?php if (isset($w_user) && is_array($w_user)) :?>
+					Bonjour <?= ' '.$w_user['usr_pseudo'] ?>
+					<a href="<?php echo $this->url('user_logout'); ?>">Déconnexion</a>
+				<?php else : ?>
+					<a href="<?php echo $this->url('user_register'); ?>">Inscription</a>
+					<a href="<?php echo $this->url('user_login'); ?>">Connexion</a>
+				<?php endif; ?>
 			</nav>
 		</header>
 
 		<section>
+			<?php $this->insert('partials/notifications') ?>
 			<?= $this->section('main_content') ?>
 		</section>
 

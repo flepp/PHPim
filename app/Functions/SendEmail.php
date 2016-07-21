@@ -6,6 +6,7 @@ class SendEmail{
 	public function sendMail($to, $subject, $body='', $attach=''){
 	    $mail = new \PHPMailer;
 	    $mail->isSMTP();                                      // Set mailer to use SMTP
+	    $mail->CharSet = 'UTF-8';
 	    $mail->Host = 'smtp.gmail.com';                       // Specify main and backup SMTP servers
 	    $mail->SMTPAuth = true;                               // Enable SMTP authentication
 	    $mail->Username = 'wf3@progweb.fr';                   // SMTP username
