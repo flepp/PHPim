@@ -79,7 +79,7 @@ class UsersManager extends \W\Manager\Manager{
 
 	public function getUsrUpdated($email){
 
-		$sql = "SELECT usr_firstname, usr_updated FROM " . $this->table . " WHERE usr_email = :email ";
+		$sql = "SELECT usr_pseudo, usr_updated FROM " . $this->table . " WHERE usr_email = :email ";
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindValue(":email", $email);
 		$sth->execute();

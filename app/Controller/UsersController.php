@@ -22,7 +22,6 @@ class UsersController extends Controller
 
         // Gathering POST datas (form)
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
-        $userpseudo = isset($_POST['userpseudo']) ? strip_tags(trim($_POST['userpseudo'])): '';
         $password = isset($_POST['password']) ? trim($_POST['password']): '';
         $street = isset($_POST['street']) ? strip_tags(trim($_POST['street'])): '';
         $city = isset($_POST['city']) ? strip_tags(trim($_POST['city'])): '';
@@ -30,17 +29,9 @@ class UsersController extends Controller
         $country = isset($_POST['country']) ? strip_tags(trim($_POST['country'])): '';
         $birthdate = isset($_POST['birthdate']) ? trim($_POST['birthdate']): '';
         $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
-        $validPseudo = '';
         $validLogin = '';
 
         // Verification des données
-        if(strlen($userpseudo) <= 2){
-                $_SESSION['errorList'][] = 'entrez un pseudo';
-                $validPseudo = false;
-            }else{
-                $validPseudo = true;
-            }
-
         $authManager = new AuthentificationManager();
         $id = $authManager->isValidLoginInfo($email, $password);
         if ($id === 0) {
@@ -50,11 +41,11 @@ class UsersController extends Controller
             $validLogin = true;
         }
 
-        if($validPseudo == true && $validLogin == true){
+        if($validLogin == true){
             $userManager = new UsersManager();
             $info = $userManager->getUsrUpdated($email);
             $updated = $info['usr_updated'];
-            $firstname = $info['usr_firstname'];
+            $pseudo = $info['usr_pseudo'];
             $password = 'webforce3';
 
             if ($updated == NULL) {
@@ -71,8 +62,8 @@ class UsersController extends Controller
                             //Checking if a value exists in an array with "in_array" function
                             if (in_array($extension, $allowedExtensions)) {
                                 //Moving an uploaded file to a new location
-                                if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$userpseudo.'.'.$extension)) {
-                                    $photo = 'img_'.$userpseudo.'.'.$extension;
+                                if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$pseudo.'.'.$extension)) {
+                                    $photo = 'img_'.$pseudo.'.'.$extension;
                                     $detailsUser = new UsersManager();
                                     $userInfo = $detailsUser->find($id);
                                     $userPhoto = array (
@@ -98,7 +89,6 @@ class UsersController extends Controller
                 $userManager = new \Manager\UsersManager();
                 $userManager->update(
                     array(
-                        'usr_pseudo' => $userpseudo,
                         'usr_street' => $street,
                         'usr_city' => $city,
                         'usr_zipcode' => $zipcode,
@@ -113,19 +103,19 @@ class UsersController extends Controller
 
                 //USER DATABASE creation
                 // Add distant access user
-                $sql = 'CREATE USER \''.$firstname.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
+                $sql = 'CREATE USER \''.$pseudo.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
                 $sth = $AllUsersManager->connectionToDatabase($sql);
 
-                $sql = 'CREATE USER \''.$firstname.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
+                $sql = 'CREATE USER \''.$pseudo.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
                 $sth = $AllUsersManager->connectionToDatabase($sql);
 
-                $sql = 'GRANT ALL PRIVILEGES ON `'.$firstname.'\_%` .  * TO \''.$firstname.'\'@\'%\'';
+                $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'%\'';
                 $sth = $AllUsersManager->connectionToDatabase($sql);
 
-                $sql = 'GRANT ALL PRIVILEGES ON `'.$firstname.'\_%` .  * TO \''.$firstname.'\'@\'localhost\'';
+                $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'localhost\'';
                 $sth = $AllUsersManager->connectionToDatabase($sql);
                 for($i=0; $i<4; $i++){
-                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$firstname.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
                 }
                 // Redirection to "Home"
@@ -170,6 +160,16 @@ class UsersController extends Controller
             $this->redirectToRoute('default_home');
         }
         $this->show('user/login');
+    }
+
+    //DECONNEXION\\
+    // Déconnecte un utilisateur
+    public function logout(){
+        //Suppress current user
+        $authManager = new \W\Security\AuthentificationManager();
+        $authManager->logUserOut();
+        // Redirection to "Home"
+        $this->redirectToRoute('default_home');
     }
 
     // FORGOT PASSWORD BY PHILIPPE
@@ -432,12 +432,14 @@ class UsersController extends Controller
                 foreach ($_POST['student'] as $key=> $value){
                     $name = isset($value['name']) ? trim($value['name']) : '';
                     $firstname = isset($value['firstname']) ? trim($value['firstname']) : '';
+                    $pseudo = isset($value['pseudo']) ? trim($value['pseudo']) : '';
                     $email = isset($value['email']) ? trim($value['email']) : '';
                     $session = isset($_POST['session']) ? trim($_POST['session']) : '';
                     $password = time();
                     $path = '<a href="http://localhost/PHPim/public/inscription/">http://localhost/PHPim/public/inscription/</a>';
                     $validFirstname = '';
                     $validName = '';
+                    $validPseudo = '';
                     $validEmail = '';
                     $validvalidEmail = '';
                     //$_SESSION['errorList'] = array();
@@ -459,6 +461,12 @@ class UsersController extends Controller
                     }else{
                         $validName = true;
                     }
+                    if(strlen(strip_tags(trim($pseudo))) < 2){
+                        $_SESSION['errorList'][] = 'Pseudo invalide en ligne #'.$key;
+                        $validPseudo = false;
+                    }else{
+                        $validPseudo = true;
+                    }
 
                     if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
                         $_SESSION['errorList'][] = 'Email invalide en ligne #'.$key;   
@@ -474,13 +482,14 @@ class UsersController extends Controller
                         $validemailEXist = true;   
                     }
 
-                    if($validFirstname == true && $validName == true && $validEmail == true && $validemailEXist == true){
+                    if($validFirstname == true && $validName == true && $validEmail == true && $validemailEXist == true && validPseudo == true){
                         $userManager = new UsersManager;
 
                         $tableInsert = [
                             'usr_firstname' => $firstname,
                             'usr_name' => $name,
                             'usr_email' => $email,
+                            'usr_pseudo' => $pseudo,
                             'usr_password' => password_hash($password,PASSWORD_BCRYPT),
                             'usr_role' => 'user',
                             'session_id' => $session,
@@ -499,7 +508,9 @@ class UsersController extends Controller
                     }
                 }
                 unset($_SESSION['filePath']);
-                $_SESSION['errorList'][] = 'Aucun étudiant sélectionné';
+                if(isset($_SESSION['errorList']) && count($_SESSION['errorList']) == 0){
+                    $_SESSION['errorList'][] = 'Aucun étudiant sélectionné';
+                }
                 $this->redirectToRoute('user_invitations');
             }
         }

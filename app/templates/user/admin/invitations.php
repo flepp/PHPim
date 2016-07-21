@@ -37,6 +37,8 @@
 					<input type="text" name="student[<?= $key ?>][firstname]" value="<?=$students['0'] ?>">
 					<label>Nom:</label>
 					<input type="text" name="student[<?= $key ?>][name]" value="<?=$students['1'] ?>">
+					<label>Pseudo:</label>
+					<input type="text" name="student[<?= $key ?>][pseudo]" value="<?=$students['3'] ?>">
 					<label>Email:</label>
 					<input type="email" name="student[<?= $key ?>][email]" value="<?=$students['2'] ?>">
 				</div>
