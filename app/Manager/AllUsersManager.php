@@ -13,9 +13,9 @@ class AllUsersManager extends \W\Manager\UserManager{
 		if (!is_numeric($id)){
 			return false;
 		}
-		$sql = 'SELECT *, session.ses_name
+		$sql = 'SELECT *, session.ses_name, session.ses_end
 				FROM '.$this->table.'
-				INNER JOIN session
+				LEFT OUTER JOIN session
 				ON users.session_id=session.id  WHERE session.id ='.$id;
 		$sth = $this->dbh->prepare($sql);
 		$sth->execute();
