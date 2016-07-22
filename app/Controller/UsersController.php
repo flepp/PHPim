@@ -269,7 +269,6 @@ class UsersController extends Controller
     //---------------- PHILIPPE END
 
     public function edit($id){
-
         $this->allowTo(['admin','user']);
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
@@ -290,7 +289,27 @@ class UsersController extends Controller
     }
 
     public function editPost($id){
+        if(isset($_POST['userOn']) || isset($_POST['userOff'])){
+            if(!empty($_POST)){ 
+                /*-------------------Disable OR Enable  session------------*/   
+                $id = $_SESSION['user']['id'];
+                $userStatus = $_POST['userStatus'];
+                $tableUpdateUser = array();
+                $userManager = new UsersManager;
+              
+                $tableUpdateUser = [
+                    'usr_status' => $userStatus,
+                    'usr_updated' => date('Y-m-d'),
+                ];
+                $updateUser = $userManager->update($tableUpdateUser, $id);
+
+                /*--------REDIRECTION---------*/
+                 $this->redirectToRoute('user_edit', ['id' => $id]);
+            }
+        }
+
         if(isset($_POST['submitInfo'])){
+            $validImg = '';
             //debug($_FILES);
             $allowedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
             foreach ($_FILES as $key => $value) {
@@ -316,62 +335,99 @@ class UsersController extends Controller
                                 if (isset($_POST)) {
                                     $detailsUser->update($userPhoto, $id);
                                 }
-                                $_SESSION['successList'][] = 'fichier uploaded<br/>';
                             }
                             else {
-                                $_SESSION['errorList'][] = 'attention, une erreur est survenue<br/>';
+                                $_SESSION['errorList'][] = 'Attention, une erreur est survenue';
+                                $validImg = false;
                             }
                         }
                         else {
-                            $_SESSION['errorList'][] = 'pas d\'extension permise<br/>';
+                            $_SESSION['errorList'][] = 'Cette extension n\'est pas permise';
+                            $validImg = false;
                         }
                     }
                 }
             }
-            //debug($_POST);
+            debug($_POST);
             //Inserting data from POST for "user" statute use
-            $userPseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
-            $password = isset($_POST['userpassword']) ? trim($_POST['userpassword']): '';
-            $street = isset($_POST['userstreet']) ? trim($_POST['userstreet']): '';
-            $city = isset($_POST['usercity']) ? trim($_POST['usercity']): '';
-            $zipcode = isset($_POST['userzipcode']) ? trim($_POST['userzipcode']): '';
-            $country = isset($_POST['usercountry']) ? trim($_POST['usercountry']): '';
-            $birthdate = isset($_POST['userbirthdate']) ? trim($_POST['userbirthdate']): '';
-            $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
-
-            //Inserting data from POST for "admin" statute use
-            $userName = isset($_POST['username']) ? trim($_POST['username']): '';
+            /***********Control First name*************/
+            $validFirstname = '';
             $userFirstName = isset($_POST['userfirstname']) ? trim($_POST['userfirstname']): '';
-            $userEmail = isset($_POST['useremail']) ? trim($_POST['useremail']): '';
-            
-            $detailsUser = new UsersManager();
-            $userInfo = $detailsUser->find($id);
-            //Inserting data in database
-            $userData =  array (
-                        'usr_pseudo' => $userPseudo,
-                        'usr_password' => $password,
-                        'usr_street' => $street,
-                        'usr_city' => $city,
-                        'usr_zipcode' => $zipcode,
-                        'usr_country' => $country,
-                        'usr_birthdate' => $birthdate,
-                        'usr_name' => $userName,
-                        'usr_firstname' => $userFirstName,
-                        'usr_email' => $userEmail,
-                        'usr_updated' => date ('Y-m-d H:i:s')
-                        );
-            $id = $userInfo['id'];
+            if(strlen(strip_tags($userFirstName)) < 2){
+                $_SESSION['errorList'][] = 'Prénom invalide ou trop court';
+                $validFirstname = false;
+            }else{
+                $validFirstname = true;
+            }
 
-            if (isset($_POST)) {
+            /***********Control name*************/
+            $validName = '';
+            $userName = isset($_POST['username']) ? trim($_POST['username']): '';
+            if(strlen(strip_tags(trim($userName))) < 2){
+                $_SESSION['errorList'][] = 'Nom invalide ou trop court';
+                $validName = false;
+            }else{
+                $validName = true;
+            }
+
+            /***********Control pseudo*************/
+            $validPseudo = '';
+            $userPseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
+            if(strlen(strip_tags(trim($userPseudo))) < 2){
+                $_SESSION['errorList'][] = 'Pseudo invalide ou trop court';
+                $validPseudo = false;
+            }else{
+                $validPseudo = true;
+            }
+
+            /***********Control email*************/
+            $validEmail = '';
+            $userEmail = isset($_POST['useremail']) ? trim($_POST['useremail']): '';
+            if (filter_var($userEmail, FILTER_VALIDATE_EMAIL) == false) {
+                $_SESSION['errorList'][] = 'Email invalide ou trop court';   
+                $validEmail = false;
+            }else{
+                $validEmail = true;
+            }
+
+            $street = isset($_POST['userstreet']) ? strip_tags(trim($_POST['userstreet'])): '';
+            $city = isset($_POST['usercity']) ? strip_tags(trim($_POST['usercity'])): '';
+            $zipcode = isset($_POST['userzipcode']) ? strip_tags(trim($_POST['userzipcode'])): '';
+            $country = isset($_POST['usercountry']) ? strip_tags(trim($_POST['usercountry'])): '';
+            $birthdate = isset($_POST['userbirthdate']) ? trim($_POST['userbirthdate']): '';
+            $photo = isset($_POST['photo']) ? strip_tags(trim($_POST['photo'])): '';
+
+            $userSessionId = $_POST['session'];
+            //Inserting data from POST for "admin" statute use
+            
+            
+            if($validFirstname == true && $validName == true && $validEmail == true && $validEmail == true && $validPseudo == true) {
+                $detailsUser = new UsersManager();
+                $userInfo = $detailsUser->find($id);
+                //Inserting data in database
+                $userData =  array (
+                    'usr_street' => $street,
+                    'usr_city' => $city,
+                    'usr_zipcode' => $zipcode,
+                    'usr_country' => $country,
+                    'usr_birthdate' => $birthdate,
+                    'usr_name' => $userName,
+                    'usr_firstname' => $userFirstName,
+                    'usr_email' => $userEmail,
+                    'usr_pseudo' => $userPseudo,
+                    'session_id' => $userSessionId,
+                    'usr_updated' => date ('Y-m-d H:i:s')
+                );
+                debug($userData);
+                $id = $userInfo['id'];
 
                 $detailsUser->update($userData, $id);
                 //Redirecting to allusers_details page
                 $this->redirectToRoute('allusers_details', ['id' => $userInfo['id']]);
+                $_SESSION['succesList'][] = 'Vos données ont été bien mise à jour!';
             }
-
-            $this->show(
-                'user/edit'
-            );
+            //I'm redirecting to 
+            $this->redirectToRoute('user_edit', ['id' => $_SESSION['user']['id']]);
         }
     }
 
@@ -389,57 +445,20 @@ class UsersController extends Controller
         unset($arrayStudents[count($arrayStudents)-1]);
         $_SESSION['stuSession'] = $arrayStudents;
         //debug($_SESSION['stuSession']);
-        if(file_exists($_SESSION['chemin'])){
-            unlink($_SESSION['chemin']);
+        if (isset($_SESSION['chemin'])){
+            if(file_exists($_SESSION['chemin'])){
+                unlink($_SESSION['chemin']);
+            }
         }
-
         /*-------------------------Getting the list of sessions------------------*/
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
-        //debug($sessionList);
-        /*------------------------TO DROP------------------------------------------------------*/
-        /*------------------------TO DROP------------------------------------------------------*/
-        $usersManager = new UsersManager;
-        $usersList = $usersManager->findAllUsersAndSort();
-        /*------------------------TO DROP------------------------------------------------------*/
-        /*------------------------TO DROP------------------------------------------------------*/
-
-        $this->show('user/admin/invitations', ['arrayStudents'=>$_SESSION['stuSession'], 'sessionList'=>$sessionList, 'usersList'=>$usersList]);
+        
+        $this->show('user/admin/invitations', ['arrayStudents'=>$_SESSION['stuSession'], 'sessionList'=>$sessionList]);
     }
 
     /*-----Uploading Users list form a file and sending them an invintation to register-----*/
     public function invitationsPost(){
-        /*------------------------TO DROP------------------------------------------------------*/
-        /*------------------------TO DROP------------------------------------------------------*/
-        if(isset($_POST['troll'])){
-            if(!empty($_POST)){
-                $id = $_POST['userInfo'];
-                $userinfo = new UsersManager;
-                $infos = $userinfo->find($id);
-                debug($infos);
-                $_SESSION['user']['id'] = $infos['id'];
-                $_SESSION['user']['session_id'] = $infos['session_id'];
-                $_SESSION['user']['usr_name'] = $infos['usr_name'];
-                $_SESSION['user']['usr_firstname'] = $infos['usr_firstname'];
-                $_SESSION['user']['usr_password'] = $infos['usr_password'];
-                $_SESSION['user']['usr_email'] = $infos['usr_email'];
-                $_SESSION['user']['usr_birthdate'] = $infos['usr_birthdate'];
-                $_SESSION['user']['usr_photo'] = $infos['usr_photo'];
-                $_SESSION['user']['usr_pseudo'] = $infos['usr_pseudo'];
-                $_SESSION['user']['usr_status'] = $infos['usr_status'];
-                $_SESSION['user']['usr_zipcode'] = $infos['usr_zipcode'];
-                $_SESSION['user']['usr_street'] = $infos['usr_street'];
-                $_SESSION['user']['usr_city'] = $infos['usr_city'];
-                $_SESSION['user']['usr_country'] = $infos['usr_country'];
-                $_SESSION['user']['usr_created'] = $infos['usr_created'];
-                $_SESSION['user']['usr_updated'] = $infos['usr_updated'];
-                debug($_SESSION['user']);
-            /*--------REDIRECTION---------*/
-            $this->redirectToRoute('user_invitations');  
-            }
-        }
-        /*------------------------TO DROP------------------------------------------------------*/
-        /*------------------------TO DROP------------------------------------------------------*/
         $this->allowTo(['admin']);
 
         if(isset($_POST['upload'])){
@@ -507,7 +526,6 @@ class UsersController extends Controller
                     $validName = '';
                     $validPseudo = '';
                     $validEmail = '';
-                    $validvalidEmail = '';
                     //$_SESSION['errorList'] = array();
                     //$_SESSION['successList'] = array();
                     $emailEx = new UserManager;
@@ -548,7 +566,7 @@ class UsersController extends Controller
                         $validemailEXist = true;   
                     }
 
-                    if($validFirstname == true && $validName == true && $validEmail == true && $validemailEXist == true && validPseudo == true){
+                    if($validFirstname == true && $validName == true && $validEmail == true && $validemailEXist == true && $validPseudo == true){
                         $userManager = new UsersManager;
 
                         $tableInsert = [

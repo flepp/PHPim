@@ -37,16 +37,5 @@
 	<button type="submit" name="sendInvitations">Envoyez les invitations!</button>
 </form>
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~CHANGING USER PROFILE FOR ADMIN~~~~~~~~~~~~~~~~~~~~~ -->   
-<h1>Vous êtes connecté en tant que:</h1> 
-<form method="post" action="">
-	<select name="userInfo">
-		<?php foreach ($usersList as $key => $info): ?>
-			<option value="<?= $info['id'] ?>" "<?= $info['id'] == $_SESSION['user']['id'] ? ' selected="selected"' : '' ?>"><?= $info['usr_name'].' ' ?><?= $info['usr_firstname'] ?></option>
-		<?php endforeach ?>
-	</select>
-	<button type="sumit" name="troll">Troll Me</button>
-</form> 
-
 <?php $this->stop('main_content') ?>
 
