@@ -287,7 +287,7 @@ class UsersController extends Controller
             array(
                 'userInfo' => $userInfo,
                 'sessionList' => $sessionList,
-                'id_session' => isset($_GET['session']) ? trim($_GET['session']): ''
+                'id_session' => isset($_GET['session']) ? trim($_GET['session']): ''//to see if I need this codeline
             )
         );
     }
@@ -319,14 +319,14 @@ class UsersController extends Controller
                                 if (isset($_POST)) {
                                     $detailsUser->update($userPhoto, $id);
                                 }
-                                echo 'fichier uploaded<br/>';
+                                $_SESSION['successList'][] = 'fichier uploaded<br/>';
                             }
                             else {
-                                echo 'attention, une erreur est survenue<br/>';
+                                $_SESSION['errorList'][] = 'attention, une erreur est survenue<br/>';
                             }
                         }
                         else {
-                            echo 'pas d\'extension permise<br/>';
+                            $_SESSION['errorList'][] = 'pas d\'extension permise<br/>';
                         }
                     }
                 }
@@ -614,7 +614,7 @@ class UsersController extends Controller
                 $databaseName = $_POST['databaseName'];
                 if(strlen(strip_tags(trim($databaseName))) >= 3){
                     $AllUsersManager = new UsersManager;
-                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$_SESSION['user']['usr_pseudo'].'_'.$databaseName.'_sql` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$_SESSION['user']['usr_pseudo'].'_'.$databaseName.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
                     $_SESSION['successList2'][] = '`'.$databaseName.'` a été crée avec succés';
                 }
