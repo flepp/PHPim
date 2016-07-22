@@ -150,8 +150,11 @@ class UsersController extends Controller
     {
         //debug($_POST);exit;
         //Gathering POST datas (form)
+        $userManager = new \Manager\UsersManager();
         $usernameOrEmail = isset($_POST['userPseudoOrEmail']) ? trim($_POST['userPseudoOrEmail']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+
+        $userStatus = $userManager->userStatus($usernameOrEmail);
 
         // Data verification
         $authManager = new \W\Security\AuthentificationManager();
@@ -160,11 +163,11 @@ class UsersController extends Controller
         if ($usr_id === 0) {
             $_SESSION['errorList'][] = 'Verifiez votre email ou votre mot de passe';
         }
-        if ($userStatus === '0') {
+        if ($userStatus['usr_status'] == '0') {
             $_SESSION['errorList'][] = 'Votre compte est désactivé. Veuillez contacter l\'administrateur';
         }
         else {
-            $userManager = new \Manager\UsersManager();
+           
             // We are "logged" and the infos are placed on session
             $authManager->logUserIn(
                 $userManager->find($usr_id)
