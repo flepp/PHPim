@@ -55,7 +55,7 @@ class UsersController extends Controller
                 foreach ($_FILES as $key => $value) {
                     if (!empty($value) && !empty($value['name'])){
                         print_r($value);
-                        if ($value['size'] <= 300000) {
+                        if ($value['size'] <= 350000) {
                             $filename = $value['name'];
                             $dotPosition = strrpos($filename, '.');
                             $extension = strtolower(substr($filename, $dotPosition + 1));
@@ -75,13 +75,16 @@ class UsersController extends Controller
                                     }
                                 }
                                 else {
-                                    $_SESSION['errorList'][] = 'Une erreur est survenue au chargement!';
+                                    $_SESSION['errorList'][] = 'Une erreur est survenue au chargement de l\'image!';
                                 }
                             }
                             else {
-                                $_SESSION['errorList'][] = 'Une erreur est survenue au chargement!';
+                                $_SESSION['errorList'][] = 'Une erreur est survenue au chargement de l\'image!';
                             }
                         }
+                    }
+                    else{
+                        $photo = 'upload/img/avatar_0.png';
                     }
                 }
 
@@ -130,11 +133,7 @@ class UsersController extends Controller
     }
 
     //CONNEXION\\
-    //Not allowed if allready connected
-
-        
-
-    //Calling the connexion view
+    //Not allowed if allready connected)
     public function login()
     {
         $isLogged = $this->getUser();
@@ -142,6 +141,7 @@ class UsersController extends Controller
             $this->showForbidden();
         }
         else{
+        //Calling the connexion view
         $this->show('user/login');
         }
     }
@@ -150,18 +150,24 @@ class UsersController extends Controller
     {
         //debug($_POST);exit;
         //Gathering POST datas (form)
+        $userManager = new \Manager\UsersManager();
         $usernameOrEmail = isset($_POST['userPseudoOrEmail']) ? trim($_POST['userPseudoOrEmail']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+
+        $userStatus = $userManager->userStatus($usernameOrEmail);
 
         // Data verification
         $authManager = new \W\Security\AuthentificationManager();
         $usr_id = $authManager->isValidLoginInfo($usernameOrEmail, $password);
+
         if ($usr_id === 0) {
             $_SESSION['errorList'][] = 'Verifiez votre email ou votre mot de passe';
         }
+        if ($userStatus['usr_status'] == '0') {
+            $_SESSION['errorList'][] = 'Votre compte est désactivé. Veuillez contacter l\'administrateur';
+        }
         else {
-            $userManager = new \Manager\UsersManager();
-
+           
             // We are "logged" and the infos are placed on session
             $authManager->logUserIn(
                 $userManager->find($usr_id)

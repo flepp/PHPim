@@ -1,8 +1,8 @@
 <?php $this->layout('layout', ['title' => 'Register']) ?>
 
 <?php $this->start('main_content') ?>
-	Inscription
-
+	<h2>Inscription</h2>
+	<h4>Bonjour, entrez les informations qui vous ont été transmises par mail</h4>
 	<form method="post" action="" enctype="multipart/form-data">
 		* Email
 		<input type="email" name="email" value="">
@@ -29,7 +29,7 @@
 		<img height="90px" width="90px" src="<?= $this->assetUrl('upload/img/avatar_0.png') ?>">
 
 		<input type="hidden" name="fichierSoumis" value="1">
-		<label for="files">Ajouter une photo</label>
+		<label for="files">Ajoutez votre photo (fichiers autorisés: jpg, jpeg, gif, png, maximum 350Ko)</label>
 		<input style="visibility: hidden;" id = "files" type="file" name="photo">
 
 		<div>* Champs obligatoires</div>

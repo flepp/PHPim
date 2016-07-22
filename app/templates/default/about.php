@@ -11,7 +11,7 @@ nom: Ibrahima Thiello
 <div>Michel
 <img height="297px" width="250px" src="<?= $this->assetUrl('upload/img/Michel-CAVRO.jpg') ?>">
 nom: Michel Cavro
-<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_pir.png')?>"></div>
+<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_fra.png')?>"></div>
 
 <div>Paul
 <img height="297px" width="250px" src="<?= $this->assetUrl('upload/img/Paul-IOANID.jpg') ?>">

@@ -103,6 +103,15 @@ class UsersManager extends \W\Manager\Manager{
 		$sth->execute();
 		return $sth->fetchAll();
 	}
+	
+	public function userStatus($userPseudoOrEmail){
+		$sql = "SELECT usr_status FROM " . $this->table . " WHERE usr_email LIKE :userPseudoOrEmail or usr_pseudo LIKE :userPseudoOrEmail";
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindValue(":userPseudoOrEmail", $userPseudoOrEmail);
+		$sth->execute();
+
+		return $sth->fetch();
+	}
 }
 
 
