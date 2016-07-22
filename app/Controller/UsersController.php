@@ -168,6 +168,7 @@ class UsersController extends Controller
         //Suppress current user
         $authManager = new \W\Security\AuthentificationManager();
         $authManager->logUserOut();
+        session_destroy();
         // Redirection to "Home"
         $this->redirectToRoute('default_home');
     }
@@ -194,7 +195,7 @@ class UsersController extends Controller
             $usrMail = isset($_POST['usrMail']) ? htmlspecialchars(trim($_POST['usrMail'])) : '';
             $emailExists = $userManager->emailExists($usrMail);
             if ($emailExists == 1) {
-                $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. <a href="http://localhost'.$controller->generateUrl('user_reset').'?token='.$token.'">Je réinitialise mon mot de passe</a>.');
+                $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. <a href="http://localhost'.$controller->generateUrl('user_reset',['token' => $token]).'">Je réinitialise mon mot de passe</a>.');
                 $userList->updateToken($data,$usrMail);
                 $_SESSION['successList'][] = 'Un email contenant un lien pour la réinitialisation de votre mot de passe vous a été envoyé.';
             }
@@ -213,39 +214,52 @@ class UsersController extends Controller
         $this->show('user/resetPassword');
     }
 
-    public function resetPassPost(){
+public function resetPassPost($token){
 
-        if (isset($_GET['token'])) {
+        $userManager = new UsersManager();
+        $userList = $userManager->findAll();
+        // $dbToken = $userList['usr_token'];
+        $id = $userManager->getIdFromToken($token);
 
-            $token = $_GET['token'];
-
-            $userManager = new UsersManager();
-            $id = $userManager->getIdFromToken($token);
-
-            if (!empty($_POST)){
-                $newPass = isset($_POST['password']) ? $_POST['password'] : '';
-                $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
-                $data = array(
-                    'usr_password' => password_hash($newPass, PASSWORD_BCRYPT),
-                    'usr_token'    => ''
-                );
-                if(empty($newPass)) {
-                    $_SESSION['errorList'][] = 'Le mot de passe ne peut être vide.';
+        if (!empty($_POST)){
+            $newPass = isset($_POST['password']) ? $_POST['password'] : '';
+            $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
+            $data = array(
+                'usr_password' => password_hash($newPass, PASSWORD_BCRYPT),
+                'usr_token'    => ''
+            );
+            if (!empty($newPass)) {
+                if (!empty($newPassConfirm)) {
+                    if ($newPass == $newPassConfirm) {
+                        if (strlen(trim($newPass)) > 8) {
+                            $userManager->update($data,$id['id']);
+                            $_SESSION['successList'][] = 'Votre mot de passe a été réinitialisé';
+                            $this->redirectToRoute('user_login');
+                        }
+                        else{
+                            $_SESSION['errorList'][] = 'Votre mot de passe doit comporter au moins huits caractères';
+                            $this->redirectToRoute('user_reset',['token' => $token]);
+                        }
+                    }
+                    else{
+                        $_SESSION['errorList'][] = 'Vos mots de passe sont différents';
+                         $this->redirectToRoute('user_reset',['token' => $token]);
+                    }
                 }
-               
-                if(!empty($_SESSION['errorList'])){
-                    $this->redirectToRoute('user_reset'.$_SESSION['token']);
+                else{
+                    $_SESSION['errorList'][] = 'Le mot de passe de confirmation est vide';
+                    $this->redirectToRoute('user_reset',['token' => $token]);
                 }
-                if(empty($_SESSION['errorList'])){
-                    $userManager->update($data,$id['id']);
-                    $_SESSION['successList'][] = 'Votre mot de passe a bien été réinitialisé!';
-                    $this->redirectToRoute('user_login');
-                }
-
             }
+            else{
+                $_SESSION['errorList'][] = 'Pas de mot de passe entré';
+                $this->redirectToRoute('user_reset',['token' => $token]);
+            }
+            // if ($dbToken == '') {
+            //     $_SESSION['errorList'][] = 'Votre session a expiré.';
+            // }
         }
     }
-
 
     //---------------- PHILIPPE END
 

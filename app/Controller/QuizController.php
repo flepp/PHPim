@@ -4,6 +4,7 @@ namespace Controller;
 use \W\Controller\Controller;
 use \Manager\QuizManager;
 use \Manager\CategoryManager;
+use \Manager\SessionManager;
 
 class QuizController extends Controller
 {
@@ -68,15 +69,13 @@ class QuizController extends Controller
             debug($_SESSION);
             $this->redirectToRoute('quiz_add');
         }
-
-
     }
 
     public function manage()
     {
         $this->allowTo(['admin']);
         $quizManager = new QuizManager();
-        $quizList = $quizManager->findAllQuizInfo();
+        $quizList = $quizManager->findAllQuizInfo($orderBy = "qui_day");
         $this->show('user/admin/manageQuiz',
             array(
                     'quizList' => $quizList
@@ -195,9 +194,10 @@ class QuizController extends Controller
         //j'instancie le manager lié à la table quiz
         $quizManager = new QuizManager();
         //J'appelle la methode findAll heritee de manager
-        $quizList = $quizManager->findAll();
-
-        $this->show('quiz/quiz', array('quizList' => $quizList));
+        $quizList = $quizManager->findAll($orderBy = "qui_day");
+        $sessionManager = new SessionManager();
+        $sessionList = $sessionManager->findAll();
+        $this->show('quiz/quiz', array('quizList' => $quizList, 'sessionList' => $sessionList));
     }
 
 }
