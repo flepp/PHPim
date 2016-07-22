@@ -14,6 +14,7 @@ class AllUsersController extends Controller{
             $session = $_SESSION['user']['session_id'];
             $sessionManager = new AllUsersManager();
             $allUsersTable = $sessionManager->findAllUsersFromSession($session);
+            //debug($allUsersTable);
             $this->show(
             'allusers/allUsers',
                 array(
@@ -34,7 +35,6 @@ class AllUsersController extends Controller{
             else {
                 $allUsersTable = array();
             }
-            //debug($allUsersTable);
             $this->show(
                 'allusers/allUsers',
                 array(
@@ -51,7 +51,6 @@ class AllUsersController extends Controller{
         $usersManager = new UsersManager;
         $usersList = $usersManager->findAllUsersAndSort();
 
-        //echo $id;
         $detailsUser = new AllUsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($_SESSION['user']);
