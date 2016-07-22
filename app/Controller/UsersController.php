@@ -161,10 +161,11 @@ class UsersController extends Controller
         $usr_id = $authManager->isValidLoginInfo($usernameOrEmail, $password);
 
         if ($usr_id === 0) {
-            $_SESSION['errorList'][] = 'Verifiez votre email ou votre mot de passe';
+            $_SESSION['errorList'][0] = 'Verifiez votre email ou votre mot de passe';
+            $this->show('user/login');
         }
         if ($userStatus['usr_status'] == '0') {
-            $_SESSION['errorList'][] = 'Votre compte est désactivé. Veuillez contacter l\'administrateur';
+            $_SESSION['errorList'][0] = 'Votre compte est désactivé. Veuillez contacter l\'administrateur';
         }
         else {
            
