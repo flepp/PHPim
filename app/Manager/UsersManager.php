@@ -103,6 +103,15 @@ class UsersManager extends \W\Manager\Manager{
 		$sth->execute();
 		return $sth->fetchAll();
 	}
+	
+	public function userStatus($userStatus){
+		$sql = "SELECT usr_status FROM " . $this->table . " WHERE usr_status = :userStatus ";
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindValue(":userStatus", $userStatus);
+		$sth->execute();
+
+		return $sth->fetch();
+	}
 }
 
 
