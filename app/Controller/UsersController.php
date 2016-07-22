@@ -55,7 +55,7 @@ class UsersController extends Controller
                 foreach ($_FILES as $key => $value) {
                     if (!empty($value) && !empty($value['name'])){
                         print_r($value);
-                        if ($value['size'] <= 300000) {
+                        if ($value['size'] <= 350000) {
                             $filename = $value['name'];
                             $dotPosition = strrpos($filename, '.');
                             $extension = strtolower(substr($filename, $dotPosition + 1));
@@ -75,13 +75,16 @@ class UsersController extends Controller
                                     }
                                 }
                                 else {
-                                    $_SESSION['errorList'][] = 'Une erreur est survenue au chargement!';
+                                    $_SESSION['errorList'][] = 'Une erreur est survenue au chargement de l\'image!';
                                 }
                             }
                             else {
-                                $_SESSION['errorList'][] = 'Une erreur est survenue au chargement!';
+                                $_SESSION['errorList'][] = 'Une erreur est survenue au chargement de l\'image!';
                             }
                         }
+                    }
+                    else{
+                        $photo = 'upload/img/avatar_0.png';
                     }
                 }
 
@@ -130,28 +133,41 @@ class UsersController extends Controller
     }
 
     //CONNEXION\\
-    //Calling the connexion view
-   public function login()
+    //Not allowed if allready connected)
+    public function login()
     {
+        $isLogged = $this->getUser();
+        if ($isLogged != 0) {
+            $this->showForbidden();
+        }
+        else{
+        //Calling the connexion view
         $this->show('user/login');
+        }
     }
     //Connexion method
     public function loginPost()
     {
         //debug($_POST);exit;
         //Gathering POST datas (form)
+        $userManager = new \Manager\UsersManager();
         $usernameOrEmail = isset($_POST['userPseudoOrEmail']) ? trim($_POST['userPseudoOrEmail']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+
+        $userStatus = $userManager->userStatus($usernameOrEmail);
 
         // Data verification
         $authManager = new \W\Security\AuthentificationManager();
         $usr_id = $authManager->isValidLoginInfo($usernameOrEmail, $password);
+
         if ($usr_id === 0) {
             $_SESSION['errorList'][] = 'Verifiez votre email ou votre mot de passe';
         }
+        if ($userStatus['usr_status'] == '0') {
+            $_SESSION['errorList'][] = 'Votre compte est désactivé. Veuillez contacter l\'administrateur';
+        }
         else {
-            $userManager = new \Manager\UsersManager();
-
+           
             // We are "logged" and the infos are placed on session
             $authManager->logUserIn(
                 $userManager->find($usr_id)
@@ -264,21 +280,47 @@ public function resetPassPost($token){
     //---------------- PHILIPPE END
 
     public function edit($id){
-
         $this->allowTo(['admin','user']);
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
         //debug($userInfo);
+        //debug($_SESSION);
+        //I'm getting the list of all sessions
+        $sessionManager = new SessionManager();
+        $sessionList = $sessionManager->findAll();
+        //debug($sessionList);
         $this->show(
             'user/edit',
             array(
                 'userInfo' => $userInfo,
+                'sessionList' => $sessionList,
+                'id_session' => isset($_GET['session']) ? trim($_GET['session']): ''//to see if I need this codeline
             )
         );
     }
 
     public function editPost($id){
+        if(isset($_POST['userOn']) || isset($_POST['userOff'])){
+            if(!empty($_POST)){ 
+                /*-------------------Disable OR Enable  session------------*/   
+                $id = $_SESSION['user']['id'];
+                $userStatus = $_POST['userStatus'];
+                $tableUpdateUser = array();
+                $userManager = new UsersManager;
+              
+                $tableUpdateUser = [
+                    'usr_status' => $userStatus,
+                    'usr_updated' => date('Y-m-d'),
+                ];
+                $updateUser = $userManager->update($tableUpdateUser, $id);
+
+                /*--------REDIRECTION---------*/
+                 $this->redirectToRoute('user_edit', ['id' => $id]);
+            }
+        }
+
         if(isset($_POST['submitInfo'])){
+            $validImg = '';
             //debug($_FILES);
             $allowedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
             foreach ($_FILES as $key => $value) {
@@ -304,64 +346,101 @@ public function resetPassPost($token){
                                 if (isset($_POST)) {
                                     $detailsUser->update($userPhoto, $id);
                                 }
-                                echo 'fichier uploaded<br/>';
                             }
                             else {
-                                echo 'attention, une erreur est survenue<br/>';
+                                $_SESSION['errorList'][] = 'Attention, une erreur est survenue';
+                                $validImg = false;
                             }
                         }
                         else {
-                            echo 'pas d\'extension permise<br/>';
+                            $_SESSION['errorList'][] = 'Cette extension n\'est pas permise';
+                            $validImg = false;
                         }
                     }
                 }
             }
-            //debug($_POST);
+            debug($_POST);
             //Inserting data from POST for "user" statute use
-            $userPseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
-            $password = isset($_POST['userpassword']) ? trim($_POST['userpassword']): '';
-            $street = isset($_POST['userstreet']) ? trim($_POST['userstreet']): '';
-            $city = isset($_POST['usercity']) ? trim($_POST['usercity']): '';
-            $zipcode = isset($_POST['userzipcode']) ? trim($_POST['userzipcode']): '';
-            $country = isset($_POST['usercountry']) ? trim($_POST['usercountry']): '';
-            $birthdate = isset($_POST['userbirthdate']) ? trim($_POST['userbirthdate']): '';
-            $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
-
-            //Inserting data from POST for "admin" statute use
-            $userName = isset($_POST['username']) ? trim($_POST['username']): '';
+            /***********Control First name*************/
+            $validFirstname = '';
             $userFirstName = isset($_POST['userfirstname']) ? trim($_POST['userfirstname']): '';
+            if(strlen(strip_tags($userFirstName)) < 2){
+                $_SESSION['errorList'][] = 'Prénom invalide ou trop court';
+                $validFirstname = false;
+            }else{
+                $validFirstname = true;
+            }
+
+            /***********Control name*************/
+            $validName = '';
+            $userName = isset($_POST['username']) ? trim($_POST['username']): '';
+            if(strlen(strip_tags(trim($userName))) < 2){
+                $_SESSION['errorList'][] = 'Nom invalide ou trop court';
+                $validName = false;
+            }else{
+                $validName = true;
+            }
+
+            /***********Control pseudo*************/
+            $validPseudo = '';
+            $userPseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
+            if(strlen(strip_tags(trim($userPseudo))) < 2){
+                $_SESSION['errorList'][] = 'Pseudo invalide ou trop court';
+                $validPseudo = false;
+            }else{
+                $validPseudo = true;
+            }
+
+            /***********Control email*************/
+            $validEmail = '';
             $userEmail = isset($_POST['useremail']) ? trim($_POST['useremail']): '';
-            //$sessionName = isset($_POST['sessionname']) ? trim($_POST['sessionname']): '';
+            if (filter_var($userEmail, FILTER_VALIDATE_EMAIL) == false) {
+                $_SESSION['errorList'][] = 'Email invalide ou trop court';   
+                $validEmail = false;
+            }else{
+                $validEmail = true;
+            }
 
-            $detailsUser = new UsersManager();
-            $userInfo = $detailsUser->find($id);
-            //Inserting data in database
-            $userData =  array (
-                        'usr_pseudo' => $userPseudo,
-                        'usr_password' => $password,
-                        'usr_street' => $street,
-                        'usr_city' => $city,
-                        'usr_zipcode' => $zipcode,
-                        'usr_country' => $country,
-                        'usr_birthdate' => $birthdate,
-                        'usr_name' => $userName,
-                        'usr_firstname' => $userFirstName,
-                        'usr_email' => $userEmail,
-                        'usr_updated' => date ('Y-m-d H:i:s')
-                        );
-            $id = $userInfo['id'];
+            $street = isset($_POST['userstreet']) ? strip_tags(trim($_POST['userstreet'])): '';
+            $city = isset($_POST['usercity']) ? strip_tags(trim($_POST['usercity'])): '';
+            $zipcode = isset($_POST['userzipcode']) ? strip_tags(trim($_POST['userzipcode'])): '';
+            $country = isset($_POST['usercountry']) ? strip_tags(trim($_POST['usercountry'])): '';
+            $birthdate = isset($_POST['userbirthdate']) ? trim($_POST['userbirthdate']): '';
+            $photo = isset($_POST['photo']) ? strip_tags(trim($_POST['photo'])): '';
 
-            if (isset($_POST)) {
+            $userSessionId = $_POST['session'];
+            //Inserting data from POST for "admin" statute use
+            
+            
+            if($validFirstname == true && $validName == true && $validEmail == true && $validEmail == true && $validPseudo == true) {
+                $detailsUser = new UsersManager();
+                $userInfo = $detailsUser->find($id);
+                //Inserting data in database
+                $userData =  array (
+                    'usr_street' => $street,
+                    'usr_city' => $city,
+                    'usr_zipcode' => $zipcode,
+                    'usr_country' => $country,
+                    'usr_birthdate' => $birthdate,
+                    'usr_name' => $userName,
+                    'usr_firstname' => $userFirstName,
+                    'usr_email' => $userEmail,
+                    'usr_pseudo' => $userPseudo,
+                    'session_id' => $userSessionId,
+                    'usr_updated' => date ('Y-m-d H:i:s')
+                );
+                debug($userData);
+                $id = $userInfo['id'];
 
                 $detailsUser->update($userData, $id);
                 //Redirecting to allusers_details page
                 $this->redirectToRoute('allusers_details', ['id' => $userInfo['id']]);
+                $_SESSION['succesList'][] = 'Vos données ont été bien mise à jour!';
             }
-
-            $this->show('user/edit');
+            //I'm redirecting to 
+            $this->redirectToRoute('user_edit', ['id' => $_SESSION['user']['id']]);
         }
     }
-//                       'ses_name' => $sessionName
 
     public function invitations(){
         $this->allowTo(['admin']);
@@ -377,15 +456,15 @@ public function resetPassPost($token){
         unset($arrayStudents[count($arrayStudents)-1]);
         $_SESSION['stuSession'] = $arrayStudents;
         //debug($_SESSION['stuSession']);
-        if(file_exists($_SESSION['chemin'])){
-            unlink($_SESSION['chemin']);
+        if (isset($_SESSION['chemin'])){
+            if(file_exists($_SESSION['chemin'])){
+                unlink($_SESSION['chemin']);
+            }
         }
-
         /*-------------------------Getting the list of sessions------------------*/
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
-        //debug($sessionList);
-
+        
         $this->show('user/admin/invitations', ['arrayStudents'=>$_SESSION['stuSession'], 'sessionList'=>$sessionList]);
     }
 
@@ -458,7 +537,6 @@ public function resetPassPost($token){
                     $validName = '';
                     $validPseudo = '';
                     $validEmail = '';
-                    $validvalidEmail = '';
                     //$_SESSION['errorList'] = array();
                     //$_SESSION['successList'] = array();
                     $emailEx = new UserManager;
@@ -499,7 +577,7 @@ public function resetPassPost($token){
                         $validemailEXist = true;   
                     }
 
-                    if($validFirstname == true && $validName == true && $validEmail == true && $validemailEXist == true && validPseudo == true){
+                    if($validFirstname == true && $validName == true && $validEmail == true && $validemailEXist == true && $validPseudo == true){
                         $userManager = new UsersManager;
 
                         $tableInsert = [
@@ -562,7 +640,7 @@ public function resetPassPost($token){
                 $databaseName = $_POST['databaseName'];
                 if(strlen(strip_tags(trim($databaseName))) >= 3){
                     $AllUsersManager = new UsersManager;
-                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$_SESSION['user']['usr_pseudo'].'_'.$databaseName.'_sql` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$_SESSION['user']['usr_pseudo'].'_'.$databaseName.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
                     $_SESSION['successList2'][] = '`'.$databaseName.'` a été crée avec succés';
                 }

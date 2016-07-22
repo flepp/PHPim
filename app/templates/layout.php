@@ -15,16 +15,16 @@
 					<a href="<?= $this->url('default_about') ?>">About</a>
 					<a href="<?= $this->url('allusers_allUsers') ?>">Etudiants</a>
 					<?php if ($w_user['usr_role'] == 'admin'): ?>
-					<a href="<?= $this->url('user_invitations') ?>">Invits</a>
-					<a href="<?= $this->url('session_session') ?>">Sessions</a>
-					<a href="<?= $this->url('quiz_manage') ?>">Gestion Quiz</a>
-					<a href="<?= $this->url('session_database') ?>">BDD Session</a>
+						<a href="<?= $this->url('session_session') ?>">Sessions</a>
+						<a href="<?= $this->url('user_invitations') ?>">Invitations</a>
+						<a href="<?= $this->url('quiz_manage') ?>">Gestion Quiz</a>
+						<a href="<?= $this->url('session_database') ?>">BDD Session</a>
 					<?php endif ?>
 					<a href="<?= $this->url('quiz_quiz') ?>">Quiz</a>
 					<a href="<?= $this->url('user_database') ?>">BDD utilisateur</a>
 					<a href="<?= $this->url('allusers_details', ['id' => $_SESSION['user']['id']]) ?>">Mon Profil</a>
 					<a href="<?php echo $this->url('user_logout'); ?>">Déconnexion</a>
-					Bonjour <?= ' '.$w_user['usr_pseudo'] ?>
+					<span>Bonjour <?= ' '.$w_user['usr_pseudo'] ?></span><img src="?"/>
 				<?php else : ?>
 					<a href="<?= $this->url('default_home') ?>">Home</a>
 					<a href="<?= $this->url('default_about') ?>">About</a>

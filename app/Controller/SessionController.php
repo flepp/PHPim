@@ -118,7 +118,7 @@ class SessionController extends Controller{
                 $sessionStart = $_POST['sessionStart'];
                 $sessionEnd = $_POST['sessionEnd'];
                 $valdate = '';
-                $valLenght = '';
+                $valLength = '';
 
                 if(strtotime($sessionStart) < strtotime($sessionEnd)){
                     $valdate = true;
@@ -129,14 +129,14 @@ class SessionController extends Controller{
                 }
                 
                 if(strlen(trim(strip_tags($sessionName))) >= 7){
-                    $valLenght = true;
+                    $valLength = true;
 
                 }
                 else{
                     $_SESSION['errorUpdated'][] = "Nom de session trop courte";
-                    $valLenght = false;
+                    $valLength = false;
                 }
-                if($valdate == true && $valLenght == true){
+                if($valdate == true && $valLength == true){
                     $tableUpdate = [
                         'ses_name' => $sessionName,
                         'ses_start' => $sessionStart,

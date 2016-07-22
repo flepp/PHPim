@@ -97,6 +97,21 @@ class UsersManager extends \W\Manager\Manager{
 		$sql = 'DROP DATABASE IF EXISTS `'.$name.'`';
 		$sth = $this->dbh->exec($sql);
 	}
+	public function findAllUsersAndSort(){
+		$sql = 'SELECT id, usr_firstname, usr_name, usr_role FROM `users` ORDER  BY usr_role ASC, usr_name ASC';
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute();
+		return $sth->fetchAll();
+	}
+	
+	public function userStatus($userPseudoOrEmail){
+		$sql = "SELECT usr_status FROM " . $this->table . " WHERE usr_email LIKE :userPseudoOrEmail or usr_pseudo LIKE :userPseudoOrEmail";
+		$sth = $this->dbh->prepare($sql);
+		$sth->bindValue(":userPseudoOrEmail", $userPseudoOrEmail);
+		$sth->execute();
+
+		return $sth->fetch();
+	}
 }
 
 

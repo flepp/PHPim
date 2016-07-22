@@ -19,6 +19,7 @@
 		["POST", "/gestion-bdd/", "Users#databasePost", "user_database_post"],
 		/* ----- AllUsers controller ------ */
 		["GET", "/etudiant/[i:id]/", "AllUsers#details", "allusers_details"],
+		["POST", "/etudiant/[i:id]/", "AllUsers#detailsPost", "allusers_details_post"],
 		["GET", "/liste-etudiants/", "AllUsers#allUsers", "allusers_allUsers"],
 		/* ----- Admin controller ----- */
 		["GET", "/administration/sessions/", "Session#session", "session_session"],
