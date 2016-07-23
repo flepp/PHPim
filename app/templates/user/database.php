@@ -10,7 +10,7 @@
 			<p><?= $databases['Database'] ?></p>
 			<form method="post" action="">
 				<input hidden type="text" name="databaseName" value="<?= $databases['Database'] ?>">
-				<button type="submit" name="deleteDatabase">Supprimer</button>
+				<button type="submit" name="deleteDatabase" class="delete">Supprimer</button>
 			</form>
 		</div>
 	<?php endforeach ?>

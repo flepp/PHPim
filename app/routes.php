@@ -38,8 +38,6 @@
 		["GET", "/administration/modification-quiz/[i:id]/", "Quiz#modify", "quiz_modify"],
 		["POST", "/administration/modification-quiz/[i:id]/", "Quiz#modifyPost", "quiz_modify_post"],
 		["GET", "/administration/quiz-categories/[a:cat]/", "Quiz#quizPerCat", "quiz_category"],
-		// ["GET", "/administration/modification-categorie/[i:id]/", "Category#modify", "category_modify"],
-		// ["POST", "/administration/modification-categorie/[i:id]/", "Category#modifyPost", "category_modify_post"],
 		/* ----- Quiz controller ------*/
 		["GET", "/quiz/", "Quiz#quiz", "quiz_quiz"],
 		['GET', '/logout/', 'Users#logout', 'user_logout'],

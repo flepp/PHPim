@@ -42,7 +42,7 @@
 				<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 				<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
 				<button type="button">Editer</button>
-				<button type="submit" name="sessionDelete">Supprimer</button>
+				<button type="submit" name="sessionDelete" class="delete">Supprimer</button>
 			</form>
 			<form method="POST" action="">
 				<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
