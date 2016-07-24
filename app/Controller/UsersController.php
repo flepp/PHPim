@@ -453,10 +453,14 @@ public function resetPassPost($token){
         }
     }
 
+    /*-------------------------------------------------------------------------------------------------------------*/
+                                       //SENDING INVITATIONS FOR USERS
+    /*-------------------------------------------------------------------------------------------------------------*/
     public function invitations(){
+
         $this->allowTo(['admin']);
 
-        /*IMPORT CSV FILE AND CONVERTING TO ARRAY*/
+        //IMPORT CSV FILE FROM THE AND CONVERTING INTO ARRAY
         $filePath = isset($_SESSION['filePath']) ? $_SESSION['filePath']: '';
         $filePathReplace = str_replace(';', ',', $filePath);
         $lines = explode(PHP_EOL, $filePathReplace);
@@ -466,46 +470,39 @@ public function resetPassPost($token){
         }
         unset($arrayStudents[count($arrayStudents)-1]);
         $_SESSION['stuSession'] = $arrayStudents;
-        //debug($_SESSION['stuSession']);
         if (isset($_SESSION['chemin'])){
             if(file_exists($_SESSION['chemin'])){
                 unlink($_SESSION['chemin']);
             }
         }
-        /*-------------------------Getting the list of sessions------------------*/
+        //-------------------------Getting the list of sessions------------------
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
         
         $this->show('user/admin/invitations', ['arrayStudents'=>$_SESSION['stuSession'], 'sessionList'=>$sessionList]);
     }
 
-    /*-----Uploading Users list form a file and sending them an invintation to register-----*/
+    /*-----Uploading Users list from a csv file and sending them an invitation for register-----*/
     public function invitationsPost(){
 
         if(isset($_POST['upload'])){
-            debug($_FILES);
             if($_FILES['fichierteleverse']['error'] >0 ){
                 $_SESSION['errorFile'][] = 'Ajoutez un fichier d\'abord.';
             }
             if (!empty($_POST)) {
-                //unset($_SESSION['errorFile']);
-                //unset($_SESSION['successFile']);
-
                 $extensionAutorisees = array('csv');
 
-                // Je récupère mon tableau avec les infos sur le fichier
+                // Getting the file from the post and doing some verifications
                 foreach ($_FILES as $key => $fichier) {
-                    // Je teste si le fichier a été uploadé
                     if (!empty($fichier) && !empty($fichier['name'])) {
-                        if ($fichier['size'] <= 8388608) {
 
+                        if ($fichier['size'] <= 8388608) {
                             $filename = $fichier['name'];
                             $dotPos = strrpos($filename, '.');
                             $extension = strtolower(substr($filename, $dotPos+1));
-                            // Je test si c'est pas un hack (sur l'extension)
-                            //if (substr($fichier['name'], -4) != '.php') {
+
                             if (in_array($extension, $extensionAutorisees)) {
-                                // Je déplace le fichier uploadé au bon endroit
+                                // giving the upload path
                                 if (move_uploaded_file($fichier['tmp_name'], PATHUPLOAD.$filename)) {
                                     $_SESSION['filePath'] = file_get_contents(PATHUPLOAD.$filename);
                                     $_SESSION['chemin'] = PATHUPLOAD.$filename;
@@ -530,6 +527,7 @@ public function resetPassPost($token){
             /*--------REDIRECTION---------*/
             $this->redirectToRoute('user_invitations');   
         }
+        /*-------AFTER getting the list of student, we verify the inputs and if they already exist in our DB-----*/
         else if(isset($_POST['sendInvitations'])){
             if(!empty($_POST)){ 
                 $i = 0;             
@@ -545,11 +543,8 @@ public function resetPassPost($token){
                     $validName = '';
                     $validPseudo = '';
                     $validEmail = '';
-                    //$_SESSION['errorList'] = array();
-                    //$_SESSION['successList'] = array();
                     $emailEx = new UserManager;
                     $emailEXist = $emailEx->emailExists($email);
-                    debug($emailEXist);
 
                     if(strlen(strip_tags($firstname)) < 2){
                         $_SESSION['errorList'][] = 'Prénom invalide en ligne #'.$key;
@@ -578,8 +573,7 @@ public function resetPassPost($token){
                         $validEmail = true;
                     }
                     if($emailEXist == 1){
-                        $_SESSION['errorList'][] = 'Email '.$email.' en ligne #'.$key.' existe déja en BDD.';
-                        debug($_SESSION['errorList']);  
+                        $_SESSION['errorList'][] = 'Email '.$email.' en ligne #'.$key.' existe déja en BDD.';  
                         $validemailEXist = false;
                     }else{
                         $validemailEXist = true;   
@@ -618,12 +612,17 @@ public function resetPassPost($token){
             }
         }
     }
+    /*-------------------------------------------------------------------------------------------------------------*/
+                                       //USERS ADDING DATABASE FOR HIMSELF
+    /*-------------------------------------------------------------------------------------------------------------*/
+    /*Showing databases*/
     public function database(){
         $this->allowTo(['admin','user']);
         $database = new UsersManager();
         $pseudo = $_SESSION['user']['usr_pseudo'];
         $allDatabase = $database->getAllDatabases($pseudo);
         $allDatabases = array();
+        //After getting all databases, trying to select all starting with name begin with usr_pseudo
         $index = 'Database ('.$_SESSION['user']['usr_pseudo'].'%)';
         foreach ($allDatabase as $key => $value) {
             $allDatabases[]['Database'] = $value[$index];
@@ -631,9 +630,9 @@ public function resetPassPost($token){
         $this->show('user/database',['allDatabases'=>$allDatabases]);
     }
     public function databasePost(){
+        /*Deleting databases*/
         if(isset($_POST['deleteDatabase'])){
             if(!empty($_POST)){
-                debug($_POST);
                 $databaseName = $_POST['databaseName'];
                 $delete = new UsersManager();
                 $deleteDatabase = $delete->deleteDatabase($databaseName);
@@ -642,12 +641,13 @@ public function resetPassPost($token){
             /*--------REDIRECTION---------*/
             $this->redirectToRoute('user_database');
         }
+        /*Adding databases*/
         if(isset($_POST['createDatabase'])){
             if(!empty($_POST['databaseName'])){
-                debug($_POST);
                 $databaseName = $_POST['databaseName'];
                 if(strlen(strip_tags(trim($databaseName))) >= 3){
                     $AllUsersManager = new UsersManager;
+                    //Specifying prefix with the user pseudo
                     $sql = 'CREATE DATABASE IF NOT EXISTS `'.$_SESSION['user']['usr_pseudo'].'_'.$databaseName.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
                     $_SESSION['successList2'][] = '`'.$databaseName.'` a été crée avec succés';
