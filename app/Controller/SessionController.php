@@ -90,6 +90,12 @@ class SessionController extends Controller{
                     'usr_updated' => date('Y-m-d'),
                 ];
                 $updateUser = $userManager->UpdateUsersStatusBySession($tableUpdateUser, $id);
+                if($sessionStatus == 1){
+                    $_SESSION['success'][] = "La session a été réactivée avec succés!";
+                }
+                else if($sessionStatus == 0){
+                    $_SESSION['success'][] = "La session a été désactivée avec succés!";
+                }
 
                 /*--------REDIRECTION---------*/
                 $this->redirectToRoute('session_session');
@@ -155,7 +161,7 @@ class SessionController extends Controller{
     public function database(){
         $this->allowTo(['admin']);
         $sessionManager = new SessionManager;
-        $sessionList = $sessionManager->findAll();
+        $sessionList = $sessionManager->sessionWithStudents();
 
         $this->show('user/admin/database',['sessionList'=>$sessionList]);
     }
@@ -168,29 +174,22 @@ class SessionController extends Controller{
                 if(strlen(strip_tags(trim($suffixe))) >= 4){
                     $AllUsersManager = new UsersManager;
                     $getAllBySession = $AllUsersManager->getAllBySession($session);
-                    $test = count($getAllBySession);
+                    foreach($getAllBySession as $key=>$value){
+                        $id = $value['id'];
+                        $firstname = $value['usr_firstname'];
+                        $pseudo = $value['usr_pseudo'];
+                        $name = $value['usr_name'];
+                        $password = 'webforce3';
+                        $status = $value['usr_status'];
 
-                    if($test > 0){
-                        foreach($getAllBySession as $key=>$value){
-                            $id = $value['id'];
-                            $firstname = $value['usr_firstname'];
-                            $pseudo = $value['usr_pseudo'];
-                            $name = $value['usr_name'];
-                            $password = 'webforce3';
-                            $status = $value['usr_status'];
-
-                            if($status == 1){
-                                $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_'.$suffixe.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
-                                $sth = $AllUsersManager->connectionToDatabase($sql);
-                                $_SESSION['successList'][] = 'Création réussie pour '.$firstname.' '.$name.'.';
-                            }
-                            else{
-                                $_SESSION['errorList'][] = $firstname.' '.$name.' est désactivé(e), impossible de lui affecter une nouvelle base de données';
-                            }
+                        if($status == 1){
+                            $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_'.$suffixe.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                            $sth = $AllUsersManager->connectionToDatabase($sql);
+                            $_SESSION['successList'][] = 'Création réussie pour '.$firstname.' '.$name.'.';
                         }
-                    }
-                    else{
-                        $_SESSION['errorList'][] = 'Cette session ne comporte pas d\'étudiant, veuillez la remplir avant tout!';
+                        else{
+                            $_SESSION['errorList'][] = $firstname.' '.$name.' est désactivé(e), impossible de lui affecter une nouvelle base de données';
+                        }
                     }
                 }
                 else{

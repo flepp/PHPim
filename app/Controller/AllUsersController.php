@@ -24,7 +24,7 @@ class AllUsersController extends Controller{
         }
         else{
             $sessionManager = new SessionManager();
-            $sessionList = $sessionManager->findAll();
+            $sessionList = $sessionManager->sessionWithStudents();
             //debug($sessionList);
             //I'm getting the table of all users
             $allUsersManager = new AllUsersManager();

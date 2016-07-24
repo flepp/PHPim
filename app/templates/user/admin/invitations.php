@@ -34,7 +34,7 @@
 			</div>
 		<?php endforeach ?>
 	<?php endif ?>
-	<button type="submit" name="sendInvitations">Envoyez les invitations!</button>
+	<button type="submit" name="sendInvitations" class="confirmation">Envoyez les invitations!</button>
 </form>
 
 <?php $this->stop('main_content') ?>

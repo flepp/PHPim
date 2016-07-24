@@ -39,8 +39,6 @@
 			</tbody>
 		<?php endforeach ?>
 	</table>
-<?php else: ?>
-	<p>Cette session est encore vide! Remplissez la <a href="<?= $this->url('session_session') ?>">ICI</a></p>
 <?php endif ?>
 
 <?php $this->stop('main_content') ?>

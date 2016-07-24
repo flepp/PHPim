@@ -314,6 +314,12 @@ public function resetPassPost($token){
                     'usr_updated' => date('Y-m-d'),
                 ];
                 $updateUser = $userManager->update($tableUpdateUser, $id);
+                if($userStatus == 1){
+                    $_SESSION['success'][] = "Le profil a été réactivé avec succés!";
+                }
+                else if($userStatus == 0){
+                    $_SESSION['success'][] = "Le profil a été désactivé avec succés!";
+                }
 
                 /*--------REDIRECTION---------*/
                  $this->redirectToRoute('user_edit', ['id' => $id]);
@@ -514,9 +520,7 @@ public function resetPassPost($token){
                         else {
                             $_SESSION['errorFile'][] = 'Votre fichier est trop lourd';
                         }
-                        
-                       //$this->redirectToRoute('user_invitations');
-                       debug($_SESSION) ;
+                       $this->redirectToRoute('user_invitations');
                     }
                 }
             }

@@ -6,11 +6,11 @@
 	<div>
 		<form method="POST" action="">
 			<input hidden type="text" name="userStatus" value="1">
-			<button type="submit" name="userOn">ON</button>
+			<button type="submit" name="userOn" class="enableStudent">ON</button>
 		</form>
 		<form method="POST" action="">
 			<input hidden type="text" name="userStatus" value="0">
-			<button type="submit" name="userOff">OFF</button>
+			<button type="submit" name="userOff" class="disableStudent">OFF</button>
 		</form>
 	</div>
 <?php endif ?>	
@@ -62,9 +62,9 @@
 
 	<!-- I'm inserting a new photo -->
 	<input type="hidden" name="fichierSoumis" value="1">
-	<label for="files"><span class="btn" style="color:#2c3e50; background-color:#bdc3c7">Changer</span></label>
+	<label for="files"><span class="btn" style="color:#2c3e50; background-color:#bdc3c7">Changer votre photo</span></label>
 	<input style="visibility: hidden;" id = "files" type="file" name="photo"><br/>
-	<input type="submit" name="submitInfo" value="Valider">
+	<button type="submit" class="update" name="submitInfo">Valider les changements</button>
 </form>
 
 <?php $this->stop('main_content') ?>
