@@ -5,6 +5,7 @@ use \W\Controller\Controller;
 use \Manager\QuizManager;
 use \Manager\CategoryManager;
 use \Manager\SessionManager;
+use \Manager\AllUsersManager as AllUsers;
 
 class QuizController extends Controller
 {
@@ -195,8 +196,9 @@ class QuizController extends Controller
         $quizManager = new QuizManager();
         //J'appelle la methode findAll heritee de manager
         $quizList = $quizManager->findAll($orderBy = "qui_day");
-        $sessionManager = new SessionManager();
-        $sessionList = $sessionManager->findAll();
+        $sessionManager = new AllUsers();
+        $id = $_SESSION['user']['session_id'];
+        $sessionList = $sessionManager->findAllUsersFromSession($id);
         $this->show('quiz/quiz', array('quizList' => $quizList, 'sessionList' => $sessionList));
     }
 

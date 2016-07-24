@@ -2,7 +2,7 @@
 
 <?php $this->start('main_content') ?>
 	<p>Veuillez réinitialiser votre mot de passe</p>
-	<form action="#" method="POST">
+	<form action="" method="POST">
 		<label for="password">Nouveau mot de passe : </label>
 		<br>
 		<input type="password" id="password" name="password">
