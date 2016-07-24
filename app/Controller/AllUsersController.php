@@ -69,7 +69,6 @@ class AllUsersController extends Controller{
                 $id = $_POST['userInfo'];
                 $userinfo = new UsersManager;
                 $infos = $userinfo->find($id);
-                debug($infos);
                 $_SESSION['user']['id'] = $infos['id'];
                 $_SESSION['user']['session_id'] = $infos['session_id'];
                 $_SESSION['user']['usr_name'] = $infos['usr_name'];

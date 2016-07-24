@@ -112,6 +112,15 @@ class UsersManager extends \W\Manager\Manager{
 
 		return $sth->fetch();
 	}
+
+	public function getSesdEnd($id){
+		$sql = '
+			SELECT session.ses_end 
+			FROM '.$this->table.'
+			LEFT OUTER JOIN session
+			ON session.id = users.session_id  WHERE session.id ='.$id;
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute();
+		return $sth->fetch();
+	}
 }
-
-

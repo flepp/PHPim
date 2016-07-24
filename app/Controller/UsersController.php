@@ -173,6 +173,10 @@ class UsersController extends Controller
             $authManager->logUserIn(
                 $userManager->find($usr_id)
             );
+            /*GETTIN SES_END for users*/
+            $id = $_SESSION['user']['id'];
+            $getSesEnd = $userManager->getSesdEnd($id);
+            $_SESSION['user']['ses_end'] = $getSesdEnd['ses_end'];
             // Redirection to "Home"
             $this->redirectToRoute('default_home');
         }
