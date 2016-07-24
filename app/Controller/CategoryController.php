@@ -15,11 +15,12 @@ class CategoryController extends Controller
         $categoryManager = new CategoryManager();
         $catName = $_POST['catName'];
         $data = array('cat_name' => $catName);
-        if (!empty($_POST['add'])) {
+        $id = $_POST['catId'];
+        if (isset($_POST['add'])) {
             if(empty($catName)) {
                 $_SESSION['errorList'][] = 'Le champ ajout est vide.';
             }
-            if(!empty($catName) && strlen($catName) < 3){
+            if(!empty($catName) && strlen($catName) < 2){
                 $_SESSION['errorList'][] = 'Le champ doit comporter au moins trois caractères';
             }
             if(empty($_SESSION['errorList'])){
@@ -29,14 +30,13 @@ class CategoryController extends Controller
             $this->redirectToRoute('category_manage');
         }
         if (isset($_POST['delete'])) {
-        $id = $_POST['catId'];
             $categoryManager->delete($id);
             $catName = $_POST['catName'];
             $_SESSION['successList'][] = 'Catégorie '.$catName.' supprimée!';
             $this->redirectToRoute('category_manage');
         }
          if (isset($_POST['modify'])) {
-                if (strlen($catName) > 3) {
+                if (strlen($catName) > 2) {
                     $_SESSION['successList'][] = 'Catégorie '.$catName.' modifiée!';
                     $categoryManager->update($data,$id);
                 }
