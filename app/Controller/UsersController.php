@@ -477,7 +477,6 @@ public function resetPassPost($token){
 
     /*-----Uploading Users list form a file and sending them an invintation to register-----*/
     public function invitationsPost(){
-        $this->allowTo(['admin']);
 
         if(isset($_POST['upload'])){
             debug($_FILES);

@@ -9,7 +9,7 @@
 		<?php debug($singleCategory) ?>
 		<?php debug($_POST) ?>
 		<br>
-		<button type="submit">Modifier</button>
+		<button type="submit" class="update">Modifier</button>
 	</form>
 	<a href="<?= $this->url('quiz_manage') ?>">Retour</a>
 <?php $this->stop('main_content') ?>
