@@ -17,7 +17,6 @@
 		<label for="categories">Catégories : </label>
 		<br>
 		<select name="categories" id="categories">
-			<option value="0">Sélectionnez une catégorie</option>
 		<?php foreach ($categoryList as $key => $value): ?>
 			<option value="<?= $value['id']?>" "<?= $value['id'] == $quizSingle['category_id'] ? ' selected="selected"' : '' ?>">
 				<?= $value['cat_name']?>
@@ -28,6 +27,5 @@
 		<button type="submit"> Modifier </button>
 	</form>
 	<a href="<?= $this->url('quiz_manage')?>">Retour</a>
-	<?php debug($quizSingle); ?>
 <?php $this->stop('main_content') ?>
 

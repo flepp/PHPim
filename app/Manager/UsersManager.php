@@ -11,7 +11,7 @@ class UsersManager extends \W\Manager\Manager{
 		parent::__construct();
 		$this->setTable('users');
 	}
-	/*Method allowing us to change status for all users linked by the same session*/
+	/*-----------Method allowing us to change status for all users linked by the same session----------*/
 	public function UpdateUsersStatusBySession(array $data, $id, $stripTags = true){
 		if (!is_numeric($id)){
 			return false;
@@ -61,7 +61,7 @@ class UsersManager extends \W\Manager\Manager{
 
         return $sth->fetch();
     }
-
+	/*-----------Get users by session----------*/
 	public function getAllBySession($session){
 
 		$sql = "SELECT id, usr_pseudo, usr_firstname, usr_name, usr_status FROM " . $this->table . " WHERE session_id = :session ";
@@ -87,16 +87,21 @@ class UsersManager extends \W\Manager\Manager{
 		return $sth->fetch();
 	}
 
+	/*-----------getting all databases where the name start with the usr_pseudo----------*/
 	public function getAllDatabases($pseudo){
 		$sql = 'SHOW DATABASES LIKE "'.$pseudo.'%"';
 		$sth = $this->dbh->prepare($sql);
 		$sth->execute();
 		return $sth->fetchAll();
 	}
+
+	/*-----------deleting all databases where the name start with the usr_pseudo----------*/
 	public function deleteDatabase($name){
 		$sql = 'DROP DATABASE IF EXISTS `'.$name.'`';
 		$sth = $this->dbh->exec($sql);
 	}
+
+	/*-----------getting the complete list of all users----------*/
 	public function findAllUsersAndSort(){
 		$sql = 'SELECT id, usr_firstname, usr_name, usr_role FROM `users` ORDER  BY usr_role ASC, usr_name ASC';
 		$sth = $this->dbh->prepare($sql);
@@ -112,7 +117,7 @@ class UsersManager extends \W\Manager\Manager{
 
 		return $sth->fetch();
 	}
-
+	/*----Get ses_end for the user to know wich quiz can he see----*/
 	public function getSesdEnd($id){
 		$sql = '
 			SELECT session.ses_end 

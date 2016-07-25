@@ -8,24 +8,25 @@
 
 class SessionController extends Controller{
 
+    /*-------------------------------------------------------------------------------------------------------------*/
+                                       //CREATING SESSION
+    /*-------------------------------------------------------------------------------------------------------------*/
     public function session(){
         $this->allowTo(['admin']);
-
+        //getting the list of existing session
         $sessionManager = new SessionManager;
-        $sessionList = $sessionManager->findAll();
-        //debug($sessionList);
+        $sessionWithStudents = $sessionManager->sessionWithStudents();
+        $sessionWithoutStudents = $sessionManager->sessionWithoutStudents();
 
-        $this->show('user/admin/sessions', ['sessionList'=>$sessionList]);
+        $this->show('user/admin/sessions', ['sessionList'=>$sessionWithStudents, 'sessionList2'=>$sessionWithoutStudents]);
     }
 
     public function sessionPost(){
-        $this->allowTo(['admin']);
 
         $tableInsert = array();
         $sessionManager = new SessionManager;
-        //debug($_POST);
 
-        /*¨-------------------Getting Post from Form Creation---------------------*/
+        /*¨-------Getting Post from Form Creation and creating session after verification--------*/
         if(isset($_POST['sessionCreate'])){
             if(!empty($_POST)){
                 $sessionName = $_POST['sessionName'];
@@ -69,7 +70,7 @@ class SessionController extends Controller{
             }
         }
 
-         /*¨-------------------Getting Post from Form Activation---------------------*/
+         /*-------Getting Post from Form Activation and disabling or enabling sessions and users--------*/
         if(isset($_POST['sessionOn']) || isset($_POST['sessionOff'])){
             if(!empty($_POST)){ 
                 /*-------------------Disable OR Enable  session------------*/   
@@ -84,7 +85,7 @@ class SessionController extends Controller{
                 ];
                 $update = $sessionManager->update($tableUpdate, $id);
 
-                /*-------------------Disable OR Enable all students from a specific session------------*/
+                /*------------Disable OR Enable all students from a specific session------------*/
                 $tableUpdateUser = [
                     'usr_status' => $sessionStatus,
                     'usr_updated' => date('Y-m-d'),
@@ -102,7 +103,7 @@ class SessionController extends Controller{
             }
         }
 
-        /*--------------------Getting Post from Form Delete---------------------*/
+        /*-------------Getting Post from Form Delete and deleting session--------------*/
         if(isset($_POST['sessionDelete'])){
             if(!empty($_POST)){ 
                 $id = $_POST['sessionId'];
@@ -114,10 +115,9 @@ class SessionController extends Controller{
                 $this->redirectToRoute('session_session');
             }
         }
-        /*--------------------Getting Post from Form Edit---------------------*/
+        /*---------Getting Post from Form Edit and editing session-----------*/
         if(isset($_POST['sessionEdit'])){
             if(!empty($_POST)){
-                //debug($_POST);
                 $id = $_POST['sessionId'];
                 $name = $_POST['sessionName'];
                 $sessionName = $_POST['sessionName'];
@@ -158,6 +158,11 @@ class SessionController extends Controller{
             }
         }
     }
+
+    /*-------------------------------------------------------------------------------------------------------------*/
+                                       //USERS ADDING DATABASE FOR A SESSION
+    /*-------------------------------------------------------------------------------------------------------------*/
+    /*------Getting list of non empty session------*/
     public function database(){
         $this->allowTo(['admin']);
         $sessionManager = new SessionManager;
@@ -168,12 +173,13 @@ class SessionController extends Controller{
     public function databasePost(){
         if(isset($_POST['suffixe'])){
             if(!empty($_POST)){
-                debug($_POST);
                 $suffixe = $_POST['suffixe'];
                 $session = $_POST['session'];
+                //Verifying the input length
                 if(strlen(strip_tags(trim($suffixe))) >= 4){
                     $AllUsersManager = new UsersManager;
                     $getAllBySession = $AllUsersManager->getAllBySession($session);
+                    //doing the operation for each student
                     foreach($getAllBySession as $key=>$value){
                         $id = $value['id'];
                         $firstname = $value['usr_firstname'];
@@ -182,7 +188,9 @@ class SessionController extends Controller{
                         $password = 'webforce3';
                         $status = $value['usr_status'];
 
+                        //verifying if the student if disabaled of or enabled by the admin
                         if($status == 1){
+                            //creating dabatases with prefix wich is the pseudo of the user
                             $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_'.$suffixe.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                             $sth = $AllUsersManager->connectionToDatabase($sql);
                             $_SESSION['successList'][] = 'Création réussie pour '.$firstname.' '.$name.'.';

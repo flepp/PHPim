@@ -7,14 +7,13 @@ use \Manager\UsersManager;
 use \Manager\SessionManager;
 use \W\Controller\Controller;
 
-class AllUsersController extends Controller{
+class AllUsersController extends Controller {
 
-    public function allUsers(){   
+    public function allUsers() {   
         if (($_SESSION['user']['usr_role'] == 'user')) {
             $session = $_SESSION['user']['session_id'];
             $sessionManager = new AllUsersManager();
             $allUsersTable = $sessionManager->findAllUsersFromSession($session);
-            //debug($allUsersTable);
             $this->show(
             'allusers/allUsers',
                 array(
@@ -22,13 +21,13 @@ class AllUsersController extends Controller{
                 )
             );
         }
-        else{
+        else {
             $sessionManager = new SessionManager();
             $sessionList = $sessionManager->sessionWithStudents();
-            //debug($sessionList);
-            //I'm getting the table of all users
+
+            /* ~~~~~~~~~~~~~~~~~ I'm getting the table of all users of each session ~~~~~~~~~~~~~~~~~~ */
             $allUsersManager = new AllUsersManager();
-            //debug($_GET['session']);
+
             if (!empty($_GET['session'])) {
                 $allUsersTable = $allUsersManager->findAllUsersFromSession($_GET['session']);
             }
@@ -44,16 +43,15 @@ class AllUsersController extends Controller{
                 )
             );
         }
-
     }
 
-    public function details($id){
+    public function details($id) {
         $usersManager = new UsersManager;
         $usersList = $usersManager->findAllUsersAndSort();
 
         $detailsUser = new AllUsersManager();
         $userInfo = $detailsUser->find($id);
-        //debug($_SESSION['user']);
+
         $this->show(
             'allusers/details',
             array(
@@ -64,7 +62,7 @@ class AllUsersController extends Controller{
     }
 
     public function detailsPost() {
-        if(isset($_POST['troll'])){
+        if(isset($_POST['troll'])) {
             if(!empty($_POST)){
                 $id = $_POST['userInfo'];
                 $userinfo = new UsersManager;
@@ -84,8 +82,8 @@ class AllUsersController extends Controller{
                 $_SESSION['user']['usr_country'] = $infos['usr_country'];
                 $_SESSION['user']['usr_created'] = $infos['usr_created'];
                 $_SESSION['user']['usr_updated'] = $infos['usr_updated'];
-                debug($_SESSION['user']);
-            /*--------REDIRECTION---------*/
+
+            /* ~~~~~~~~~~~~~~~~~ I'm redirecting to user details page ~~~~~~~~~~~~~~~~~~ */
             $this->redirectToRoute('allusers_details', ['id' => $_SESSION['user']['id']]);  
             }
         }
