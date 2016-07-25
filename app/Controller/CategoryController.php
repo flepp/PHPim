@@ -13,14 +13,21 @@ class CategoryController extends Controller
 
     public function managePost(){
         $categoryManager = new CategoryManager();
-        $catName = $_POST['catName'];
-        $data = array('cat_name' => $catName);
+        $catName = isset($_POST['catName']) ? strip_tags($_POST['catName']) : '';
+        $data = array(
+            'cat_name' => $catName,
+            'cat_created' => date('Y-m-d')
+            );
+        $dataUpdate = array(
+            'cat_name' => $catName,
+            'cat_updated' => date('Y-m-d')
+            );
         $id = $_POST['catId'];
         if (isset($_POST['add'])) {
             if(empty($catName)) {
                 $_SESSION['errorList'][] = 'Le champ ajout est vide.';
             }
-            if(!empty($catName) && strlen($catName) < 2){
+            if(!empty($catName) && strlen($catName) < 3){
                 $_SESSION['errorList'][] = 'Le champ doit comporter au moins trois caractères';
             }
             if(empty($_SESSION['errorList'])){
@@ -38,33 +45,13 @@ class CategoryController extends Controller
          if (isset($_POST['modify'])) {
                 if (strlen($catName) > 2) {
                     $_SESSION['successList'][] = 'Catégorie '.$catName.' modifiée!';
-                    $categoryManager->update($data,$id);
+                    $categoryManager->update($dataUpdate,$id);
                 }
                 else{
                     $_SESSION['errorList'][] = 'Une erreur s\'est produite lors de la modification.';
                 }
             $this->redirectToRoute('category_manage');
         }
-    }
-
-    public function modify($id){
-        $categoryManager = new CategoryManager();
-        $singleCategory = $categoryManager->find($id);
-        $this->show('user/admin/modifyCategory', array('singleCategory' => $singleCategory));
-    }
-
-    public function modifyPost($id){
-        $categoryManager = new CategoryManager();
-        $singleCategory = $categoryManager->find($id);
-        $catName = $_POST['catName'];
-        $data = array(
-            'cat_name' => $catName
-        );
-        $id=$_POST['catId'];
-        if (!empty($_POST)) {
-            $categoryManager->update($data,$id);
-        }
-        $this->redirectToRoute('category_modify', ['id' => $singleCategory['id']]);
     }
 }
 ?>

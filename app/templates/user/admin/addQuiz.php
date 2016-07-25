@@ -18,7 +18,6 @@
 		<label for="categories">Catégories : </label>
 		<br>
 		<select name="categories" id="categories">
-			<option value="0">Sélectionnez une catégorie</option>
 			<?php foreach ($categoryList as $key => $value): ?>
 				<option value="<?= $value['id']?>"><?= $value['cat_name']?></option>
 			<?php endforeach ?>
