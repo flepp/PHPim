@@ -8,19 +8,20 @@
     use \W\Security\AuthentificationManager;
     use \Functions\SendEmail as SendEmail;
 
-class UsersController extends Controller
-{
-    //INSCRIPTION\\
-    //Calling the inscription view
-    public function register()
-    {
+class UsersController extends Controller {
+
+    /*-------------------------------------------------------------------------------------------------------------*/
+                                       //INSCRIPTION FOR USERS
+    /*-------------------------------------------------------------------------------------------------------------*/
+    /*------------ Calling the inscription view --------------*/
+    public function register() {
         $this->show('user/register');
     }
 
-    //Inscription method
-    public function registerPost(){
+    /*---------------- Inscription method --------------------*/
+    public function registerPost() {
 
-        // Gathering POST datas (form)
+        /*---------- Gathering POST data (form) -----------------*/
         $email = isset($_POST['email']) ? trim($_POST['email']): '';
         $password = isset($_POST['password']) ? trim($_POST['password']): '';
         $street = isset($_POST['street']) ? strip_tags(trim($_POST['street'])): '';
@@ -31,17 +32,17 @@ class UsersController extends Controller
         $photo = isset($_POST['photo']) ? trim($_POST['photo']): '';
         $validLogin = '';
 
-        // Verification des données
+        /* --------- Data verification ------------ */
         $authManager = new AuthentificationManager();
         $id = $authManager->isValidLoginInfo($email, $password);
         if ($id === 0) {
             $_SESSION['errorList'][] = 'Verifiez votre email ou votre mot de passe';
             $validLogin = false;
-        }else{
+        }else {
             $validLogin = true;
         }
 
-        if($validLogin == true){
+        if($validLogin == true) {
             $userManager = new UsersManager();
             $info = $userManager->getUsrUpdated($email);
             $updated = $info['usr_updated'];
@@ -50,18 +51,18 @@ class UsersController extends Controller
 
             if ($updated == NULL) {
 
-                // Photo manager
+                /* ---------- Photo manager ------------------ */
                 $allowedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
                 foreach ($_FILES as $key => $value) {
-                    if (!empty($value) && !empty($value['name'])){
+                    if (!empty($value) && !empty($value['name'])) {
                         print_r($value);
                         if ($value['size'] <= 350000) {
                             $filename = $value['name'];
                             $dotPosition = strrpos($filename, '.');
                             $extension = strtolower(substr($filename, $dotPosition + 1));
-                            //Checking if a value exists in an array with "in_array" function
+                            /* --------------- Checking if a value exists in an array with "in_array" function ------------*/
                             if (in_array($extension, $allowedExtensions)) {
-                                //Moving an uploaded file to a new location
+                                /* --------------- Moving an uploaded file to a new location --------------*/
                                 if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$pseudo.'.'.$extension)) {
                                     $photo = 'img_'.$pseudo.'.'.$extension;
                                     $detailsUser = new UsersManager();
@@ -83,12 +84,12 @@ class UsersController extends Controller
                             }
                         }
                     }
-                    else{
+                    else {
                         $photo = 'upload/img/avatar_0.png';
                     }
                 }
 
-                //DB insersion
+                /* ------------- Insertion into database -------------- */
                 $userManager = new \Manager\UsersManager();
                 $userManager->update(
                     array(
@@ -104,8 +105,11 @@ class UsersController extends Controller
 
                 $AllUsersManager = new UsersManager;
 
-                //USER DATABASE creation
-                // Add distant access user
+                /*-------------------------------------------------------------------------------------------------------------*/
+                                                            //USER DATABASE CREATION
+                /*-------------------------------------------------------------------------------------------------------------*/
+                
+                /* -------------- Adding a distant access user ------------------ */
                 $sql = 'CREATE USER \''.$pseudo.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
                 $sth = $AllUsersManager->connectionToDatabase($sql);
 
@@ -121,42 +125,41 @@ class UsersController extends Controller
                     $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
                 }
-                // Redirection to "Home"
+                /* ----------------- Redirection to login page ------------------- */
                 $this->redirectToRoute('user_login');
             }
             else {
                 $_SESSION['errorList'][] = 'Vous êtes déjà inscrit!';
             }
         }
-        // Redirection to "Home"
+        /* ----------------- Redirection to register page ------------------- */
         $this->redirectToRoute('user_register');
     }
 
-    //CONNEXION\\
-    //Not allowed if allready connected)
-    public function login()
-    {
+    /*-------------------------------------------------------------------------------------------------------------*/
+                                                //USER CONNEXION
+    /*-------------------------------------------------------------------------------------------------------------*/
+    /* ---------------------- Connection not allowed if allready connected ----------------- */
+    public function login() {
         $isLogged = $this->getUser();
         if ($isLogged != 0) {
             $this->showForbidden();
         }
-        else{
-        //Calling the connexion view
+        else {
+        /* ---------------- Calling the connexion view ------------------ */
         $this->show('user/login');
         }
     }
-    //Connexion method
-    public function loginPost()
-    {
-        //debug($_POST);exit;
-        //Gathering POST datas (form)
+    /* ------------------ Connexion method ----------------------- */
+    public function loginPost() {
+        /* --------------- Gathering POST data (form) ------------------ */
         $userManager = new \Manager\UsersManager();
         $usernameOrEmail = isset($_POST['userPseudoOrEmail']) ? trim($_POST['userPseudoOrEmail']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
         $userStatus = $userManager->userStatus($usernameOrEmail);
 
-        // Data verification
+        /* -------------------------- Data verification ------------------- */
         $authManager = new \W\Security\AuthentificationManager();
         $usr_id = $authManager->isValidLoginInfo($usernameOrEmail, $password);
 
@@ -169,28 +172,30 @@ class UsersController extends Controller
         }
         else {
            
-            // We are "logged" and the infos are placed on session
+            /* ------------------ We are "logged" and the infos are placed on session ------------------ */
             $authManager->logUserIn(
                 $userManager->find($usr_id)
             );
-            /*GETTIN SES_END for users*/
+            /* ----------------------- Getting the SES_END for users --------------------- */
             $id = $_SESSION['user']['id'];
             $getSesEnd = $userManager->getSesdEnd($id);
             $_SESSION['user']['ses_end'] = $getSesdEnd['ses_end'];
-            // Redirection to "Home"
+            /* ------------ Redirection to "Home" page ------------------- */
             $this->redirectToRoute('default_home');
         }
         $this->show('user/login');
     }
 
-    //DECONNEXION\\
-    // Déconnecte un utilisateur
-    public function logout(){
-        //Suppress current user
+    /*-------------------------------------------------------------------------------------------------------------*/
+                                                //USER DECONNEXION
+    /*-------------------------------------------------------------------------------------------------------------*/
+    /* ---------------- Deconnecting an user ---------------- */
+    public function logout() {
+        /* ---------------- Suppressing the current user ----------------- */
         $authManager = new \W\Security\AuthentificationManager();
         $authManager->logUserOut();
         session_destroy();
-        // Redirection to "Home"
+        /* --------------- Redirection to "Home" page ---------------- */
         $this->redirectToRoute('default_home');
     }
 
@@ -284,30 +289,33 @@ public function resetPassPost($token){
 
     //---------------- PHILIPPE END
 
-    public function edit($id){
+    /*-------------------------------------------------------------------------------------------------------------*/
+                                                //USER EDITION
+    /*-------------------------------------------------------------------------------------------------------------*/
+    public function edit($id) {
         $this->allowTo(['admin','user']);
         $detailsUser = new UsersManager();
         $userInfo = $detailsUser->find($id);
-        //debug($userInfo);
-        //debug($_SESSION);
-        //I'm getting the list of all sessions
+
+        /* ----------- I'm getting the list of all sessions ------------- */
         $sessionManager = new SessionManager();
         $sessionList = $sessionManager->findAll();
-        //debug($sessionList);
+
         $this->show(
             'user/edit',
             array(
                 'userInfo' => $userInfo,
                 'sessionList' => $sessionList,
-                'id_session' => isset($_GET['session']) ? trim($_GET['session']): ''//to see if I need this codeline
+                'id_session' => isset($_GET['session']) ? trim($_GET['session']): ''
             )
         );
     }
 
-    public function editPost($id){
-        if(isset($_POST['userOn']) || isset($_POST['userOff'])){
-            if(!empty($_POST)){ 
-                /*-------------------Disable OR Enable  session------------*/   
+    public function editPost($id) {
+        if(isset($_POST['userOn']) || isset($_POST['userOff'])) {
+            if(!empty($_POST)) { 
+                
+                /* ------------------- Disabling or enabling a session ------------ */   
                 $id = $_SESSION['user']['id'];
                 $userStatus = $_POST['userStatus'];
                 $tableUpdateUser = array();
@@ -318,35 +326,35 @@ public function resetPassPost($token){
                     'usr_updated' => date('Y-m-d'),
                 ];
                 $updateUser = $userManager->update($tableUpdateUser, $id);
-                if($userStatus == 1){
+                if($userStatus == 1) {
                     $_SESSION['success'][] = "Le profil a été réactivé avec succés!";
                 }
-                else if($userStatus == 0){
+                else if($userStatus == 0) {
                     $_SESSION['success'][] = "Le profil a été désactivé avec succés!";
                 }
 
-                /*--------REDIRECTION---------*/
+                /* -------- Redirecting to user edit page --------- */
                  $this->redirectToRoute('user_edit', ['id' => $id]);
             }
         }
 
-        if(isset($_POST['submitInfo'])){
+        if(isset($_POST['submitInfo'])) {
             $validImg = '';
-            //debug($_FILES);
             $allowedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
             foreach ($_FILES as $key => $value) {
-                if (!empty($value) && !empty($value['name'])){
+                if (!empty($value) && !empty($value['name'])) {
                     print_r($value);
                     if ($value['size'] <= 300000) {
                         $filename = $value['name'];
                         $dotPosition = strrpos($filename, '.');
                         $extension = strtolower(substr($filename, $dotPosition + 1));
-                        /*Checking if a value exists in an array with "in_array" function*/
+
+                        /* ------------------- Checking if a value exists in an array with "in_array" function ---------------- */
                         if (in_array($extension, $allowedExtensions)) {
-                            /*Moving an uploaded file to a new location*/
+                            
+                            /* ------------------ Moving an uploaded file to a new location ------------------------------ */
                             if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD.$filename)) {
                                 $_SESSION['filePath'] = IMAGEUPLOAD.$filename;
-                                //debug($_SESSION);
                                                                         
                                 $detailsUser = new UsersManager();
                                 $userInfo = $detailsUser->find($id);
@@ -370,35 +378,35 @@ public function resetPassPost($token){
                     }
                 }
             }
-            debug($_POST);
-            //Inserting data from POST for "user" statute use
-            /***********Control First name*************/
+
+            /* ------------------- Inserting data from POST for "user" statute use ------------------ */
+            /***********Control first name*************/
             $validFirstname = '';
             $userFirstName = isset($_POST['userfirstname']) ? trim($_POST['userfirstname']): '';
-            if(strlen(strip_tags($userFirstName)) < 2){
+            if(strlen(strip_tags($userFirstName)) < 2) {
                 $_SESSION['errorList'][] = 'Prénom invalide ou trop court';
                 $validFirstname = false;
-            }else{
+            }else {
                 $validFirstname = true;
             }
 
             /***********Control name*************/
             $validName = '';
             $userName = isset($_POST['username']) ? trim($_POST['username']): '';
-            if(strlen(strip_tags(trim($userName))) < 2){
+            if(strlen(strip_tags(trim($userName))) < 2) {
                 $_SESSION['errorList'][] = 'Nom invalide ou trop court';
                 $validName = false;
-            }else{
+            }else {
                 $validName = true;
             }
 
             /***********Control pseudo*************/
             $validPseudo = '';
             $userPseudo = isset($_POST['userpseudo']) ? trim($_POST['userpseudo']): '';
-            if(strlen(strip_tags(trim($userPseudo))) < 2){
+            if(strlen(strip_tags(trim($userPseudo))) < 2) {
                 $_SESSION['errorList'][] = 'Pseudo invalide ou trop court';
                 $validPseudo = false;
-            }else{
+            }else {
                 $validPseudo = true;
             }
 
@@ -408,7 +416,7 @@ public function resetPassPost($token){
             if (filter_var($userEmail, FILTER_VALIDATE_EMAIL) == false) {
                 $_SESSION['errorList'][] = 'Email invalide ou trop court';   
                 $validEmail = false;
-            }else{
+            }else {
                 $validEmail = true;
             }
 
@@ -418,15 +426,15 @@ public function resetPassPost($token){
             $country = isset($_POST['usercountry']) ? strip_tags(trim($_POST['usercountry'])): '';
             $birthdate = isset($_POST['userbirthdate']) ? trim($_POST['userbirthdate']): '';
             $photo = isset($_POST['photo']) ? strip_tags(trim($_POST['photo'])): '';
-
             $userSessionId = $_POST['session'];
-            //Inserting data from POST for "admin" statute use
-            
+
+            /* ------------------ Inserting data from POST for "admin" statute use --------------------- */
             
             if($validFirstname == true && $validName == true && $validEmail == true && $validEmail == true && $validPseudo == true) {
                 $detailsUser = new UsersManager();
                 $userInfo = $detailsUser->find($id);
-                //Inserting data in database
+
+                /* ----------- Inserting data into database ------------- */
                 $userData =  array (
                     'usr_street' => $street,
                     'usr_city' => $city,
@@ -440,15 +448,14 @@ public function resetPassPost($token){
                     'session_id' => $userSessionId,
                     'usr_updated' => date ('Y-m-d H:i:s')
                 );
-                debug($userData);
                 $id = $userInfo['id'];
-
                 $detailsUser->update($userData, $id);
-                //Redirecting to allusers_details page
+
+                /* ---------------------- Redirecting to allusers details page ----------------- */
                 $this->redirectToRoute('allusers_details', ['id' => $userInfo['id']]);
                 $_SESSION['succesList'][] = 'Vos données ont été bien mise à jour!';
             }
-            //I'm redirecting to 
+            /* -------------------- I'm redirecting to user edit page -------------------------- */
             $this->redirectToRoute('user_edit', ['id' => $_SESSION['user']['id']]);
         }
     }
@@ -460,7 +467,7 @@ public function resetPassPost($token){
 
         $this->allowTo(['admin']);
 
-        //IMPORT CSV FILE FROM THE AND CONVERTING INTO ARRAY
+        //IMPORT CSV FILE FROM THE ??? AND CONVERTING INTO ARRAY
         $filePath = isset($_SESSION['filePath']) ? $_SESSION['filePath']: '';
         $filePathReplace = str_replace(';', ',', $filePath);
         $lines = explode(PHP_EOL, $filePathReplace);
@@ -475,7 +482,7 @@ public function resetPassPost($token){
                 unlink($_SESSION['chemin']);
             }
         }
-        //-------------------------Getting the list of sessions------------------
+        /*-------------------------Getting the list of sessions------------------*/
         $sessionManager = new SessionManager;
         $sessionList = $sessionManager->findAll();
         
