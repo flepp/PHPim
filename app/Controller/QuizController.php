@@ -5,6 +5,7 @@ use \W\Controller\Controller;
 use \Manager\QuizManager;
 use \Manager\CategoryManager;
 use \Manager\SessionManager;
+use \Manager\UsersManager;
 use \Manager\AllUsersManager as AllUsers;
 
 class QuizController extends Controller
@@ -220,6 +221,7 @@ class QuizController extends Controller
         //J'appelle la methode findAll heritee de manager
         $quizList = $quizManager->getQuizByCat($orderBy = "qui_day");
         $quizListBycat = array();
+        $i = 0;
         foreach($quizList as $key => $value) {
             $quizListBycat[ucfirst ($value['cat_name'])][] = array(
                 'id' => $value['qui_id'],
@@ -230,9 +232,20 @@ class QuizController extends Controller
                 'qui_day' => $value['qui_day']
             );
         }
-        $sessionManager = new AllUsers();
-        $id = $_SESSION['user']['session_id'];
-        $sessionList = $sessionManager->findAllUsersFromSession($id);
+        /* ----------------------- Getting the SES_END for users --------------------- */
+            if(isset($_SESSION) && !empty($_SESSION)){
+                $id = $_SESSION['user']['session_id'];
+                $userManager = new UsersManager;
+                $getSesEnd = $userManager->getSesdEnd($id);
+                $_SESSION['user']['ses_end'] = $getSesEnd['ses_end'];
+            }
+
+        //j'instancie le manager lié à la table quiz
+        $quizManager = new QuizManager();
+        //J'appelle la methode findAll heritee de manager
+        $quizList = $quizManager->findAll($orderBy = "qui_day");
+        $sessionManager = new SessionManager();
+        $sessionList = $sessionManager->findAll();
         $this->show('quiz/quiz', array('quizList' => $quizListBycat, 'sessionList' => $sessionList));
     }
 
