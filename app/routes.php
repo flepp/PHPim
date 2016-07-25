@@ -11,14 +11,15 @@
 		["POST", "/connexion/", "Users#loginPost", "user_login_post"],
 		["GET", "/mdp-oublie/", "Users#forgot", "user_forgot"],
 		["POST", "/mdp-oublie/", "Users#forgotPost", "user_forgot_post"],
-		["GET", "/mdp-nouveau/", "Users#resetPass", "user_reset"],
-		["POST", "/mdp-nouveau/", "Users#resetPassPost", "user_reset_post"],
+		["GET", "/mdp-nouveau/[a:token]", "Users#resetPass", "user_reset"],
+		["POST", "/mdp-nouveau/[a:token]", "Users#resetPassPost", "user_reset_post"],
 		["GET", "/edition/[i:id]/", "Users#edit", "user_edit"],
 		["POST", "/edition/[i:id]/", "Users#editPost", "user_edit_post"],
 		["GET", "/gestion-bdd/", "Users#database", "user_database"],
 		["POST", "/gestion-bdd/", "Users#databasePost", "user_database_post"],
 		/* ----- AllUsers controller ------ */
 		["GET", "/etudiant/[i:id]/", "AllUsers#details", "allusers_details"],
+		["POST", "/etudiant/[i:id]/", "AllUsers#detailsPost", "allusers_details_post"],
 		["GET", "/liste-etudiants/", "AllUsers#allUsers", "allusers_allUsers"],
 		/* ----- Admin controller ----- */
 		["GET", "/administration/sessions/", "Session#session", "session_session"],
@@ -37,8 +38,6 @@
 		["GET", "/administration/modification-quiz/[i:id]/", "Quiz#modify", "quiz_modify"],
 		["POST", "/administration/modification-quiz/[i:id]/", "Quiz#modifyPost", "quiz_modify_post"],
 		["GET", "/administration/quiz-categories/[a:cat]/", "Quiz#quizPerCat", "quiz_category"],
-		// ["GET", "/administration/modification-categorie/[i:id]/", "Category#modify", "category_modify"],
-		// ["POST", "/administration/modification-categorie/[i:id]/", "Category#modifyPost", "category_modify_post"],
 		/* ----- Quiz controller ------*/
 		["GET", "/quiz/", "Quiz#quiz", "quiz_quiz"],
 		['GET', '/logout/', 'Users#logout', 'user_logout'],

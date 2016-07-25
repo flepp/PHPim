@@ -15,10 +15,6 @@
 		<br>
 		<input type="text" id="link" name="quiLink">
 		<br>
-		<label for="text">Texte : </label>
-		<br>
-		<input type="text" id="text" name="quiText">
-		<br>
 		<label for="categories">Catégories : </label>
 		<br>
 		<select name="categories" id="categories">

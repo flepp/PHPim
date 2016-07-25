@@ -30,27 +30,29 @@
 				<form method="POST" action="">
 					<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
 					<input hidden type="text" name="sessionStatus" value="1">
-					<button type="submit" name="sessionOn">ON</button>
+					<button type="submit" name="sessionOn" class="enableSession">ON</button>
 				</form>
 				<form method="POST" action="">
 					<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
 					<input hidden type="text" name="sessionStatus" value="0">
-					<button type="submit" name="sessionOff">OFF</button>
+					<button type="submit" name="sessionOff" class="disableSession">OFF</button>
 				</form>
+			</div>
+			<div>
+				<button type="button" class="button_edit">Editer</button>
 			</div>
 			<form method="POST" action="">
 				<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 				<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
-				<button type="button">Editer</button>
-				<button type="submit" name="sessionDelete">Supprimer</button>
+				<button type="submit" name="sessionDelete" class="delete">Supprimer</button>
 			</form>
-			<form method="POST" action="">
+			<form hidden method="POST" action="" class="show_edit">
 				<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 				<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
 				<input type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 				<input type="date" name="sessionStart" value="<?= $value['ses_start'] ?>">
 				<input type="date" name="sessionEnd" value="<?= $value['ses_end'] ?>">
-				<button type="submit" name="sessionEdit">Modifier</button>
+				<button type="submit" name="sessionEdit" class="update">Modifier</button>
 			</form>
 		<?php endforeach; ?>
 	</ul>

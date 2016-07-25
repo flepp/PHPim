@@ -4,6 +4,8 @@ namespace Controller;
 use \W\Controller\Controller;
 use \Manager\QuizManager;
 use \Manager\CategoryManager;
+use \Manager\SessionManager;
+use \Manager\AllUsersManager as AllUsers;
 
 class QuizController extends Controller
 {
@@ -61,9 +63,6 @@ class QuizController extends Controller
             if(empty($link)) {
                 $_SESSION['errorList'][] = 'Le champ lien est vide.';
             }
-            /*if(empty($text)) {
-                 $quizList['qui_text'] = $link;
-            }*/
             if(empty($_SESSION['errorList'])){
                 $quizManager->insert($data);
                 $_SESSION['successList'][] = 'Le quiz a bien été ajouté!';
@@ -71,15 +70,13 @@ class QuizController extends Controller
             debug($_SESSION);
             $this->redirectToRoute('quiz_add');
         }
-
-
     }
 
     public function manage()
     {
         $this->allowTo(['admin']);
         $quizManager = new QuizManager();
-        $quizList = $quizManager->findAllQuizInfo();
+        $quizList = $quizManager->findAllQuizInfo($orderBy = "qui_day");
         $this->show('user/admin/manageQuiz',
             array(
                     'quizList' => $quizList
@@ -131,34 +128,59 @@ class QuizController extends Controller
         //J'appelle la methode findAll heritee de manager
         $quizSingle = $quizManager->find($id);
 
-        $quiDay = $_POST['quiDay'];
-        $quiTitle = $_POST['quiTitle'];
-        $quiLink = $_POST['quiLink'];
-        $quiText = $_POST['quiText'];
+        $day = $_POST['quiDay'];
+        $title = $_POST['quiTitle'];
+        $link = $_POST['quiLink'];
+        $text = $_POST['quiText'];
         $category = isset($_POST['categories']) ? trim($_POST['categories']) : '';
 
-        $data = array(
-            "qui_day" => $quiDay,
-            "qui_title" => $quiTitle,
-            "qui_link" => $quiLink,
-            "qui_text" => $quiText,
-            "category_id" => $category
-        );
+        if (empty($text)) {
+            $data = array(
+                'qui_day' => $day,
+                'qui_title' => $title,
+                'qui_link' => $link,
+                'qui_text' => $link,
+                'category_id' => $category
+            );
+        }
+        else{
+            $data = array(
+                'qui_day' => $day,
+                'qui_title' => $title,
+                'qui_link' => $link,
+                'qui_text' => $text,
+                'category_id' => $category
+            );
+        }
 
         $id = $quizSingle['id'];
 
-        if(isset($_POST)){
-            if (strlen($quiTitle) > 3) {
+        if(!empty($_POST)) {
+            if(empty($day)) {
+                $_SESSION['errorList'][] = 'Le champ jour est vide.';
+            }
+            if(!empty($day) && !is_numeric($day)){
+                $_SESSION['errorList'][] = 'Le champ jour doit être un chiffre ou un nombre';
+            }
+            if(empty($title)) {
+                $_SESSION['errorList'][] = 'Le champ titre est vide.';
+            }
+            if(!empty($title) && strlen($title) < 3){
+                $_SESSION['errorList'][] = 'Le champ titre doit comporter au moins trois caractères';
+            }
+            if(empty($link)) {
+                $_SESSION['errorList'][] = 'Le champ lien est vide.';
+            }
+            if(!empty($_SESSION['errorList'])){
+                $this->redirectToRoute('quiz_modify', ['id' => $quizSingle[id]]);
+            }
+            if(empty($_SESSION['errorList'])){
                 $quizUpdate = $quizManager->update($data, $id, $stripTags = true);
-                $_SESSION['successList'][] = 'Le quiz a bien été modifié!';
+                $_SESSION['successList'][] = 'Le quiz '.$title.' a bien été modifié!';
+                $this->redirectToRoute('quiz_manage');
             }
-            else{
-                $_SESSION['errorList'][] = 'Une erreur s\'est produite, veuillez recommencer.';
-            }
-            $this->redirectToRoute('quiz_modify', ['id' => $quizSingle[id]]);
-        }
 
-        $this->show('user/admin/modifyQuiz', array('quizSingle' => $quizSingle));
+        }
     }
 
      public function quizPerCat(){
@@ -173,9 +195,11 @@ class QuizController extends Controller
         //j'instancie le manager lié à la table quiz
         $quizManager = new QuizManager();
         //J'appelle la methode findAll heritee de manager
-        $quizList = $quizManager->findAll();
-
-        $this->show('quiz/quiz', array('quizList' => $quizList));
+        $quizList = $quizManager->findAll($orderBy = "qui_day");
+        $sessionManager = new AllUsers();
+        $id = $_SESSION['user']['session_id'];
+        $sessionList = $sessionManager->findAllUsersFromSession($id);
+        $this->show('quiz/quiz', array('quizList' => $quizList, 'sessionList' => $sessionList));
     }
 
 }
