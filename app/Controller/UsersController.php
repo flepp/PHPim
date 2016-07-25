@@ -91,6 +91,19 @@ class UsersController extends Controller {
                                 $validPhoto = false;
                             }
                         }
+                        else {
+                            $photo = 'avatar_0.png';
+                            $detailsUser = new UsersManager();
+                            $userInfo = $detailsUser->find($id);
+                            $userPhoto = array (
+                                'usr_photo' => $photo
+                                    );
+                            $id = $userInfo['id'];
+                            if (isset($_POST)) {
+                                $detailsUser->update($userPhoto, $id);
+                                $validPhoto = true;
+                            }
+                        }
                     }
                 }
                 else{
