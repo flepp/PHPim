@@ -48,85 +48,97 @@ class UsersController extends Controller {
             $updated = $info['usr_updated'];
             $pseudo = $info['usr_pseudo'];
             $password = 'webforce3';
+            $validPhoto = '';
 
             if ($updated == NULL) {
-
-                /* ---------- Photo manager ------------------ */
-                $allowedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
-                foreach ($_FILES as $key => $value) {
-                    if (!empty($value) && !empty($value['name'])) {
-                        print_r($value);
-                        if ($value['size'] <= 350000) {
-                            $filename = $value['name'];
-                            $dotPosition = strrpos($filename, '.');
-                            $extension = strtolower(substr($filename, $dotPosition + 1));
-                            /* --------------- Checking if a value exists in an array with "in_array" function ------------*/
-                            if (in_array($extension, $allowedExtensions)) {
-                                /* --------------- Moving an uploaded file to a new location --------------*/
-                                if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$pseudo.'.'.$extension)) {
-                                    $photo = 'img_'.$pseudo.'.'.$extension;
-                                    $detailsUser = new UsersManager();
-                                    $userInfo = $detailsUser->find($id);
-                                    $userPhoto = array (
-                                                'usr_photo' => $photo
-                                                );
-                                    $id = $userInfo['id'];
-                                    if (isset($_POST)) {
-                                        $detailsUser->update($userPhoto, $id);
+                if (isset($_FILES) && !empty($_FILES)){
+                    /* ---------- Photo manager ------------------ */
+                    $allowedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
+                    foreach ($_FILES as $key => $value) {
+                        if (!empty($value) && !empty($value['name'])) {
+                            if ($value['size'] <= 350000) {
+                                $filename = $value['name'];
+                                $dotPosition = strrpos($filename, '.');
+                                $extension = strtolower(substr($filename, $dotPosition + 1));
+                                /* --------------- Checking if a value exists in an array with "in_array" function ------------*/
+                                if (in_array($extension, $allowedExtensions)) {
+                                    /* --------------- Moving an uploaded file to a new location --------------*/
+                                    if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$pseudo.'.'.$extension)) {
+                                        $photo = 'img_'.$pseudo.'.'.$extension;
+                                        $detailsUser = new UsersManager();
+                                        $userInfo = $detailsUser->find($id);
+                                        $userPhoto = array (
+                                                    'usr_photo' => $photo
+                                                    );
+                                        $id = $userInfo['id'];
+                                        if (isset($_POST)) {
+                                            $detailsUser->update($userPhoto, $id);
+                                            $validPhoto = true;
+                                        }
+                                    }
+                                    else {
+                                        $_SESSION['errorList'][] = 'Une erreur est survenue au chargement de l\'image!';
+                                        $validPhoto = false;
                                     }
                                 }
                                 else {
-                                    $_SESSION['errorList'][] = 'Une erreur est survenue au chargement de l\'image!';
+                                    $_SESSION['errorList'][] = 'Extension de l\'image non reconnue!';
+                                    $validPhoto = false;
                                 }
                             }
                             else {
-                                $_SESSION['errorList'][] = 'Une erreur est survenue au chargement de l\'image!';
+                                $_SESSION['errorList'][] = 'taille maximum autorisée pour l\'image 350Ko';
+                                $validPhoto = false;
                             }
                         }
                     }
-                    else {
-                        $photo = 'upload/img/avatar_0.png';
-                    }
                 }
+                else{
+                    $validPhoto = true;
+                }
+                if ($validPhoto){
+                    /* ------------- Insertion into database -------------- */
+                    $userManager = new \Manager\UsersManager();
+                    $userManager->update(
+                        array(
+                            'usr_street' => $street,
+                            'usr_city' => $city,
+                            'usr_zipcode' => $zipcode,
+                            'usr_country' => $country,
+                            'usr_birthdate' => $birthdate,
+                            'usr_status' => '1',
+                            'usr_updated' => date('Y-m-d H:i:s')
+                        ), $id
+                    );
 
-                /* ------------- Insertion into database -------------- */
-                $userManager = new \Manager\UsersManager();
-                $userManager->update(
-                    array(
-                        'usr_street' => $street,
-                        'usr_city' => $city,
-                        'usr_zipcode' => $zipcode,
-                        'usr_country' => $country,
-                        'usr_birthdate' => $birthdate,
-                        'usr_status' => '1',
-                        'usr_updated' => date('Y-m-d H:i:s')
-                    ), $id
-                );
+                    $AllUsersManager = new UsersManager;
 
-                $AllUsersManager = new UsersManager;
-
-                /*-------------------------------------------------------------------------------------------------------------*/
-                                                            //USER DATABASE CREATION
-                /*-------------------------------------------------------------------------------------------------------------*/
-                
-                /* -------------- Adding a distant access user ------------------ */
-                $sql = 'CREATE USER \''.$pseudo.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
-                $sth = $AllUsersManager->connectionToDatabase($sql);
-
-                $sql = 'CREATE USER \''.$pseudo.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
-                $sth = $AllUsersManager->connectionToDatabase($sql);
-
-                $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'%\'';
-                $sth = $AllUsersManager->connectionToDatabase($sql);
-
-                $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'localhost\'';
-                $sth = $AllUsersManager->connectionToDatabase($sql);
-                for($i=0; $i<4; $i++){
-                    $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                    /*-------------------------------------------------------------------------------------------------------------*/
+                                                                //USER DATABASE CREATION
+                    /*-------------------------------------------------------------------------------------------------------------*/
+                    
+                    /* -------------- Adding a distant access user ------------------ */
+                    $sql = 'CREATE USER \''.$pseudo.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                    $sql = 'CREATE USER \''.$pseudo.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
+                    $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                    $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'%\'';
+                    $sth = $AllUsersManager->connectionToDatabase($sql);
+
+                    $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'localhost\'';
+                    $sth = $AllUsersManager->connectionToDatabase($sql);
+                    for($i=0; $i<4; $i++){
+                        $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+                        $sth = $AllUsersManager->connectionToDatabase($sql);
+                    }
+                    /* ----------------- Redirection to login page ------------------- */
+                    $this->redirectToRoute('user_login');
                 }
-                /* ----------------- Redirection to login page ------------------- */
-                $this->redirectToRoute('user_login');
+                else{
+                     $_SESSION['errorList'][] = 'Un problème est survenu au chargement de l\'image!';
+                }
             }
             else {
                 $_SESSION['errorList'][] = 'Vous êtes déjà inscrit!';
