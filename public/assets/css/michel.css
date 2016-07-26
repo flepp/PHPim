@@ -60,3 +60,13 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#595959', endColorstr='#595959',GradientType=1 ); /* IE6-9 */
 
 }
+.pressMe {
+	margin-top: 5px;
+	color: black;
+	line-height: 30px;
+	text-align: center;
+	background-color: #EAEAEA;
+	height: 30px;
+	width: 120px;
+	border-radius: 5px;
+}

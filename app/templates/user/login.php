@@ -21,12 +21,14 @@
 		    		<div>* Champs obligatoires</div>
 		    		<button type="submit" class="btn btn-default">Valider</button>
 		    	</div>
-		    	<div class="form-group col-md-12">
-					<a href="<?= $this->url('user_register') ?>"><button class="btn btn-default">Inscription</button></a>
-					<a href="<?= $this->url('user_forgot')?>"><button class="btn btn-default">Mot de passe oublié?</button></a>
-					<?php $this->stop('main_content') ?>
-				</div>
 		    </form>
+	    	<div class="form-group col-md-12">
+	    		<div class="pressMe">
+				<a href="<?= $this->url('user_register') ?>" >Inscription</a></div>
+				<div class="pressMe">
+				<a href="<?= $this->url('user_forgot')?>">Mot de passe oublié?</a></div>
+				<?php $this->stop('main_content') ?>
+			</div>
 	    </div>
 	</div>
 <form>
