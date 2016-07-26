@@ -15,10 +15,13 @@
 
 /* flip speed goes here */
 .flipper {
-	color: black;
+	color:black;
 	transition: 0.5s;
 	transform-style: preserve-3d;
 	position: relative;
+}
+.flipper a{
+	color:black;
 }
 
 /* hide back of pane during swap */
@@ -31,6 +34,7 @@
 
 /* front pane, placed above back */
 .front {
+	overflow: hidden;
 	z-index: 2;
 	/* for firefox 31 */
 	transform: rotateY(0deg);
@@ -67,6 +71,9 @@
 	text-align: center;
 	background-color: #EAEAEA;
 	height: 30px;
-	width: 120px;
+	width: 140px;
 	border-radius: 5px;
+}
+.pressMe a{
+	color: black;
 }
