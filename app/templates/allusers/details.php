@@ -3,6 +3,7 @@
 <?php $this->start('main_content') ?>
 
 	<!-- ~~~~~~~~~~~~~~~~~ I'm displaying the specific info for an user ~~~~~~~~~~~~~ -->		
+	<div class="container">
 	<h1>Info:</h1>
 	<img height="297px" width="250px" src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>">
 	<ul>
@@ -43,5 +44,5 @@
 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfSWVubN0FtFttDkHjBWTbwINb-VFNbVc&signed_in=true&callback=initMap"async defer>
 	</script>
-      
+    </div>  
 <?php $this->stop('main_content') ?>
