@@ -1,0 +1,9 @@
+diff a/app/templates/user/register.php b/app/templates/user/register.php	(rejected hunks)
+@@ -3,7 +3,6 @@
+ <?php $this->start('main_content') ?>
+ 	<h2>Inscription</h2>
+ 	<h4>Bonjour, entrez les informations qui vous ont été transmises par mail</h4>
+-	<form method="post" action="" enctype="multipart/form-data">
+ 
+ <div class="container">
+     <form>
