@@ -1,4 +1,4 @@
-.firstSection{
+/*.firstSection{
 	background-color: #38B3E4;
 	color: white;
 }
@@ -8,4 +8,8 @@
 }
 .firstSection h1, .secondSection h1{
 	text-align: center;
+}*/
+
+*{
+	border: 1px solid red;
 }
