@@ -19,9 +19,7 @@
 						<label>Date de fin:</label>
 						<input type="date" name="sessionEnd" class="form-control">
 					</div>
-					<div class="col-xs-4 col-xs-offset-4">
-						<button type="submit" name="sessionCreate" class="btn btn-default">+</button>
-					</div>
+						<button type="submit" name="sessionCreate" class="btn btn-default">Ajouter</button>
 				</form>
 			</div>
 	</section>
@@ -78,14 +76,16 @@
 							<button type="button" class="button_edit btn btn-default">Editer</button>
 						</div>
 					</div>
-					<form hidden method="POST" action="" class="show_edit">
-						<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
-						<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
-						<input class="form-control" type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
-						<input class="form-control" type="date" name="sessionStart" value="<?= $value['ses_start'] ?>">
-						<input class="form-control" type="date" name="sessionEnd" value="<?= $value['ses_end'] ?>">
-						<button type="submit" name="sessionEdit" class="update btn btn-default">Modifier</button>
-					</form>
+					<div class="row">
+						<form hidden method="POST" action="" class="show_edit col-xs-10 col-xs-offset-1">
+							<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
+							<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
+							<input class="form-control" type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
+							<input class="form-control" type="date" name="sessionStart" value="<?= $value['ses_start'] ?>">
+							<input class="form-control" type="date" name="sessionEnd" value="<?= $value['ses_end'] ?>">
+							<button type="submit" name="sessionEdit" class="update btn btn-default">Modifier</button>
+						</form>
+					</div>
 				</div>
 			<?php endforeach; ?>
 		</ul>
