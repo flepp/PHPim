@@ -3,7 +3,7 @@
 <?php $this->start('main_content') ?>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~CREATING DATABASE FOR SESSION~~~~~~~~~~~~~~~~~~~~~ -->
-<h1>Choississez une la sesion</h1>
+<h1>Choisissez une sesion</h1>
 <form method="POST" action="">
 	<select name="session">
 	<?php foreach ($sessionList as $key => $value): ?>

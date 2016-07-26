@@ -1,3 +1,11 @@
-h1,{
-	border: 1px solid black;
+.firstSection{
+	background-color: #38B3E4;
+	color: white;
+}
+.secondSection{
+	background-color: E9E5DD;
+	color: black;
+}
+.firstSection h1, .secondSection h1{
+	text-align: center;
 }
