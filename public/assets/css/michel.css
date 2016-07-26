@@ -1,0 +1,49 @@
+/*****************Flipping images****************/
+/* entire container, keeps perspective */
+.flip-container {
+	perspective: 1000px;
+}
+	/* flip the pane when hovered */
+	.flip-container:hover .flipper, .flip-container.hover .flipper {
+		transform: rotateY(180deg);
+	}
+
+.flip-container, .front, .back {
+	width: 250px;
+	height: 297px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.5s;
+	transform-style: preserve-3d;
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+	padding-top: 50px;
+	text-align: center;
+	/* Gradient color */
+	background: #ddd8d2; /* Old browsers */
+	background: -moz-linear-gradient(left,  #ddd8d2 0%, #ffffff 44%, #ffffff 56%, #ddd8d2 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left,  #ddd8d2 0%,#ffffff 44%,#ffffff 56%,#ddd8d2 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right,  #ddd8d2 0%,#ffffff 44%,#ffffff 56%,#ddd8d2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ddd8d2', endColorstr='#ddd8d2',GradientType=1 ); /* IE6-9 */
+}

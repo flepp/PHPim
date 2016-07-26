@@ -25,6 +25,7 @@
 		<?php else: ?>
 			<h1>Les étudiants de <?= $allUsersTable[0]['ses_name']  ?> </h1>
 		<?php endif ?>
+	<div class="container">
 		<table>
 		<?php foreach ($allUsersTable as $key => $value): ?>
 			<tbody>
@@ -35,6 +36,7 @@
 			</tbody>
 		<?php endforeach ?>
 		</table>
+	</div>
 	<?php endif ?>
 
 <?php $this->stop('main_content') ?>
