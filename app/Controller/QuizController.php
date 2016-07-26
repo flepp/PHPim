@@ -5,6 +5,7 @@ use \W\Controller\Controller;
 use \Manager\QuizManager;
 use \Manager\CategoryManager;
 use \Manager\SessionManager;
+use \Manager\UsersManager;
 use \Manager\AllUsersManager as AllUsers;
 
 class QuizController extends Controller
@@ -22,11 +23,11 @@ class QuizController extends Controller
     public function addPost(){
         $quizManager = new QuizManager();
         $quizList = $quizManager->findAll();
-        $day = isset($_POST['quiDay']) ? trim($_POST['quiDay']) : '';
-        $title = isset($_POST['quiTitle']) ? trim($_POST['quiTitle']) : '';
-        $link = isset($_POST['quiLink']) ? trim($_POST['quiLink']) : '';
-        $text = isset($_POST['quiText']) ? trim($_POST['quiText']) : '';
-        $category = isset($_POST['categories']) ? trim($_POST['categories']) : '';
+        $day = isset($_POST['quiDay']) ? trim(strip_tags($_POST['quiDay'])) : '';
+        $title = isset($_POST['quiTitle']) ? strip_tags($_POST['quiTitle']) : '';
+        $link = isset($_POST['quiLink']) ? trim(strip_tags($_POST['quiLink'])) : '';
+        $text = isset($_POST['quiText']) ? strip_tags($_POST['quiText']) : '';
+        $category = $_POST['categories'];
 
         if (empty($text)) {
             $data = array(
@@ -34,6 +35,9 @@ class QuizController extends Controller
                 'qui_title' => $title,
                 'qui_link' => $link,
                 'qui_text' => $link,
+                'category_id' => $category,
+                'qui_status' => 0,
+                'qui_created' => date('Y-m-d'),
                 'category_id' => $category
             );
         }
@@ -43,6 +47,9 @@ class QuizController extends Controller
                 'qui_title' => $title,
                 'qui_link' => $link,
                 'qui_text' => $text,
+                'category_id' => $category,
+                'qui_status' => 0,
+                'qui_created' => date('Y-m-d'),
                 'category_id' => $category
             );
         }
@@ -76,10 +83,23 @@ class QuizController extends Controller
     {
         $this->allowTo(['admin']);
         $quizManager = new QuizManager();
-        $quizList = $quizManager->findAllQuizInfo($orderBy = "qui_day");
+        /*$quizList = $quizManager->findAllQuizInfo($orderBy = "qui_day");*/
+        $quizList = $quizManager->getQuizByCat();
+        /*grouping quiz by category name*/
+        $quizListBycat = array();
+        foreach($quizList as $key => $value) {
+            $quizListBycat[ucfirst ($value['cat_name'])][] = array(
+                'id' => $value['qui_id'],
+                'category_id' => $value['id'],
+                'qui_title' => ucfirst ($value['qui_title']),
+                'qui_link' => $value['qui_link'],
+                'qui_status' => $value['qui_status'],
+                'qui_day' => $value['qui_day']
+            );
+        }
         $this->show('user/admin/manageQuiz',
             array(
-                    'quizList' => $quizList
+                    'quizList' => $quizListBycat
             )
         );
     }
@@ -128,11 +148,11 @@ class QuizController extends Controller
         //J'appelle la methode findAll heritee de manager
         $quizSingle = $quizManager->find($id);
 
-        $day = $_POST['quiDay'];
-        $title = $_POST['quiTitle'];
-        $link = $_POST['quiLink'];
-        $text = $_POST['quiText'];
-        $category = isset($_POST['categories']) ? trim($_POST['categories']) : '';
+        $day = isset($_POST['quiDay']) ? trim(strip_tags($_POST['quiDay'])) : '';
+        $title = isset($_POST['quiTitle']) ? strip_tags($_POST['quiTitle']) : '';
+        $link = isset($_POST['quiLink']) ? trim(strip_tags($_POST['quiLink'])) : '';
+        $text = isset($_POST['quiText']) ? strip_tags($_POST['quiText']) : '';
+        $category = $_POST['categories'];
 
         if (empty($text)) {
             $data = array(
@@ -140,6 +160,8 @@ class QuizController extends Controller
                 'qui_title' => $title,
                 'qui_link' => $link,
                 'qui_text' => $link,
+                'category_id' => $category,
+                'qui_updated' => date('Y-m-d'),
                 'category_id' => $category
             );
         }
@@ -148,6 +170,8 @@ class QuizController extends Controller
                 'qui_day' => $day,
                 'qui_title' => $title,
                 'qui_link' => $link,
+                'category_id' => $category,
+                'qui_updated' => date('Y-m-d'),
                 'qui_text' => $text,
                 'category_id' => $category
             );
@@ -183,23 +207,39 @@ class QuizController extends Controller
         }
     }
 
-     public function quizPerCat(){
-        $this->allowTo(['admin']);
-        $quizManager = new QuizManager();
-        $quizList = $quizManager->findQuizByCat();
-        $this->show('user/admin/quizPerCategory', array('quizList' => $quizList));
-    }
-
     public function quiz()
     {
         //j'instancie le manager lié à la table quiz
         $quizManager = new QuizManager();
         //J'appelle la methode findAll heritee de manager
+        $quizList = $quizManager->getQuizByCat($orderBy = "qui_day");
+        $quizListBycat = array();
+        $i = 0;
+        foreach($quizList as $key => $value) {
+            $quizListBycat[ucfirst ($value['cat_name'])][] = array(
+                'id' => $value['qui_id'],
+                'category_id' => $value['id'],
+                'qui_title' => ucfirst ($value['qui_title']),
+                'qui_link' => $value['qui_link'],
+                'qui_status' => $value['qui_status'],
+                'qui_day' => $value['qui_day']
+            );
+        }
+        /* ----------------------- Getting the SES_END for users --------------------- */
+            if(isset($_SESSION) && !empty($_SESSION)){
+                $id = $_SESSION['user']['session_id'];
+                $userManager = new UsersManager;
+                $getSesEnd = $userManager->getSesdEnd($id);
+                $_SESSION['user']['ses_end'] = $getSesEnd['ses_end'];
+            }
+
+        //j'instancie le manager lié à la table quiz
+        $quizManager = new QuizManager();
+        //J'appelle la methode findAll heritee de manager
         $quizList = $quizManager->findAll($orderBy = "qui_day");
-        $sessionManager = new AllUsers();
-        $id = $_SESSION['user']['session_id'];
-        $sessionList = $sessionManager->findAllUsersFromSession($id);
-        $this->show('quiz/quiz', array('quizList' => $quizList, 'sessionList' => $sessionList));
+        $sessionManager = new SessionManager();
+        $sessionList = $sessionManager->findAll();
+        $this->show('quiz/quiz', array('quizList' => $quizListBycat, 'sessionList' => $sessionList));
     }
 
 }

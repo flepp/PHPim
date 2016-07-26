@@ -16,7 +16,11 @@
 		<li>Adresse:<?= ' '.$userInfo['usr_street'] ?></li>
 		<li>Code postal:<?= ' '.$userInfo['usr_zipcode'] ?></li>
 	</ul>
-
+	
+	<input id="address" type="textbox" value="<?= $userInfo['usr_city'].', '.$userInfo['usr_street'] ?>">
+    
+    <div id="map"></div>
+	
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~ I'm redirecting to all users page ~~~~~~~~~~~~~~~~~~~ -->
 	<a href="<?= $this->url('allusers_allUsers') ?>">Retour vers liste</a>
 	<!-- I'm redirecting to edit user page -->
@@ -35,5 +39,9 @@
 			</select>
 			<button type="sumit" name="troll">Troll me</button>
 		</form> 
-	<?php endif ?>	
+	<?php endif ?>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfSWVubN0FtFttDkHjBWTbwINb-VFNbVc&signed_in=true&callback=initMap"async defer>
+	</script>
+      
 <?php $this->stop('main_content') ?>
