@@ -50,7 +50,7 @@
 						<?php endif ?>
 						<?php endif; ?>
 						<?php if (isset($w_user) && is_array($w_user)) :?>
-						<li><a href="<?= $this->url('user_database') ?>">BDD utilisateur</a></li>
+						<li><a href="<?= $this->url('user_database') ?>">Mes B.D.D</a></li>
 						<li><a href="<?= $this->url('allusers_allUsers') ?>">Etudiants</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profil <span class="caret"></span></a>

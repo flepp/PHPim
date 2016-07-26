@@ -1,15 +1,5 @@
-/*.firstSection{
-	background-color: #38B3E4;
-	color: white;
-}
-.secondSection{
-	background-color: #E9E5DD;
-	color: black;
-}
-.firstSection h1, .secondSection h1{
-	text-align: center;
-}*/
-
-*{
-	border: 1px solid red;
+.info-upload span{
+	display: block;
+	font-style: italic;
+	font-size: 1rem;
 }
