@@ -12,12 +12,22 @@
 					<div class="front">
 						<img height="297px" width="250px" src="<?=$this->assetUrl('upload/img/Ibrahima-THIELO.jpg')?>">
 					</div>
-					<div class="back">
-						Nom: Ibrahima Thiello <br>
-						<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_sen.png')?>"><br>
-						linkedin: ibrahima-thiello <br>
-						twitter: ibrah_thiello <br>
-						@: ibrahima.thiello@hotmail.fr <br>
+					<div class="container back">
+						<div class="col-md-12">
+							Nom: Ibrahima Thiello
+						</div>
+						<div class="col-md-12">
+							<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_sen.png')?>">
+						</div>
+						<div class="col-md-12">
+							linkedin:<a href="https://www.linkedin.com/in/ibrahima-thiello"> ibrahima-thiello </a>
+						</div>
+						<div class="col-md-12">
+							twitter: <a href="https://twitter.com/ibrah_thiello">ibrah_thiello </a>
+						</div>
+						<div class="col-md-12">
+							@:<a href="mailto:ibrahima.thiello@hotmail.fr"> ibrahima.thiello@hotmail.fr </a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -28,10 +38,16 @@
 					<div class="front">
 						<img height="297px" width="250px" src="<?=$this->assetUrl('upload/img/Michel-CAVRO.jpg')?>">
 					</div>
-					<div class="back">
-						Nom: Michel Cavro <br>
-						<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_fra.png')?>"><br>
-						linkedin: michelcavro <br>
+					<div class="container back">
+						<div class="col-md-12">
+							Nom: Michel Cavro
+						</div>
+						<div class="col-md-12">
+						<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_fra.png')?>">
+						</div>
+						<div class="col-md-12">
+						linkedin: michelcavro
+						</div>
 					</div>
 				</div>
 			</div>
@@ -42,9 +58,13 @@
 					<div class="front">
 						<img height="297px" width="250px" src="<?=$this->assetUrl('upload/img/Paul-IOANID.jpg')?>">
 					</div>
-					<div class="back">
-						Nom: Paul Ioanid <br>
-						<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_rom.png')?>"><br>
+					<div class="container back">
+						<div class="col-md-12">
+						Nom: Paul Ioanid
+						</div>
+						<div class="col-md-12">
+						<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_rom.png')?>">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -55,9 +75,13 @@
 					<div class="front">
 						<img height="297px" width="250px" src="<?=$this->assetUrl('upload/img/Philippe-TASCH.jpg')?>">
 					</div>
-					<div class="back">
-						Nom: Philippe Tasch <br>
-						<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_lux.png')?>"><br>
+					<div class="container back">
+						<div class="col-md-12">
+						Nom: Philippe Tasch
+						</div>
+						<div class="col-md-12">
+						<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_lux.png')?>">
+						</div>
 					</div>
 				</div>
 			</div>
