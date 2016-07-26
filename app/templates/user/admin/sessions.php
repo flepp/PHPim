@@ -4,9 +4,9 @@
 <div class="container">
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION CREATION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
 	<section class="row firstSection">
-		<h1 class="col-xs-12">Créer une session </h1>
+		<h1 class="col-xs-12 col-sm-6">Créer une session </h1>
 			<div class="row">
-				<form method="POST" action="" class="col-xs-10 col-xs-offset-1">
+				<form method="POST" action="" class="col-xs-10 col-xs-offset-1 col-sm-6">
 					<div class="form-group">
 						<label>Nom de la session:</label>
 						<input type="text" name="sessionName" class="form-control">
@@ -27,9 +27,9 @@
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION EDITION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
 	<section class="row secondSection">
 
-			<h1 class="col-xs-12">Liste des sessions</h1>
+			<h1 class="col-xs-12 col-sm-6">Liste des sessions</h1>
 			<!---------------SESSION WITH STUDENTS----------- -->
-			<ul  class="col-xs-12">
+			<ul  class="col-xs-12 col-sm-6 col-sm-offset-1">
 				<?php foreach($sessionList as $key => $value) : ?>
 					<div class="row"> 
 						<li class="col-xs-9"><?= $value['ses_name'] ?> du <?= $value['ses_start'] ?> / <?= $value['ses_end'] ?></li>
