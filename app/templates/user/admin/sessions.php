@@ -3,7 +3,7 @@
 <?php $this->start('main_content') ?>
 <div class="container">
 	<div class="row">
-		<h1 class="col-xs-6 col-xs-offset-3">Créer une session </h1>
+		<h1 class="col-xs-4 col-xs-offset-4">Créer une session </h1>
 	</div>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION CREATION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
 	<div class="row">
@@ -22,7 +22,7 @@
 					<input class="col-xs-12 col-sm-4 col-sm-offset-4 " type="date" name="sessionEnd">
 				</div>
 				<div class="row">
-					<button class="col-xs-12" type="submit" name="sessionCreate">Créer</button>
+					<button class="col-xs-1 col-xs-offset-4" type="submit" name="sessionCreate">+</button>
 				</div>
 			</form>
 		</section>
