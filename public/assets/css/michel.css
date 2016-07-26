@@ -15,9 +15,13 @@
 
 /* flip speed goes here */
 .flipper {
+	color:black;
 	transition: 0.5s;
 	transform-style: preserve-3d;
 	position: relative;
+}
+.flipper a{
+	color:black;
 }
 
 /* hide back of pane during swap */
@@ -30,6 +34,7 @@
 
 /* front pane, placed above back */
 .front {
+	overflow: hidden;
 	z-index: 2;
 	/* for firefox 31 */
 	transform: rotateY(0deg);
@@ -46,4 +51,29 @@
 	background: -webkit-linear-gradient(left,  #ddd8d2 0%,#ffffff 44%,#ffffff 56%,#ddd8d2 100%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(to right,  #ddd8d2 0%,#ffffff 44%,#ffffff 56%,#ddd8d2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ddd8d2', endColorstr='#ddd8d2',GradientType=1 ); /* IE6-9 */
+}
+/*****************End Flipping images****************/
+.fondNoir {
+	padding: 30px;
+	color: white;
+	/* Gradient color */
+	background: rgb(89,89,89); /* Old browsers */
+	background: -moz-linear-gradient(left,  rgba(89,89,89,1) 0%, rgba(22,22,22,1) 20%, rgba(0,0,0,1) 47%, rgba(0,0,0,1) 53%, rgba(22,22,22,1) 80%, rgba(89,89,89,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left,  rgba(89,89,89,1) 0%,rgba(22,22,22,1) 20%,rgba(0,0,0,1) 47%,rgba(0,0,0,1) 53%,rgba(22,22,22,1) 80%,rgba(89,89,89,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right,  rgba(89,89,89,1) 0%,rgba(22,22,22,1) 20%,rgba(0,0,0,1) 47%,rgba(0,0,0,1) 53%,rgba(22,22,22,1) 80%,rgba(89,89,89,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#595959', endColorstr='#595959',GradientType=1 ); /* IE6-9 */
+
+}
+.pressMe {
+	margin-top: 5px;
+	color: black;
+	line-height: 30px;
+	text-align: center;
+	background-color: #EAEAEA;
+	height: 30px;
+	width: 140px;
+	border-radius: 5px;
+}
+.pressMe a{
+	color: black;
 }
