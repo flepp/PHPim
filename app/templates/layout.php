@@ -5,6 +5,15 @@
 	<title><?= $this->e($title) ?></title>
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/reset.css') ?>">
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
+	<style>
+		#map {
+        height: 400px;
+        width:400px;
+        border: 1px solid red;
+      }
+
+	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -43,7 +52,8 @@
 		<footer>
 		</footer>
 	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script src="<?= $this->assetUrl('js/script.js') ?>"></script>
+	
+	<script type="text/javascript" src="<?= $this->assetUrl('js/script.js') ?>"></script>
+
 </body>
 </html>
