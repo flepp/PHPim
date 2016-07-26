@@ -56,5 +56,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="<?= $this->assetUrl('js/script.js') ?>"></script>
 	<script src="<?= $this->assetUrl('js/bootstrap.js') ?>"></script>
+
 </body>
 </html>

@@ -119,11 +119,11 @@ class UsersManager extends \W\Manager\Manager{
 	}
 	/*----Get ses_end for the user to know wich quiz can he see----*/
 	public function getSesdEnd($id){
-		$sql = '
+		$sql = "
 			SELECT session.ses_end 
-			FROM '.$this->table.'
+			FROM ".$this->table."
 			LEFT OUTER JOIN session
-			ON session.id = users.session_id  WHERE session.id ='.$id;
+			ON session.id = users.session_id  WHERE session.id =".$id;
 		$sth = $this->dbh->prepare($sql);
 		$sth->execute();
 		return $sth->fetch();
