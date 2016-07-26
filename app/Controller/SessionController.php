@@ -15,9 +15,10 @@ class SessionController extends Controller{
         $this->allowTo(['admin']);
         //getting the list of existing session
         $sessionManager = new SessionManager;
-        $sessionList = $sessionManager->findAll();
+        $sessionWithStudents = $sessionManager->sessionWithStudents();
+        $sessionWithoutStudents = $sessionManager->sessionWithoutStudents();
 
-        $this->show('user/admin/sessions', ['sessionList'=>$sessionList]);
+        $this->show('user/admin/sessions', ['sessionList'=>$sessionWithStudents, 'sessionList2'=>$sessionWithoutStudents]);
     }
 
     public function sessionPost(){

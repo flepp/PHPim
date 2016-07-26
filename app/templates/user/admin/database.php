@@ -7,7 +7,7 @@
 <form method="POST" action="">
 	<select name="session">
 	<?php foreach ($sessionList as $key => $value): ?>
-		<option value="<?= $value['id'] ?>"><?= $value['ses_name'] ?></option>
+		<option value="<?= $value['id'] ?>"><?= ucfirst ($value['ses_name']) ?></option>
 	<?php endforeach ?>
 	</select>
 	<label>Suffixe de la database:</label>

@@ -17,6 +17,24 @@ class SessionManager extends \W\Manager\Manager{
 			FROM users 
 			INNER JOIN session ON session.id = users.session_id 
 			GROUP BY session.id, session.ses_name
+			ORDER BY session.ses_name ASC
+		';
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute();
+
+		return $sth->fetchAll();
+	}
+
+	public function sessionWithoutStudents(){
+		$sql ='
+			SELECT session.id, session.ses_name, session.ses_start, session.ses_end, session.ses_status, users.usr_name
+			FROM
+			  session
+			LEFT OUTER JOIN users ON session
+			  .id = users.session_id
+			  
+			WHERE users.id IS NULL
+			ORDER BY session.ses_name ASC
 		';
 		$sth = $this->dbh->prepare($sql);
 		$sth->execute();

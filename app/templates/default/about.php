@@ -6,11 +6,15 @@
 <div>Ibrahima
 <img height="297px" width="250px" src="<?=$this->assetUrl('upload/img/Ibrahima-THIELO.jpg')?>">
 nom: Ibrahima Thiello
+linkedin:ibrahima-thiello
+twitter:ibrah_thiello
+@: ibrahima.thiello@hotmail.fr
 <img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_sen.png')?>"></div>
 
 <div>Michel
 <img height="297px" width="250px" src="<?= $this->assetUrl('upload/img/Michel-CAVRO.jpg') ?>">
 nom: Michel Cavro
+linkedin.com/in/michelcavro
 <img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_fra.png')?>"></div>
 
 <div>Paul

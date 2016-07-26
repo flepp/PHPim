@@ -23,6 +23,7 @@
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION EDITION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
 <section>
 	<h1>Liste des sessions:</h1>
+	<!---------------SESSION WITH STUDENTS----------- -->
 	<ul>
 		<?php foreach($sessionList as $key => $value) : ?>
 			<li><?= $value['ses_name'] ?> du <?= $value['ses_start'] ?> au <?= $value['ses_end'] ?> status(<?= $value['ses_status'] ?>)</li> 
@@ -38,6 +39,23 @@
 					<button type="submit" name="sessionOff" class="disableSession">OFF</button>
 				</form>
 			</div>
+			<div>
+				<button type="button" class="button_edit">Editer</button>
+			</div>
+			<form hidden method="POST" action="" class="show_edit">
+				<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
+				<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
+				<input type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
+				<input type="date" name="sessionStart" value="<?= $value['ses_start'] ?>">
+				<input type="date" name="sessionEnd" value="<?= $value['ses_end'] ?>">
+				<button type="submit" name="sessionEdit" class="update">Modifier</button>
+			</form>
+		<?php endforeach; ?>
+	</ul>
+	<!---------------SESSION WITH NO STUDENTS----------- -->
+	<ul>
+		<?php foreach($sessionList2 as $key => $value) : ?>
+			<li><?= $value['ses_name'] ?> du <?= $value['ses_start'] ?> au <?= $value['ses_end'] ?> status(<?= $value['ses_status'] ?>)</li> 
 			<div>
 				<button type="button" class="button_edit">Editer</button>
 			</div>
