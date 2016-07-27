@@ -1,15 +1,8 @@
 /*Style for all users container*/
 .container-paul {
-	
 	background-color: #38B3E4;
-	
 	width: 85%;
 	text-align: center;
-	
-}
-
-.container-paul a:hover {
-  color: #202020;
 }
 .container-paul select {
 	border: 3px solid #FEB905;

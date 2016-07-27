@@ -6,7 +6,7 @@
 	<div class="container container-paul">
 		<div class="row">
 			<div class="col-xs-6">
-				<h1>Info:</h1>
+				<h1>Informations personnels:</h1>
 				<img height="297px" width="250px" src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>">
 				<ul>
 					<li>Nom:<?= ' '.$userInfo['usr_name'] ?></li>
@@ -33,14 +33,16 @@
 
 				<!-- ~~~~~~~~~~~~~~~~~ I'm changing the user profile for admin ~~~~~~~~~~~~~~~~~~ -->
 				<?php if ($_SESSION['user']['usr_role'] == 'admin'): ?> 
-					<h1>Vous êtes connecté en tant que:</h1> 
+					<h4>Vous êtes connecté en tant que:</h4> 
 					<form method="post" action="">
-						<select name="userInfo">
-							<?php foreach ($usersList as $key => $info): ?>
-								<option value="<?= $info['id'] ?>" "<?= $info['id'] == $_SESSION['user']['id'] ? ' selected="selected"' : '' ?>"><?= $info['usr_name'].' ' ?><?= $info['usr_firstname'] ?></option>
-							<?php endforeach ?>
-						</select>
-						<button class="btn btn-default" type="submit" name="troll">Troll me</button>
+						<div class="form-group">
+							<select name="userInfo">
+								<?php foreach ($usersList as $key => $info): ?>
+									<option value="<?= $info['id'] ?>" "<?= $info['id'] == $_SESSION['user']['id'] ? ' selected="selected"' : '' ?>"><?= $info['usr_name'].' ' ?><?= $info['usr_firstname'] ?></option>
+								<?php endforeach ?>
+							</select>
+							<button class="btn btn-default" type="submit" name="troll">Troll me</button>
+						</div>
 					</form> 
 				<?php endif ?>
 			</div>
