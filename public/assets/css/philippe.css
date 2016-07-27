@@ -299,10 +299,20 @@
 	background-color: #38B3E4;
 }
 
+	.custom-form-blue input{
+
+		background-color: #30A9DA;
+	}
+
 .custom-form-gold{
 
 	background-color: #FEB905;
 }
+
+	.custom-form-gold input{
+
+		background-color: #F4B006;
+	}
 
 .custom-button-blue{
 
