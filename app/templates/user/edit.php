@@ -78,11 +78,11 @@
 				</div>
 			</div>
 		<label for="inputPhoto">Photo d'étudiant:</label>
-		<img height="178px" width="150px" src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>">
+		<img src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>">
 		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ I'm inserting a new photo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<input type="hidden" name="fichierSoumis" value="1">
 		<label for="files"><span class="btn btn-default">Changer</span></label>
-		<input style="visibility: hidden;" id = "files" type="file" name="photo">
+		<input id = "files" type="file" name="photo">
 		<div class="btn-valider">
 			<input class="btn btn-default" type="submit" name="submitInfo" value="VALIDER">
 		</div>
