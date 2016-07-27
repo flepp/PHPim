@@ -357,7 +357,6 @@
 	border: none;
 	border-bottom: 3px solid;
 	margin-bottom: 20px;
-	background-color: transparent;
 }
 
 input::-webkit-input-placeholder {
