@@ -68,7 +68,7 @@ $(document).ready(function(){
     $("button.button_edit").click(function(e){
         e.preventDefault();
         $(".show_edit").fadeIn('slow');
-        $(this).fadeOut('slow');
+        $("button.button_edit").fadeOut('slow');
     });
 });
 
@@ -96,4 +96,5 @@ function geocodeAddress(geocoder, resultsMap) {
           alert('Geocode was not successful for the following reason: ' + status);
         }
     });
+
 }
