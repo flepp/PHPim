@@ -43,7 +43,7 @@
 							<input class="form-control" type="text" name="username" value="<?= $userInfo['usr_name'] ?>">
 							<label for="inputFirstName">Prénom:</label>
 							<input class="form-control" type="text" name="userfirstname" value="<?= $userInfo['usr_firstname'] ?>">
-							<label for="inputEmail">Email*:</label>
+							<label for="inputEmail">Email:</label>
 							<input class="form-control" type="email" name="useremail" value="<?= $userInfo['usr_email'] ?>">
 							<label for="inputPseudo">Pseudo (min. 3 charactères):</label>
 							<input class="form-control" type="text" name="userpseudo" value="<?= $userInfo['usr_pseudo'] ?>">
