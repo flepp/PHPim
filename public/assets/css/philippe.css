@@ -289,3 +289,94 @@
 	transform: rotate(45deg);
 	transition: all 0.3s ease-out;
 }
+
+/* styles formulaires */
+
+/* COULEURS */
+
+.custom-form-blue{
+
+	background-color: #38B3E4;
+}
+
+.custom-form-gold{
+
+	background-color: #FEB905;
+}
+
+.custom-button-blue{
+
+	background-color: #38B3E4;
+}
+
+.custom-button-gold{
+
+	background-color: #FEB905;
+}
+
+/* appliquer au formulaire SEULEMENT*/
+.custom-form{
+
+	padding: 10%;
+}
+
+/* styles de base du formulaire */
+.custom-form button{
+
+	display: inline-block;
+	vertical-align: middle;
+	padding: 15px 22px;
+	text-transform: uppercase;
+	color: #fff;
+	border: 0;
+}
+
+/* styles pour les labels du formulaire */
+
+.custom-form-group label{
+
+	margin-bottom: 10px;
+	text-transform: uppercase;
+}
+
+/* styles pour les champs du formulaire */
+
+.custom-form-group input{
+
+	padding: 15px;
+	border: none;
+	border-bottom: 3px solid;
+	margin-bottom: 20px;
+	background-color: transparent;
+}
+
+input::-webkit-input-placeholder {
+color: #fff !important;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+color: #fff !important;
+}
+
+input::-moz-placeholder {  /* Firefox 19+ */
+color: #fff !important;
+}
+
+input:-ms-input-placeholder {
+color: #fff !important;
+}
+
+
+/* styles pour le bouton d'envoi d'un formulaire à partir du mode tablette */
+
+@media screen and (min-width : 768px){
+	form .form-send-button{
+	    position: absolute;
+	    padding: 25px 30px;
+	    top: 95%;
+	    right: -15px;
+	}
+}
+
+
+

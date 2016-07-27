@@ -197,6 +197,10 @@ header .navbar > .container .navbar-brand span + span{
 .nav-sub-menu li{
 
 	width: 25%;
+}
+
+.user-dropdown li{
+
 	float: right;
 }
 
