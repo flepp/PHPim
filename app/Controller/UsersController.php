@@ -126,9 +126,8 @@ class UsersController extends Controller {
 
                     $AllUsersManager = new UsersManager;
 
-                    /*-------------------------------------------------------------------------------------------------------------*/
-                                                                //USER DATABASE CREATION
-                    /*-------------------------------------------------------------------------------------------------------------*/
+                    
+                    /*-------------------USER DATABASE CREATION----------------------------*/
                     
                     /* -------------- Adding a distant access user ------------------ */
                     $sql = 'CREATE USER \''.$pseudo.'\'@\'%\' IDENTIFIED BY \''.$password.'\'';
@@ -257,11 +256,14 @@ class UsersController extends Controller {
         $this->redirectToRoute('user_forgot');
     }
 
+    /*-------------------------------------------------------------------------------------------------------------*/
+                                                //USER RESET PASS
+    /*-------------------------------------------------------------------------------------------------------------*/
     public function resetPass(){
         $this->show('user/resetPassword');
     }
 
-public function resetPassPost($token){
+    public function resetPassPost($token){
 
         $userManager = new UsersManager();
         $userList = $userManager->findAll();
@@ -269,10 +271,11 @@ public function resetPassPost($token){
         $id = $userManager->getIdFromToken($token);
 
         if (!empty($_POST)){
-            $newPass = isset($_POST['password']) ? $_POST['password'] : '';
-            $newPassConfirm = isset($_POST['passwordConfirm']) ? $_POST['passwordConfirm'] : '';
+            $newPass = isset($_POST['password']) ? trim(strip_tags($_POST['password'])) : '';
+            $newPassConfirm = isset($_POST['passwordConfirm']) ? trim(strip_tags($_POST['passwordConfirm'])) : '';
             $data = array(
                 'usr_password' => password_hash($newPass, PASSWORD_BCRYPT),
+                'usr_updated' => date('Y-m-d'),
                 'usr_token'    => ''
             );
             if (!empty($newPass)) {
@@ -302,13 +305,65 @@ public function resetPassPost($token){
                 $_SESSION['errorList'][] = 'Pas de mot de passe entré';
                 $this->redirectToRoute('user_reset',['token' => $token]);
             }
-            // if ($dbToken == '') {
-            //     $_SESSION['errorList'][] = 'Votre session a expiré.';
-            // }
         }
     }
 
-    //---------------- PHILIPPE END
+    /*-------------------------------------------------------------------------------------------------------------*/
+                                                //USER CHANGE PASS
+    /*-------------------------------------------------------------------------------------------------------------*/
+    public function changePass(){
+
+        $this->show('user/changement-mdp');
+    }
+
+    public function changePassPost(){
+        if(isset($_POST['changePassword'])){
+            $oldPass = isset($_POST['passwordOld']) ? trim(strip_tags($_POST['passwordOld'])) : '';
+            $newPass = isset($_POST['password']) ? trim(strip_tags($_POST['password'])) : '';
+            $newPassConfirm = isset($_POST['passwordConfirm']) ? trim(strip_tags($_POST['passwordConfirm'])) : '';
+            $username = $_SESSION['user']['usr_pseudo'];
+            $data = array(
+                'usr_password' => password_hash($newPass, PASSWORD_BCRYPT),
+                'usr_updated' => date('Y-m-d')
+            );
+
+            if(!empty($oldPass)){
+                $authManager = new AuthentificationManager;
+                $usr_id = $authManager->isValidLoginInfo($username, $oldPass);
+                debug($usr_id);
+                if ($usr_id === 0) {
+                    $_SESSION['errorList'][0] = 'L\'ancien mot de passe saisi est incorrect';
+                    $this->redirectToRoute('user_change_pass');
+                }
+                else{
+                   if(!empty($newPass) && strlen($newPass) > 8){
+                        if(!empty($newPassConfirm) && strlen($newPassConfirm) > 8){
+                            if($newPass == $newPassConfirm){
+                                 $userManager = new UsersManager;
+                                $userManager->update($data,$usr_id);
+                                $_SESSION['successList'][] = 'Votre mot de passe a été réinitialisé';
+                                $this->redirectToRoute('default_home');
+                            }
+                            else{
+                                $_SESSION['errorList'][] = 'Vos mots de passe sont différents';
+                            }
+                        }
+                        else{
+                            $_SESSION['errorList'][] = 'Le mot de passe confirmé n\'a pas encore été saisi ou est trop court!';
+                        }
+                   }
+                   else{
+                        $_SESSION['errorList'][] = 'Le nouveau mot de passe n\'a pas encore été saisi ou est trop court!';
+                   }
+                }
+            }
+            else{
+                $_SESSION['errorList'][] = 'L\'ancien mot de passe n\'a pas encore été saisi!';
+            }
+            $this->redirectToRoute('user_change_pass');
+        }
+
+    }
 
     /*-------------------------------------------------------------------------------------------------------------*/
                                                 //USER EDITION

@@ -13,6 +13,8 @@
 		["POST", "/mdp-oublie/", "Users#forgotPost", "user_forgot_post"],
 		["GET", "/mdp-nouveau/[a:token]", "Users#resetPass", "user_reset"],
 		["POST", "/mdp-nouveau/[a:token]", "Users#resetPassPost", "user_reset_post"],
+		["GET", "/changement-mdp/", "Users#changePass", "user_change_pass"],
+		["POST", "/changement-mdp/", "Users#changePassPost", "user_change_pass_post"],
 		["GET", "/edition/[i:id]/", "Users#edit", "user_edit"],
 		["POST", "/edition/[i:id]/", "Users#editPost", "user_edit_post"],
 		["GET", "/gestion-bdd/", "Users#database", "user_database"],
