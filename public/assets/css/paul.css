@@ -1,18 +1,8 @@
 /*Style for all users container*/
 .container-paul {
-	border: 3px solid #FEB905;
-	background-color: silver;
-	border-radius: 10px;
-	width: 80%;
+	background-color: #38B3E4;
+	width: 85%;
 	text-align: center;
-	margin: 50px auto;
-}
-.users-display {
-	padding: 15px 0;
-	text-align: center;
-}
-.container-paul a:hover {
-  color: #202020;
 }
 .container-paul select {
 	border: 3px solid #FEB905;
@@ -22,8 +12,9 @@
 /*Style for map frame*/
 #map {
 	margin-top: 20px;
-	height: 470px;
-	width: 470px;
+	margin-bottom: 20px;
+	height: 720px;
+	width: 720px;
 	border: 3px solid #FEB905;
 }
 .container-paul p,li,a {
@@ -44,4 +35,15 @@
 .container-paul .on-off {
 	text-align: right;
 	margin: 20px 15px;
+}
+.list-details {
+	background-color: #FEB905;
+	width: 300px;
+	height: 205px;
+	margin-left: 165px;
+}
+.retour-vers-liste {
+	text-align: left;
+	margin-left: 20px;
+	margin-bottom: 20px;
 }

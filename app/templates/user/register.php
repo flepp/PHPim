@@ -9,7 +9,7 @@
 				<h2>Bonjour, entrez les informations qui vous ont été transmises par mail</h2>
 			</div>
 		    <form>
-		      <div class="form-group col-md-4">
+		      <div class="form-group col-md-4 custom-form-group">
 		        <label for="Email">* Adresse Email</label>
 		        <input type="email" class="form-control" placeholder="Email" name="email" value="">
 		      </div>

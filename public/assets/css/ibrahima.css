@@ -3,3 +3,27 @@
 	font-style: italic;
 	font-size: 1rem;
 }
+
+.section-session-left{
+	background-color: #FEB905;
+}
+
+.section-session-right{
+	background-color: #38B3E4;
+}
+
+@media screen and (min-width: 768px){
+
+		
+	}
+	@media screen and (min-width: 992px){
+		
+		
+	}
+
+	@media screen and (min-width: 1200px){
+		.section-session-right {
+			position: relative;
+		    top: 120px;
+		    left: -65px;	
+	}
