@@ -10,8 +10,8 @@
 
 .flip-container, .front, .back {
 	margin: auto;
-	width: 255px;
-	height: 302px;
+	width: 280px;
+	height: 332px;
 }
 
 /* flip speed goes here */
@@ -51,12 +51,11 @@
 /*****************End Flipping images****************/
 
 .fondCoul {
-	padding: 50px;
+	padding: 30px;
 	color: white;
 	background-color: #38B3E4;
-
 }
 
-.col-lg-3{
+.divPhoto{
 	padding: 0;
 }
