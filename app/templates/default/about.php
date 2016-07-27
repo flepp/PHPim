@@ -2,11 +2,11 @@
 <?php $this->layout('layout', ['title' => 'About !']) ?>
 <?php $this->start('main_content') ?>
 
-<div class="container fondCoul">
+<div class="container fondCoul photoAbout">
 	<div class="row">
 		<h1>Ce projet à été réalisé par l'équipe de WEBFORCEONE</h1>
 		<h2>de la session 2 (du 04-04-2016 au 29-07-2016)</h2>
-		<div class="col-md-3">
+		<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
@@ -32,7 +32,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
@@ -52,7 +52,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
@@ -69,7 +69,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
