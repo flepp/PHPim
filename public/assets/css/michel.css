@@ -61,8 +61,14 @@
 	color: #38B3E4;
 }
 
+.pressMe{
+	text-align: center;
+}
 .pressMe a {
+	margin-left: 15px;
+	margin-right: 15px;
 	color: #FEB905;
+	font-size: 25px;
 }
 .pressMe a:first-of-type {
 	color: #38B3E4;
@@ -73,4 +79,7 @@
 
 .photoAbout span{
 	color: #FEB905;
+}
+.fileUpload button{
+	hidden
 }
