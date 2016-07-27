@@ -3,8 +3,8 @@
 <?php $this->start('main_content') ?>
 
 	<!-- ~~~~~~~~~~~~~~~~~ I'm displaying the specific info for an user ~~~~~~~~~~~~~ -->		
-	<div class="container-paul">
-		<div class="row user-details">
+	<div class="container container-paul">
+		<div class="row">
 			<div class="col-xs-6">
 				<h1>Info:</h1>
 				<img height="297px" width="250px" src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>">
@@ -40,12 +40,12 @@
 								<option value="<?= $info['id'] ?>" "<?= $info['id'] == $_SESSION['user']['id'] ? ' selected="selected"' : '' ?>"><?= $info['usr_name'].' ' ?><?= $info['usr_firstname'] ?></option>
 							<?php endforeach ?>
 						</select>
-						<button class="btn btn-default" type="sumit" name="troll">Troll me</button>
+						<button class="btn btn-default" type="submit" name="troll">Troll me</button>
 					</form> 
 				<?php endif ?>
 			</div>
 
+    </div>  
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfSWVubN0FtFttDkHjBWTbwINb-VFNbVc&signed_in=true&callback=initMap"async defer>
 	</script>
-    </div>  
 <?php $this->stop('main_content') ?>
