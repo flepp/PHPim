@@ -32,8 +32,8 @@
 				<div class="table">
 					<div class="row users-display">
 					<?php foreach ($allUsersTable as $key => $value): ?>
-						<div class="col-xs-2"><img height="178px" width="150px" src="<?= $this->assetUrl('upload/img/'.$value['usr_photo']) ?>" alt="">
-							<a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>"><?= ' '.$value['usr_firstname'].' '.$value['usr_name'] ?></a>
+						<div class="col-xs-4"><a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>"><img height="513px" width="432px" src="<?= $this->assetUrl('upload/img/'.$value['usr_photo']) ?>" alt=""></a>
+							<!--<a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>"><?= ' '.$value['usr_firstname'].' '.$value['usr_name'] ?></a>-->
 						</div>
 					<?php endforeach ?>
 					</div>
