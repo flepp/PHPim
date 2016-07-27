@@ -10,7 +10,7 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-6 col-lg-offset-3">
-			    <form method="POST" class=" custom-form custom-form-blue">
+			    <form method="POST" class="custom-form custom-form-blue">
 			    	<div class="custom-form-group">
 			    		<label for="Email">* Pseudo ou email</label>
 			    		<input type="text" class="form-control" name="userPseudoOrEmail" value="">
@@ -20,8 +20,8 @@
 			        	<input type="password" class="form-control" name="password" value="">
 			    	</div>
 			    	<div class="custom-form-group">
-			    		<div>* Champs obligatoires</div>
 			    		<button type="submit" class="custom-button-gold">Valider</button>
+			    		<div>* Champs obligatoires</div>
 			    	</div>
 			    </form>
 		    	<div class="form-group col-md-12 pressMe">
@@ -32,4 +32,5 @@
 					<?php $this->stop('main_content') ?>
 				</div>
 		    </div>
+		</div>
 	</div>

@@ -57,6 +57,13 @@
 .divPhoto{
 	padding: 0;
 }
-.pressMe div:first-child {
+
+.pressMe a {
+	color: #FEB905;
+}
+.pressMe a:first-of-type {
 	color: #38B3E4;
+}
+.pressMe a:hover{
+	color: #fff;
 }
