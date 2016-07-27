@@ -80,6 +80,10 @@
 .photoAbout span{
 	color: #FEB905;
 }
-.fileUpload button{
-	hidden
+.fileUpload{
+	opacity: .1;
+}
+.upload{
+	text-align: center;
+	font-size: 18px;
 }
