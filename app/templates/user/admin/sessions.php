@@ -100,7 +100,7 @@
 					</form>
 				<?php endforeach; ?>
 			</ul>
-		<div class="col-xs-8 col-xs-offset-2">
+		</div">
 	</section>
 </div>
 <?php $this->stop('main_content') ?>
