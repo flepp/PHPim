@@ -2,7 +2,7 @@
 <?php $this->layout('layout', ['title' => 'About !']) ?>
 <?php $this->start('main_content') ?>
 
-<div class="container fondNoir">
+<div class="container fondCoul">
 	<div class="row">
 		<h1>Ce projet à été réalisé par l'équipe de WEBFORCEONE</h1>
 		<h2>de la session 2 (du 04-04-2016 au 29-07-2016)</h2>
@@ -10,7 +10,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="297px" width="250px" src="<?=$this->assetUrl('upload/img/Ibrahima-THIELO.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Ibrahima-THIELO.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
@@ -36,7 +36,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="297px" width="250px" src="<?=$this->assetUrl('upload/img/Michel-CAVRO.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Michel-CAVRO.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
@@ -56,7 +56,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="297px" width="250px" src="<?=$this->assetUrl('upload/img/Paul-IOANID.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Paul-IOANID.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
@@ -73,7 +73,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="297px" width="250px" src="<?=$this->assetUrl('upload/img/Philippe-TASCH.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Philippe-TASCH.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
