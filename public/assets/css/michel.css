@@ -50,10 +50,8 @@
 }
 /*****************End Flipping images****************/
 
-.fondCoul {
-	padding: 30px;
-	color: white;
-	background-color: #38B3E4;
+.titleRegister h1{
+	color: #38B3E4;
 }
 
 .divPhoto{
