@@ -10,14 +10,14 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Ibrahima-THIELO.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('img/Ibrahima-THIELO.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
 							Nom: Ibrahima Thiello
 						</div>
 						<div class="col-md-12">
-							<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_sen.png')?>">
+							<img height="38px" width="60px" src="<?=$this->assetUrl('img/flag_sen.png')?>">
 						</div>
 						<div class="col-md-12">
 							linkedin:<a href="https://www.linkedin.com/in/ibrahima-thiello"> ibrahima-thiello </a>
@@ -36,14 +36,14 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Michel-CAVRO.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('img/Michel-CAVRO.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
 							Nom: Michel Cavro
 						</div>
 						<div class="col-md-12">
-						<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_fra.png')?>">
+						<img height="38px" width="60px" src="<?=$this->assetUrl('img/flag_fra.png')?>">
 						</div>
 						<div class="col-md-12">
 						linkedin: michelcavro
@@ -56,14 +56,14 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Paul-IOANID.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('img/Paul-IOANID.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
 						Nom: Paul Ioanid
 						</div>
 						<div class="col-md-12">
-						<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_rom.png')?>">
+						<img height="38px" width="60px" src="<?=$this->assetUrl('img/flag_rom.png')?>">
 						</div>
 					</div>
 				</div>
@@ -73,14 +73,14 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Philippe-TASCH.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('img/Philippe-TASCH.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
 						Nom: Philippe Tasch
 						</div>
 						<div class="col-md-12">
-						<img height="38px" width="60px" src="<?=$this->assetUrl('upload/img/flag_lux.png')?>">
+						<img height="38px" width="60px" src="<?=$this->assetUrl('img/flag_lux.png')?>">
 						</div>
 					</div>
 				</div>
