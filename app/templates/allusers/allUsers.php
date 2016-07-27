@@ -9,14 +9,15 @@
 		<div class="section choose-session">
 			<h1>Choisissez une session:</h1>
 			<form action="" method="">
-				<select name="session">
-				<?php foreach ($sessionList as $key => $value) : ?>
-					<option value="<?= $value['id']  ?>" <?php if ($id_session == $value['id']) : ?>selected="selected"<?php endif; ?>><?= $value['ses_name'] ?>
-					</option>
-				<?php endforeach; ?>
-				</select>
-				<button class="btn btn-default" type="submit" name="Valider">Valider</button>
-				
+				<div class="form-group">
+					<select name="session">
+					<?php foreach ($sessionList as $key => $value) : ?>
+						<option value="<?= $value['id']  ?>" <?php if ($id_session == $value['id']) : ?>selected="selected"<?php endif; ?>><?= $value['ses_name'] ?>
+						</option>
+					<?php endforeach; ?>
+					</select>
+					<button class="btn btn-default" type="submit" name="Valider">Valider</button>
+				</div>
 			</form>
 		</div>
 	<?php endif ?>
