@@ -10,7 +10,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="332px" width="280px" src="<?=$this->assetUrl('upload/img/Ibrahima-THIELO.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Ibrahima-THIELO.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
@@ -36,7 +36,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="332px" width="280px" src="<?=$this->assetUrl('upload/img/Michel-CAVRO.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Michel-CAVRO.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
@@ -56,7 +56,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="332px" width="280px" src="<?=$this->assetUrl('upload/img/Paul-IOANID.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Paul-IOANID.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
@@ -73,7 +73,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="332px" width="280px" src="<?=$this->assetUrl('upload/img/Philippe-TASCH.jpg')?>">
+						<img height="302px" width="255px" src="<?=$this->assetUrl('upload/img/Philippe-TASCH.jpg')?>">
 					</div>
 					<div class="container back">
 						<div class="col-md-12">
