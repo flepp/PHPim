@@ -7,8 +7,8 @@
 		<div class="row">
 			<div class="col-xs-6">
 				<h1>Informations personnels:</h1>
-				<img height="297px" width="250px" src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>">
-				<ul>
+				<img height="360px" width="300px" src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>"><br/><br/>
+				<ul class="list-details">
 					<li>Nom:<?= ' '.$userInfo['usr_name'] ?></li>
 					<li>Prénom:<?= ' '.$userInfo['usr_firstname'] ?></li>
 					<li>Email:<?= ' '.$userInfo['usr_email'] ?></li>
@@ -19,18 +19,10 @@
 					<li>Adresse:<?= ' '.$userInfo['usr_street'] ?></li>
 					<li>Code postal:<?= ' '.$userInfo['usr_zipcode'] ?></li>
 				</ul>
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~ I'm redirecting to all users page ~~~~~~~~~~~~~~~~~~~ -->
+				<a class="btn btn-default" href="<?= $this->url('allusers_allUsers') ?>">Retour vers liste</a>
 			</div>
 			<div class="col-xs-6">
-				<input hidden id="address" type="textbox" value="<?= $userInfo['usr_city'].', '.$userInfo['usr_street'] ?>">
-			    
-			    <div id="map"></div>
-				<!-- ~~~~~~~~~~~~~~~~~~~~~~ I'm redirecting to all users page ~~~~~~~~~~~~~~~~~~~ -->
-				<a href="<?= $this->url('allusers_allUsers') ?>">Retour vers liste</a>
-				<!-- I'm redirecting to edit user page -->
-				<?php if ($userInfo['id'] == $_SESSION['user']['id']): ?>
-					<a href="<?= $this->url('user_edit', ['id' => $userInfo['id']]) ?>">Editer</a>
-				<?php endif ?>
-
 				<!-- ~~~~~~~~~~~~~~~~~ I'm changing the user profile for admin ~~~~~~~~~~~~~~~~~~ -->
 				<?php if ($_SESSION['user']['usr_role'] == 'admin'): ?> 
 					<h4>Vous êtes connecté en tant que:</h4> 
@@ -45,6 +37,14 @@
 						</div>
 					</form> 
 				<?php endif ?>
+				<input hidden id="address" type="textbox" value="<?= $userInfo['usr_city'].', '.$userInfo['usr_street'] ?>">
+			    
+			    <div id="map"></div>
+				<!-- I'm redirecting to edit user page -->
+				<?php if ($userInfo['id'] == $_SESSION['user']['id']): ?>
+					<a href="<?= $this->url('user_edit', ['id' => $userInfo['id']]) ?>">Editer</a>
+				<?php endif ?>
+
 			</div>
 
     </div>  

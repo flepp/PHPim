@@ -12,8 +12,9 @@
 /*Style for map frame*/
 #map {
 	margin-top: 20px;
-	height: 700px;
-	width: 700px;
+	margin-bottom: 20px;
+	height: 720px;
+	width: 720px;
 	border: 3px solid #FEB905;
 }
 .container-paul p,li,a {
@@ -34,4 +35,10 @@
 .container-paul .on-off {
 	text-align: right;
 	margin: 20px 15px;
+}
+.list-details {
+	background-color: #FEB905;
+	width: 300px;
+	height: 205px;
+	margin-left: 165px;
 }

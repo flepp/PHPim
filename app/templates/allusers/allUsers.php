@@ -15,7 +15,8 @@
 					</option>
 				<?php endforeach; ?>
 				</select>
-				<input class="btn btn-default" type="submit" value="Ok"/>
+				<button class="btn btn-default" type="submit" name="Valider">Valider</button>
+				
 			</form>
 		</div>
 	<?php endif ?>
