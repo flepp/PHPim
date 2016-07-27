@@ -10,8 +10,8 @@
 
 .flip-container, .front, .back {
 	margin: auto;
-	width: 280px;
-	height: 332px;
+	width: 290px;
+	height: 344px;
 }
 
 /* flip speed goes here */
@@ -41,21 +41,24 @@
 	transform: rotateY(0deg);
 }
 
+.front h1{
+	color: #fff;
+	text-align: center;
+	margin-top: -55px;
+	z-index: 5;
+}
+
 /* back, initially hidden pane */
 .back {
 	transform: rotateY(180deg);
 	padding-top: 50px;
 	text-align: center;
-	background-color: #FEB905;
+	background-color: #E9E5DD
 }
 /*****************End Flipping images****************/
 
 .titleRegister h1{
 	color: #38B3E4;
-}
-
-.divPhoto{
-	padding: 0;
 }
 
 .pressMe a {
@@ -66,4 +69,8 @@
 }
 .pressMe a:hover{
 	color: #fff;
+}
+
+.photoAbout span{
+	color: #FEB905;
 }
