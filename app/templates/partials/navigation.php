@@ -42,7 +42,7 @@
 										<a href="<?= $this->url('session_database') ?>">
 											<span>BDD Session</span>
 											<div class="description">
-												gérez vos sessions
+												gérez vos B.D.D
 											</div>
 										</a>
 									</li>
