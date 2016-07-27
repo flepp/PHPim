@@ -2,8 +2,8 @@
 
 <?php $this->start('main_content') ?>
 
-	<!-- ~~~~ I'm inserting a "form", for selecting the session, which will be displayed only for "admin" statute ~~~ -->
 <div class="container container-paul">
+	<!-- ~~~~ I'm inserting a "form", for selecting the session, which will be displayed only for "admin" statute ~~~ -->
 	<?php if ($_SESSION['user']['usr_role'] == 'admin'): ?> 
 		<div class="on-off">
 			<form method="POST" action="">
@@ -38,22 +38,24 @@
 			<div class="row">
 				<div class="col-xs-6">
 					<div class="form-group">
-						<label for="inputName">Nom:</label>
-						<input class="form-control" type="text" name="username" value="<?= $userInfo['usr_name'] ?>">
-						<label for="inputFirstName">Prénom:</label>
-						<input class="form-control" type="text" name="userfirstname" value="<?= $userInfo['usr_firstname'] ?>">
-						<label for="inputEmail">Email*:</label>
-						<input class="form-control" type="email" name="useremail" value="<?= $userInfo['usr_email'] ?>">
-						<label for="inputPseudo">Pseudo (min. 3 charactères):</label>
-						<input class="form-control" type="text" name="userpseudo" value="<?= $userInfo['usr_pseudo'] ?>">
-						<label for="changeSession">Changer la session de l'étudiant:</label>
-						<select name="session">
-							<option value="0">Pas de session</option>
-						<?php foreach ($sessionList as $key => $value) : ?>
-							<option value="<?= $value['id'] ?>" "<?= $value['id'] == $_SESSION['user']['session_id'] ? ' selected="selected"' : '' ?>"><?= $value['ses_name'] ?>
-							</option>
-						<?php endforeach; ?>
-						</select>
+						<div class="inputs-admin">
+							<label for="inputName">Nom:</label>
+							<input class="form-control" type="text" name="username" value="<?= $userInfo['usr_name'] ?>">
+							<label for="inputFirstName">Prénom:</label>
+							<input class="form-control" type="text" name="userfirstname" value="<?= $userInfo['usr_firstname'] ?>">
+							<label for="inputEmail">Email*:</label>
+							<input class="form-control" type="email" name="useremail" value="<?= $userInfo['usr_email'] ?>">
+							<label for="inputPseudo">Pseudo (min. 3 charactères):</label>
+							<input class="form-control" type="text" name="userpseudo" value="<?= $userInfo['usr_pseudo'] ?>">
+							<label for="changeSession">Changer la session de l'étudiant:</label>
+							<select name="session">
+								<option value="0">Pas de session</option>
+							<?php foreach ($sessionList as $key => $value) : ?>
+								<option value="<?= $value['id'] ?>" "<?= $value['id'] == $_SESSION['user']['session_id'] ? ' selected="selected"' : '' ?>"><?= $value['ses_name'] ?>
+								</option>
+							<?php endforeach; ?>
+							</select>
+						</div>	
 					</div>	
 				</div>
 			
@@ -76,11 +78,11 @@
 				</div>
 			</div>
 		<label for="inputPhoto">Photo d'étudiant:</label>
-		<img height="178px" width="150px" src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>">
+		<img src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>">
 		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ I'm inserting a new photo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<input type="hidden" name="fichierSoumis" value="1">
 		<label for="files"><span class="btn btn-default">Changer</span></label>
-		<input style="visibility: hidden;" id = "files" type="file" name="photo">
+		<input id = "files" type="file" name="photo">
 		<div class="btn-valider">
 			<input class="btn btn-default" type="submit" name="submitInfo" value="VALIDER">
 		</div>

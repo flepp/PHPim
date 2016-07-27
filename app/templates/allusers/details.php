@@ -7,7 +7,7 @@
 		<div class="row">
 			<div class="col-xs-6">
 				<h1>Informations personnelles:</h1>
-				<img height="360px" width="300px" src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>"><br/><br/>
+				<img src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>"><br/><br/>
 				<ul class="list-details">
 					<li>Nom:<?= ' '.$userInfo['usr_name'] ?></li>
 					<li>Prénom:<?= ' '.$userInfo['usr_firstname'] ?></li>
@@ -39,16 +39,14 @@
 						</div>
 					</form> 
 				<?php endif ?>
-				<input hidden id="address" type="textbox" value="<?= $userInfo['usr_city'].', '.$userInfo['usr_street'] ?>">
-			    
+				<input hidden id="address" type="textbox" value="<?= $userInfo['usr_country'].', '.$userInfo['usr_city'].', '.$userInfo['usr_street'] ?>">
 			    <div id="map"></div>
-
 			</div>
 				<!-- ~~~~~~~~~~~~~~~~~~~~~~ I'm redirecting to all users page ~~~~~~~~~~~~~~~~~~~ -->
-			<div class="retour-vers-liste">
-				<a class="btn btn-default" href="<?= $this->url('allusers_allUsers') ?>">Retour vers liste</a>
-			</div>
     </div>  
+	<div class="retour-vers-liste">
+		<a class="btn btn-default" href="<?= $this->url('allusers_allUsers') ?>">Retour vers liste</a>
+	</div>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfSWVubN0FtFttDkHjBWTbwINb-VFNbVc&signed_in=true&callback=initMap"async defer>
 	</script>
 <?php $this->stop('main_content') ?>
