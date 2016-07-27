@@ -39,10 +39,8 @@
 						</div>
 					</form> 
 				<?php endif ?>
-				<input hidden id="address" type="textbox" value="<?= $userInfo['usr_city'].', '.$userInfo['usr_street'] ?>">
-			    
+				<input hidden id="address" type="textbox" value="<?= $userInfo['usr_country'].', '.$userInfo['usr_city'].', '.$userInfo['usr_street'] ?>">
 			    <div id="map"></div>
-
 			</div>
 				<!-- ~~~~~~~~~~~~~~~~~~~~~~ I'm redirecting to all users page ~~~~~~~~~~~~~~~~~~~ -->
 			<div class="retour-vers-liste">
