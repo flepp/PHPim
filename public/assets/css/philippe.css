@@ -347,6 +347,23 @@
 	border: none;
 	border-bottom: 3px solid;
 	margin-bottom: 20px;
+	background-color: transparent;
+}
+
+input::-webkit-input-placeholder {
+color: #fff !important;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+color: #fff !important;
+}
+
+input::-moz-placeholder {  /* Firefox 19+ */
+color: #fff !important;
+}
+
+input:-ms-input-placeholder {
+color: #fff !important;
 }
 
 
