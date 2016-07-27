@@ -145,7 +145,7 @@ class QuizController extends Controller
     public function modifyPost($id){
 
         $quizManager = new QuizManager();
-        //J'appelle la methode findAll heritee de manager
+        //Updating Quiz
         $quizSingle = $quizManager->find($id);
 
         $day = isset($_POST['quiDay']) ? trim(strip_tags($_POST['quiDay'])) : '';
@@ -209,9 +209,9 @@ class QuizController extends Controller
 
     public function quiz()
     {
-        //j'instancie le manager lié à la table quiz
+        //getting quiz table
         $quizManager = new QuizManager();
-        //J'appelle la methode findAll heritee de manager
+        //fetchin all and sorting par cat_name
         $quizList = $quizManager->getQuizByCat($orderBy = "qui_day");
         $quizListBycat = array();
         $i = 0;
@@ -233,9 +233,8 @@ class QuizController extends Controller
                 $_SESSION['user']['ses_end'] = $getSesEnd['ses_end'];
             }
 
-        //j'instancie le manager lié à la table quiz
+        
         $quizManager = new QuizManager();
-        //J'appelle la methode findAll heritee de manager
         $quizList = $quizManager->findAll($orderBy = "qui_day");
         $sessionManager = new SessionManager();
         $sessionList = $sessionManager->findAll();

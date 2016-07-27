@@ -20,7 +20,7 @@
 <body>
 	<header class="header-navigation">
 		<nav class="navbar">
-			<div class="container">
+			<div class="container container-i">
 				<!-- Brand and toggle get grouped for better mobile display -->
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -50,7 +50,7 @@
 						<?php endif ?>
 						<?php endif; ?>
 						<?php if (isset($w_user) && is_array($w_user)) :?>
-						<li><a href="<?= $this->url('user_database') ?>">BDD utilisateur</a></li>
+						<li><a href="<?= $this->url('user_database') ?>">Mes B.D.D</a></li>
 						<li><a href="<?= $this->url('allusers_allUsers') ?>">Etudiants</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profil <span class="caret"></span></a>
