@@ -12,19 +12,24 @@
 	background-color: #38B3E4;
 }
 
+.section-session-right p + div{
+
+	margin-bottom: 15px;
+}
+
 @media screen and (min-width: 768px){
 
-		
-	}
-	@media screen and (min-width: 992px){
-		
-		
-	}
 
-	@media screen and (min-width: 1200px){
-		.section-session-right {
-			position: relative;
-		    top: 120px;
-		    left: -65px;	
+}
+@media screen and (min-width: 992px){
+
+}
+
+@media screen and (min-width: 1200px){
+	.section-session-right {
+		position: relative;
+	    top: 35px;
+	    left: -55px;
+	    padding: 10%;
 	}
 }

@@ -330,7 +330,14 @@
 	padding: 10%;
 }
 
+.custom-inline-form{
+
+	display: inline-block;
+	vertical-align: middle;
+}
+
 /* styles de base du formulaire */
+ .custom-button,
  .custom-form button{
 
 	display: inline-block;
@@ -374,6 +381,11 @@ color: #fff !important;
 input:-ms-input-placeholder {
 color: #fff !important;
 }
+
+/*[hidden]{
+
+	display: none !important;
+}*/
 
 
 /* styles pour le bouton d'envoi d'un formulaire à partir du mode tablette */
