@@ -4,8 +4,8 @@
 
 <div class="container container-i">
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION CREATION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
-	<section class="row col-md-6">
-		<div class="col-xs-8 col-xs-offset-2 col-sm-6">
+	<section class="row col-md-6 section-session-left">
+		<div class="col-xs-10 col-sm-6">
 			<h1 class="">Créer une session </h1>
 			<form method="POST" action="">
 				<div class="form-group">
@@ -26,9 +26,9 @@
 	</section>
 
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION EDITION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
-	<section class="col-md-6">
-		<div class="col-xs-8 col-xs-offset-2 col-sm-6">
-			<h1 class="">Sessions créees</h1>
+	<section class="row col-md-6 section-session-right">
+		<div class="col-xs-10 col-sm-6">
+			<h1 class="">Sessions créées</h1>
 			<!---------------SESSION WITH STUDENTS----------- -->
 			<h2>Sessions remplies</h2>
 			<ul>

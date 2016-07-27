@@ -3,3 +3,14 @@
 	font-style: italic;
 	font-size: 1rem;
 }
+
+.section-session-left{
+	background-color: #FEB905;
+}
+
+.section-session-right{
+	background-color: #38B3E4;
+	position: relative;
+    top: 120px;
+    left: -65px;
+}
