@@ -57,3 +57,6 @@
 .divPhoto{
 	padding: 0;
 }
+.pressMe div:first-child {
+	color: #38B3E4;
+}

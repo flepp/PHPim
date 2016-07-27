@@ -11,7 +11,7 @@
 	<div class="container">
 		<div class="col-lg-8 col-md-offset-2 fondCoul">
 			<div class="row">
-			    <form>
+			    <form method="POST">
 			      <div class="form-group col-md-4 custom-form-group">
 			        <label for="Email">* Adresse Email</label>
 			        <input type="email" class="form-control" name="email" value="">
