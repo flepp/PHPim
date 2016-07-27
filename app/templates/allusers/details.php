@@ -45,7 +45,7 @@
 
 			</div>
 				<!-- ~~~~~~~~~~~~~~~~~~~~~~ I'm redirecting to all users page ~~~~~~~~~~~~~~~~~~~ -->
-			<div class="retour-vers-liste">	
+			<div class="retour-vers-liste">
 				<a class="btn btn-default" href="<?= $this->url('allusers_allUsers') ?>">Retour vers liste</a>
 			</div>
     </div>  
