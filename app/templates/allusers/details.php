@@ -19,8 +19,10 @@
 					<li>Adresse:<?= ' '.$userInfo['usr_street'] ?></li>
 					<li>Code postal:<?= ' '.$userInfo['usr_zipcode'] ?></li>
 				</ul>
-				<!-- ~~~~~~~~~~~~~~~~~~~~~~ I'm redirecting to all users page ~~~~~~~~~~~~~~~~~~~ -->
-				<a class="btn btn-default" href="<?= $this->url('allusers_allUsers') ?>">Retour vers liste</a>
+				<!-- I'm redirecting to edit user page -->
+				<?php if ($userInfo['id'] == $_SESSION['user']['id']): ?>
+					<a class="btn btn-default" href="<?= $this->url('user_edit', ['id' => $userInfo['id']]) ?>">Editer</a>
+				<?php endif ?>
 			</div>
 			<div class="col-xs-6">
 				<!-- ~~~~~~~~~~~~~~~~~ I'm changing the user profile for admin ~~~~~~~~~~~~~~~~~~ -->
@@ -40,13 +42,12 @@
 				<input hidden id="address" type="textbox" value="<?= $userInfo['usr_city'].', '.$userInfo['usr_street'] ?>">
 			    
 			    <div id="map"></div>
-				<!-- I'm redirecting to edit user page -->
-				<?php if ($userInfo['id'] == $_SESSION['user']['id']): ?>
-					<a href="<?= $this->url('user_edit', ['id' => $userInfo['id']]) ?>">Editer</a>
-				<?php endif ?>
 
 			</div>
-
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~ I'm redirecting to all users page ~~~~~~~~~~~~~~~~~~~ -->
+			<div class="retour-vers-liste">	
+				<a class="btn btn-default" href="<?= $this->url('allusers_allUsers') ?>">Retour vers liste</a>
+			</div>
     </div>  
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfSWVubN0FtFttDkHjBWTbwINb-VFNbVc&signed_in=true&callback=initMap"async defer>
 	</script>
