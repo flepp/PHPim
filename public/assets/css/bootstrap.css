@@ -1601,9 +1601,6 @@ output {
   background-image: none;
 }
 
-.form-control:focus {
-  border-color: #66afe9;
-}
 .form-control::-moz-placeholder {
   color: #999999;
   opacity: 1;

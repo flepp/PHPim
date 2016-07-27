@@ -1,7 +1,7 @@
 .info-upload span{
 	display: block;
 	font-style: italic;
-	font-size: 1rem;
+	font-size: 80%;
 }
 
 .section-session-left{
@@ -10,6 +10,8 @@
 
 .section-session-right{
 	background-color: #38B3E4;
+	padding: 6%;
+
 }
 
 .section-session-right p + div{
@@ -21,15 +23,30 @@
 
 
 }
+
 @media screen and (min-width: 992px){
 
+	.section-session-right{
+		background-color: #38B3E4;
+		padding: 10%;
+
+	}
 }
 
-@media screen and (min-width: 1200px){
-	.section-session-right {
-		position: relative;
-	    top: 35px;
-	    left: -55px;
-	    padding: 10%;
-	}
+.database-row{
+
+	background-color: #FEB905;
+	padding: 15px 0;
+	margin-bottom: 15px;
+	overflow: hidden;
+}
+
+.database-row p{
+
+	float: left;
+}
+
+.database-row form{
+
+	float: right;
 }

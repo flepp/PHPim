@@ -5,18 +5,18 @@
 <!-- ~~~~~ I'm inserting a "form", for selecting the session, which will be displayed only for "admin" statute ~~~ -->
 <?php if (isset($sessionList) && sizeof($sessionList) > 0): ?>	
 	<?php if ($_SESSION['user']['usr_role'] == 'admin'): ?>
-	<div class="container container-paul">
+	<div class="container">
+		<h1 class="h1">Choisissez une session</h1>
 		<div class="section choose-session">
-			<h1>Choisissez une session:</h1>
 			<form action="" method="">
-				<div class="form-group">
+				<div class="form-group custom-form-group">
 					<select name="session">
 					<?php foreach ($sessionList as $key => $value) : ?>
 						<option value="<?= $value['id']  ?>" <?php if ($id_session == $value['id']) : ?>selected="selected"<?php endif; ?>><?= $value['ses_name'] ?>
 						</option>
 					<?php endforeach; ?>
 					</select>
-					<button class="btn btn-default" type="submit" name="Valider">Valider</button>
+					<button class="custom-button custom-button-gold" type="submit" name="Valider">Valider</button>
 				</div>
 			</form>
 		</div>
@@ -27,9 +27,9 @@
 		<div class="section list-session">
 			<?php if(count($allUsersTable) > 0) : ?>
 				<?php if ($_SESSION['user']['usr_role'] == 'user'): ?>
-					<h1>Liste des étudiants de ma session:</h1>
+					<h2>Étudiants de ma session:</h2>
 				<?php else: ?>
-					<h1>Les étudiants de <?= $allUsersTable[0]['ses_name']  ?> </h1>
+					<h2>Étudiants de la <?= $allUsersTable[0]['ses_name']  ?> </h2>
 				<?php endif ?>
 				<div class="table">
 					<div class="row users-display">

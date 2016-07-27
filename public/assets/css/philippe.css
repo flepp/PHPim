@@ -174,11 +174,10 @@
 	position: relative;
 	display: block;
 	background-color: #FEB905;
-	padding: 30px;
 	overflow: hidden;
 	text-transform: uppercase;
 	font-size: 27px;
-
+	width: 100%;
 }
 
 @media screen and (min-width: 768px){
@@ -191,8 +190,7 @@
 		left: calc(50% - 20px);
 		height: 190px;
 		margin-bottom: -95px;
-		padding: 35px;
-
+		width: auto;
 	}
 }
 
@@ -206,8 +204,6 @@
 		height: 300px;
 		margin-bottom: -150px;
 		font-size: 45px;
-		padding: 50px;
-
 	}
 }
 
@@ -236,6 +232,7 @@
 	position: relative;
 	z-index: 1;
 	display: block;
+	padding: 35px;
 	width: 100%;
 	height: 100%;
 }
@@ -262,8 +259,8 @@
 @media screen and (min-width: 992px){
 	.intro-link img{
 		position: absolute;
-		bottom: 0px;
-		left: 0px;
+		bottom: 50px;
+		left: 35px;
 	}
 }
 
@@ -304,6 +301,11 @@
 		background-color: #30A9DA;
 	}
 
+	.custom-form-blue input:focus{
+
+		border-color: #FEB905;
+	}
+
 .custom-form-gold{
 
 	background-color: #FEB905;
@@ -325,9 +327,18 @@
 }
 
 /* appliquer au formulaire SEULEMENT*/
+
 .custom-form{
 
-	padding: 10%;
+	padding: 6%;
+}
+
+@media screen and (min-width : 992px){
+
+	.custom-form{
+
+		padding: 10%;
+	}
 }
 
 .custom-inline-form{
@@ -342,10 +353,37 @@
 
 	display: inline-block;
 	vertical-align: middle;
-	padding: 15px 22px;
+	padding: 10px 16px;
 	text-transform: uppercase;
 	color: #fff;
 	border: 0;
+	margin-bottom: 3px;
+}
+
+@media screen and (min-width : 768px){
+	.custom-button,
+	.custom-form button{
+
+		display: inline-block;
+		vertical-align: middle;
+		padding: 12px 18px;
+		text-transform: uppercase;
+		color: #fff;
+		border: 0;
+	}
+}
+
+@media screen and (min-width : 768px){
+	.custom-button,
+	.custom-form button{
+
+		display: inline-block;
+		vertical-align: middle;
+		padding: 15px 22px;
+		text-transform: uppercase;
+		color: #fff;
+		border: 0;
+	}
 }
 
 /* styles pour les labels du formulaire */
@@ -387,17 +425,63 @@ color: #fff !important;
 	display: none !important;
 }*/
 
+select{
+
+	padding: 15px;
+	min-width: 100px;
+	border: 3px solid #38B3E4;
+	background-color: #E9E5DD;
+	color: #000;
+	margin-bottom: 15px;
+ //-webkit-appearance:none;
+}
+
+option{
+
+	//padding: 15px;
+	border-bottom: 3px solid #38B3E4;
+}
+
+form .form-send-button{
+
+	margin-top: 15px;
+}
 
 /* styles pour le bouton d'envoi d'un formulaire à partir du mode tablette */
 
-@media screen and (min-width : 768px){
+@media screen and (min-width : 1200px){
 	form .form-send-button{
 	    position: absolute;
 	    padding: 25px 30px;
-	    top: 95%;
-	    right: -15px;
+	    top: 85%;
+	    left: -15px;
 	}
 }
 
+
+/*  quizzzzzzzz  */
+
+.quiz{
+
+	background-color: #FEB905;
+	padding: 5%;
+	margin: 10px 0;
+}
+
+div[class^="col-"]:nth-of-type(even) .quiz{
+
+	background-color: #38B3E4;
+}
+
+.quiz > p:first-child{
+
+	border-bottom: 2px solid #fff;
+	overflow: hidden;
+	padding-bottom: 15px
+}
+.quiz span + span{
+
+	float: right;
+}
 
 

@@ -4,11 +4,19 @@
 	perspective: 1000px;
 }
 /* flip the pane when hovered */
-.flip-container:hover .flipper, .flip-container.hover .flipper {
+.flip-container:hover .flipper,
+.flip-container.hover .flipper {
 	transform: rotateY(180deg);
 }
 
-.flip-container, .front, .back {
+.flip-container img{
+
+	max-width: 100%;
+}
+
+.flip-container,
+.front,
+.back {
 	margin: auto;
 	width: 290px;
 	height: 344px;
@@ -61,19 +69,18 @@
 	color: #38B3E4;
 }
 
-.pressMe{
+.login-optional{
 	text-align: center;
+	margin-top: 25px;
 }
-.pressMe a {
-	margin-left: 15px;
-	margin-right: 15px;
+.login-optional a {
 	color: #FEB905;
-	font-size: 25px;
 }
-.pressMe a:first-of-type {
+.login-optional a:first-of-type {
 	color: #38B3E4;
+	margin-right: 15px;
 }
-.pressMe a:hover{
+.login-optional a:hover{
 	color: #fff;
 }
 
@@ -86,4 +93,9 @@
 .upload{
 	text-align: center;
 	font-size: 18px;
+}
+
+.form-mandatory-msg{
+
+	margin-top: 15px;
 }

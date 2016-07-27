@@ -1,7 +1,8 @@
 <?php $this->layout('layout', ['title' => 'Ajout de catégorie']) ?>
 
 <?php $this->start('main_content') ?>
-	<p>Ajouter une catégorie</p>
+<div class="container">
+	<h1 class="h1">Ajouter une catégorie</h1>
 	<form action="" method="POST">
 		<label for="category">Nom de la catégorie : </label>
 		<input type="text" placeholder="Catégorie" name="catName">
@@ -19,5 +20,6 @@
 	</form>
 	<?php endforeach ?>
 	<a href="<?= $this->url('quiz_manage'); ?>">Retour</a>
+</div>
 <?php $this->stop('main_content') ?>
 

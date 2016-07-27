@@ -6,9 +6,9 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto+Condensed" rel="stylesheet">
 	<title><?= $this->e($title) ?></title>
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/reset.css') ?>">
-	<link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/bootstrap.css') ?>">
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/bootstrap-theme.css') ?>">
+	<link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
 	<!-- CSS personnel -->
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/michel.css') ?>">
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/paul.css') ?>">
