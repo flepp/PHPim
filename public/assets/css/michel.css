@@ -9,6 +9,7 @@
 }
 
 .flip-container, .front, .back {
+	margin: auto;
 	width: 255px;
 	height: 302px;
 }
@@ -48,44 +49,14 @@
 	background-color: #FEB905;
 }
 /*****************End Flipping images****************/
-form label {
-    display: block;
-    padding: 15px 0;
-    font-size: 14px;
-    text-transform: uppercase;
-}
-form:first-of-type input {
-    padding: 15px;
-    display: block;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.15);
-    border: none;
-    border-bottom: 2px solid #FEB905;
-}
 
 .fondCoul {
-	padding: 80px;
+	padding: 50px;
 	color: white;
 	background-color: #38B3E4;
 
 }
 
-.pressMe {
-	margin-top: 5px;
-	line-height: 45px;
-	text-align: center;
-	background-color: #FEB905;
-	height: 45px;
-	width: 140px;
-	transition: 0.2s;
-}
-.pressMe:hover{
-	background-color: #EAEAEA;
-}
-.pressMe a{
-	color: white;
-	transition: 0.2s;
-}
-.pressMe:hover a{
-	color: black;
+.col-lg-3{
+	padding: 0;
 }
