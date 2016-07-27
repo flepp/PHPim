@@ -25,20 +25,20 @@
 
 	@media screen and (min-width: 768px){
 
-		.home-header{
+		header{
 			padding-top: 40px;
 		}
 	}
 	@media screen and (min-width: 992px){
 
-		.home-header{
+		header{
 			padding-top: 55px;
 		}
 	}
 
 	@media screen and (min-width: 1200px){
 
-		.home-header{
+		header{
 			padding-top: 75px;
 		}
 	}

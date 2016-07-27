@@ -51,7 +51,7 @@
 							<?php endif ?>
 							<?php endif; ?>
 							<?php if (isset($w_user) && is_array($w_user)) :?>
-							<li><a href="<?= $this->url('user_database') ?>"><span>BDD utilisateur</span></a></li>
+							<li><a href="<?= $this->url('user_database') ?>"><span>Mes B.D.D</span></a></li>
 							<li><a href="<?= $this->url('allusers_allUsers') ?>"><span>Etudiants</span></a></li>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle profile-img" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -82,7 +82,7 @@
 					<h1 class="home-heading col-xs-12">Bienvenue sur la <span class="heading-separator">plateforme de quiz</span> de l'école <span>Webforce 3</span></h1>
 			      	<div class="intro-text intro-text-top">
 				      	<p>
-				        	L'application PHPim propose une gestion centralisée des bases de données des étudiants de la formation webforce3, ainsi qu'un accès rapide aux quizs mis au point par les formateurs.
+				        	L'application PHPim propose une gestion centralisée des bases de données des étudiants de la formation webforce3, ainsi qu'un accès rapide aux quiz mis au point par les formateurs.
 				        </p>
 			        </div>
 		        </div>
