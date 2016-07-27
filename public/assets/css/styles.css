@@ -107,11 +107,9 @@ nav.navbar{
 	color: #fff;
 }
 
-.navbar-nav .open .dropdown-menu > li > a:hover{
+/*.navbar-nav .open .dropdown-menu > li > a:hover{
 
-	background-color: transparent;
-	color: #FEB905;
-}
+}*/
 .navbar a span{
 
 	position: relative;
@@ -161,7 +159,6 @@ header .navbar > .container .navbar-brand span + span{
 		font-size: 18px;
 		background-color: #202020;
 		color: #fff;
-
 	}
 }
 
@@ -176,10 +173,14 @@ header .navbar > .container .navbar-brand span + span{
 	display: none;
 }
 
+.description{
+
+	display: none;
+}
+
 @media screen and (min-width: 768px){
 
-.nav > li:nth-of-type(3),
-.nav > li:last-of-type{
+.nav  .menu-item-dropdown{
 
 	position: static;
 }
@@ -190,12 +191,12 @@ header .navbar > .container .navbar-brand span + span{
 	background-color: transparent;
 	box-shadow: none;
 	border: none;
+	top: 115%;
 }
 
 .nav-sub-menu li{
 
 	width: 25%;
-	height: 150px;
 	float: right;
 }
 
@@ -210,6 +211,12 @@ header .navbar > .container .navbar-brand span + span{
 	position: relative;
 	overflow: hidden;
 }
+
+	.description{
+		display: block;
+		font-size: 90%;
+		text-transform: lowercase;
+	}
 
 .dropdown-menu.nav-sub-menu li a:after{
 
@@ -251,8 +258,7 @@ header .navbar > .container .navbar-brand span + span{
 		display: none;
 	}
 }
-
-.nav > li:last-of-type a:after{
+.nav > li .profile-img:after{
 
 	content: none;
 }
@@ -275,10 +281,10 @@ header .navbar > .container .navbar-brand span + span{
 .footer a {
 
 	color: #FEB905;
-	text-transform: uppercase;
 }
 
 .footer a + a {
 
 	color: #38B3E4;
+	text-transform: uppercase;
 }
