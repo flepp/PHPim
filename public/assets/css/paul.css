@@ -33,7 +33,7 @@
 	text-transform: uppercase;
 }
 .container-paul .on-off {
-	text-align: right;
+	text-align: left;
 	margin: 20px 15px;
 }
 .list-details {
@@ -49,4 +49,7 @@
 }
 .btn-valider {
 	margin-bottom: 20px;
+}
+.inputs-admin {
+	background-color: #FEB905;
 }
