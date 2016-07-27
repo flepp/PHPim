@@ -10,7 +10,7 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-6 col-lg-offset-3">
-			    <form class=" custom-form custom-form-blue">
+			    <form method="POST" class=" custom-form custom-form-blue">
 			    	<div class="custom-form-group">
 			    		<label for="Email">* Pseudo ou email</label>
 			    		<input type="text" class="form-control" name="userPseudoOrEmail" value="">
@@ -24,11 +24,11 @@
 			    		<button type="submit" class="custom-button-gold">Valider</button>
 			    	</div>
 			    </form>
-		    	<div class="form-group col-md-12 custom-form-group">
-		    		<div class="pressMe">
-					<a href="<?= $this->url('user_register') ?>" >Inscription</a></div>
-					<div class="pressMe">
-					<a href="<?= $this->url('user_forgot')?>">Mot de passe oublié?</a></div>
+		    	<div class="form-group col-md-12 pressMe">
+		    		<div>
+					<a href="<?= $this->url('user_register') ?>" >Inscription</a>
+					<a href="<?= $this->url('user_forgot')?>">Mot de passe oublié?</a>
+					</div>
 					<?php $this->stop('main_content') ?>
 				</div>
 		    </div>
