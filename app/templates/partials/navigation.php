@@ -39,18 +39,18 @@
 										</a>
 									</li>
 									<li class="col-sm-4">
-										<a href="<?= $this->url('quiz_manage') ?>">
-											<span>Gestion Quiz</span>
-											<div class="description">
-												gérez vos quiz
-											</div>
-										</a>
-									</li>
-									<li class="col-sm-4">
 										<a href="<?= $this->url('session_database') ?>">
 											<span>BDD Session</span>
 											<div class="description">
 												gérez vos sessions
+											</div>
+										</a>
+									</li>
+									<li class="col-sm-4">
+										<a href="<?= $this->url('quiz_manage') ?>">
+											<span>Gestion Quiz</span>
+											<div class="description">
+												gérez vos quiz
 											</div>
 										</a>
 									</li>
@@ -61,7 +61,7 @@
 							<?php if (isset($w_user) && is_array($w_user)) :?>
 							<li><a href="<?= $this->url('user_database') ?>"><span>Mes B.D.D</span></a></li>
 							<li><a href="<?= $this->url('allusers_allUsers') ?>"><span>Etudiants</span></a></li>
-							<li class="dropdown menu-item-dropdown">
+							<li class="dropdown menu-item-dropdown user-dropdown">
 								<a href="#" class="dropdown-toggle profile-img" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 									<span class="profile-text">Profil<span class="caret"></span></span>
 									<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
