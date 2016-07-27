@@ -44,7 +44,7 @@
 							<form class="custom-form" method="POST" action="" <?php if($value['ses_status'] == 1){echo " hidden";} ?>>
 								<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
 								<input hidden type="text" name="sessionStatus" value="1">
-								<button type="submit" name="sessionOn" class="enableSession btn btn-default">Réactivé</button>
+								<button type="submit" name="sessionOn" class="enableSession custom-button-gold">Réactivé</button>
 							</form>
 							<form class="custom-form" method="POST" action="" <?php if($value['ses_status'] == 0){echo " hidden";} ?>>
 								<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
