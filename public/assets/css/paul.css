@@ -1,64 +1,23 @@
-/*Style for all users container*/
-.container-paul {
-	background-color: #38B3E4;
-	width: 85%;
-	text-align: center;
-}
-.container-paul select {
-	border: 3px solid #FEB905;
-	min-width: 200px;
-	background-color: #E9E5DD;
-}
 /*Style for map frame*/
 #map {
 	margin-top: 20px;
 	margin-bottom: 20px;
-	height: 720px;
-	width: 720px;
-	border: 3px solid #FEB905;
+	width: 100%;
+	height: 0px;
+	padding-bottom: 25%;
 }
-.container-paul p,li,a {
-  font-size: 16px;
-  font-family: "Roboto Condensed";
+
+.details-list{
+	position: relative;
 }
-.container-paul .form-group div {
-	width: 400px;
-	padding: 20px;
-	margin-bottom: 5px;
-}
-.container-paul form label {
-	display: block;
-	padding: 15px 0;
-	font-size: 14px;
-	text-transform: uppercase;
-}
-.container-paul .on-off {
-	text-align: left;
-	margin: 20px 15px;
-}
-.list-details {
-	background-color: #FEB905;
-	width: 300px;
-	height: 205px;
-	margin-left: 165px;
+
+.details-list li {
+	padding: 10px;
 }
 .retour-vers-liste {
 	text-align: left;
 	margin-left: 20px;
 	margin-bottom: 20px;
-}
-.btn-valider {
-	margin-bottom: 20px;
-}
-.inputs-admin {
-	background-color: #FEB905;
-}
-.container-paul img {
-	width: 410px;
-	height: 510px;
-}
-#files {
-	visibility: hidden;
 }
 
 /* styles gallerie d'images */
@@ -75,3 +34,17 @@
 	-webkit-background-size: cover;
 	background-size: cover;
 }
+
+/* styles edition de profil */
+
+.img-wrap{
+
+	max-width: 50%;
+	margin: 30px auto 30px auto;
+}
+
+.img-wrap img{
+
+	max-width: 100%;
+}
+

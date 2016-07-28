@@ -5,8 +5,9 @@
 <div class="container container-i">
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION CREATION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
 	<section class="row">
+	<h1 class="h1">Gestion de sessions</h1>
 	 	<div class="col-md-6">
-			<h1 class="">Créer une session </h1>
+			<h2>Créer une session </h2>
 			<form method="POST" action="" class="custom-form-gold custom-form">
 				<div class="form-group custom-form-group">
 					<label>Nom de la session</label>
@@ -25,7 +26,7 @@
 		</div>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION EDITION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
 		<div class="col-md-6">
-			<h1 class="">Sessions créées</h1>
+			<h2>Sessions créées</h2>
 			<div class="col-xs-12 section-session-right">
 				<!---------------SESSION WITH STUDENTS----------- -->
 				<div>
@@ -50,8 +51,7 @@
 									<button type="submit" name="sessionOff" class="disableSession  custom-button custom-button-gold">Désactiver</button>
 								</form>
 							<?php endif; ?>
-						</div>
-						<div>
+						
 							<form hidden method="POST" action="" class="show_edit custom-form-blue custom-form custom-form-group">
 								<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 								<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
