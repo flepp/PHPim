@@ -64,11 +64,11 @@ $(document).ready(function(){
 
     /*--------------------------------- END CONFIRM ALL REQUEST-----------------------------------*/
     /*---------------------------------------------------------------------------------------*/
-
-    $("button.button_edit").click(function(e){
+    var btnEdit = $(".button_edit");
+    btnEdit.click(function(e){
         e.preventDefault();
-        $(".show_edit").fadeIn('slow');
-        $("button.button_edit").fadeOut('slow');
+        $(this).parent().children(".show_edit").fadeIn('slow');
+        $(this).fadeOut('slow');
     });
 });
 

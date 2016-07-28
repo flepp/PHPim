@@ -14,6 +14,7 @@
 						<p>
 							<span>Jour : <?php $value['qui_day'] ?></span> <span>Cat</span></p>
 						<h3 class="quiz-content">
+						<?= $value['qui_title'] ?>
 						</h3>
 					</a>
 				</div>
