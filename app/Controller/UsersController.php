@@ -585,7 +585,7 @@ class UsersController extends Controller {
                 foreach ($_FILES as $key => $fichier) {
                     if (!empty($fichier) && !empty($fichier['name'])) {
 
-                        if ($fichier['size'] <= 8388608) {
+                        if ($fichier['size'] <= 18388608) {
                             $filename = $fichier['name'];
                             $dotPos = strrpos($filename, '.');
                             $extension = strtolower(substr($filename, $dotPos+1));
