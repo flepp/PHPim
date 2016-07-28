@@ -6,7 +6,7 @@
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~CREATING DATABASE FOR SESSION~~~~~~~~~~~~~~~~~~~~~ -->
 	<section class="row">
 		<div class="col-xs-8 col-sm-6 col-md-6">
-			<h1>Choisissez une sesion</h1>
+			<h1>Choisissez une session</h1>
 			<form method="POST" action="" class="custom-form-gold custom-form">
 				<div class="row">
 					<div class="col-xs-6 col-sm-6 col-md-3">
