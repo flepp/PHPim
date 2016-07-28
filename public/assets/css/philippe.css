@@ -331,7 +331,7 @@
 }
 
 /* appliquer au formulaire SEULEMENT*/
-
+.details-list,
 .custom-form{
 
 	padding: 6%;
@@ -339,7 +339,8 @@
 }
 
 @media screen and (min-width : 992px){
-
+	
+	.details-list,
 	.custom-form{
 
 		padding: 10%;
