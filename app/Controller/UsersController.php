@@ -315,7 +315,7 @@ class UsersController extends Controller {
                                                 //USER CHANGE PASS
     /*-------------------------------------------------------------------------------------------------------------*/
     public function changePass(){
-
+        $this->allowTo(['admin','user']); 
         $this->show('user/changement-mdp');
     }
 
