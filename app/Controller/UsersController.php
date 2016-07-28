@@ -548,13 +548,17 @@ class UsersController extends Controller {
 
         //IMPORT CSV FILE FROM THE ??? AND CONVERTING INTO ARRAY
         $filePath = isset($_SESSION['filePath']) ? $_SESSION['filePath']: '';
-        $filePathReplace = str_replace(';', ',', $filePath);
+        $filePathReplace = str_replace(';', ',', trim($filePath));
         $lines = explode(PHP_EOL, $filePathReplace);
         $arrayStudents = array();
         foreach ($lines as $line) {
             $arrayStudents[] = str_getcsv($line);
         }
-        unset($arrayStudents[count($arrayStudents)-1]);
+        
+        //debug(count($arrayStudents[count($arrayStudents)-1][0]));
+        if(count($arrayStudents[count($arrayStudents)-1][0]) == 0){
+            unset($arrayStudents[count($arrayStudents)-1]);
+        }
         $_SESSION['stuSession'] = $arrayStudents;
         if (isset($_SESSION['chemin'])){
             if(file_exists($_SESSION['chemin'])){
