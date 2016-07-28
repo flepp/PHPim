@@ -38,7 +38,6 @@
 						</p>
 						<div>
 							<button type="button" class="button_edit custom-button custom-button-gold">Editer</button>
-
 							<form class="custom-inline-form" method="POST" action="" <?php if($value['ses_status'] == 1){echo " hidden";} ?>>
 								<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
 								<input hidden type="text" name="sessionStatus" value="1">
@@ -49,8 +48,6 @@
 								<input hidden type="text" name="sessionStatus" value="0">
 								<button type="submit" name="sessionOff" class="disableSession  custom-button custom-button-gold">Désactivé</button>
 							</form>
-						</div>
-						<div>
 							<form hidden method="POST" action="" class="show_edit custom-form-blue custom-form custom-form-group">
 								<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 								<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">

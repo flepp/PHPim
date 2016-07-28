@@ -1,7 +1,7 @@
 <?php $this->layout('layout', ['title' => 'Invitations']) ?>
 
 <?php $this->start('main_content') ?>
-<div class="container"> 
+<div class="container">
 	<h1 class="h1">Liste d'étudiants</h1>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~UPLOADING STUDENT LIST~~~~~~~~~~~~~~~~~~~~~ -->
 	<section class="row">
