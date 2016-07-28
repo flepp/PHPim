@@ -73,7 +73,7 @@
 		</div>
 		<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 divPhoto">
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
-				<div class="flipper">
+				<div class="Philippe">
 					<div class="front">
 						<img src="<?=$this->assetUrl('img/Philippe-TASCH.jpg')?>">
 						<h1>Flipper</h1>
