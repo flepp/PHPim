@@ -7,38 +7,43 @@
 	<?php if ($_SESSION['user']['usr_role'] == 'admin'): ?>
 	<div class="container">
 		<h1 class="h1">Choisissez une session</h1>
-		<div class="section choose-session">
-			<form action="" method="">
-				<div class="form-group custom-form-group">
-					<select name="session">
-					<?php foreach ($sessionList as $key => $value) : ?>
-						<option value="<?= $value['id']  ?>" <?php if ($id_session == $value['id']) : ?>selected="selected"<?php endif; ?>><?= $value['ses_name'] ?>
-						</option>
-					<?php endforeach; ?>
-					</select>
-					<button class="custom-button custom-button-gold" type="submit" name="Valider">Valider</button>
-				</div>
-			</form>
+		<div class="row">
+			<div class="col-md-6">
+				<form action="" method="" class="custom-form custom-form-blue">
+					<div class="form-group custom-form-group">
+						<select name="session">
+						<?php foreach ($sessionList as $key => $value) : ?>
+							<option value="<?= $value['id']  ?>" <?php if ($id_session == $value['id']) : ?>selected="selected"<?php endif; ?>><?= $value['ses_name'] ?>
+							</option>
+						<?php endforeach; ?>
+						</select>
+						<button class="custom-button custom-button-gold" type="submit" name="Valider">Valider</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	<?php endif ?>
 <?php endif ?>
 
 		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Here starts the part for "user" statute ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<div class="section list-session">
+		<div class="row">
 			<?php if(count($allUsersTable) > 0) : ?>
 				<?php if ($_SESSION['user']['usr_role'] == 'user'): ?>
 					<h2>Étudiants de ma session:</h2>
 				<?php else: ?>
 					<h2>Étudiants de la <?= $allUsersTable[0]['ses_name']  ?> </h2>
 				<?php endif ?>
-				<div class="table">
 					<div class="row users-display">
 					<?php foreach ($allUsersTable as $key => $value): ?>
-						<div class="col-xs-12 col-sm-6 col-md-4"><a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>"><img class="img-responsive" src="<?= $this->assetUrl('upload/img/'.$value['usr_photo']) ?>" alt=""></a>
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="embed-responsive embed-responsive-4by3 img-gallery-div"
+								style="background-image : url(<?= $this->assetUrl('upload/img/'.$value['usr_photo']) ?>)
+							">
+								<a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>" class="embed-responsive-item"></a>
+							</div>
 						</div>
 					<?php endforeach ?>
 					</div>
-				</div>
 			<?php endif ?>
 		</div>
 	</div>

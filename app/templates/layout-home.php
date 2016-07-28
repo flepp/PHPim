@@ -15,7 +15,11 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
-	<?= $this->section('main_content') ?>
+	<div class="wrap">
+		<main class="main">
+			<?= $this->section('main_content') ?>
+		</main>
+	</div>
 	<?php $this->insert('partials/footer') ?>
 	<script src="<?= $this->assetUrl('js/script.js') ?>"></script>
 	<script src="<?= $this->assetUrl('js/bootstrap.js') ?>"></script>

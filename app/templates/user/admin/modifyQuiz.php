@@ -32,7 +32,7 @@
 			</form>
 		</div>
 	</div>
-	<a class="custom-button custom-button-gold button-back" href="<?= $this->url('quiz_manage')?>">Retour</a>
+	<a class="custom-button button-back" href="<?= $this->url('quiz_manage')?>">Retour</a>
 </div>
 <?php $this->stop('main_content') ?>
 

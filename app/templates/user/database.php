@@ -25,7 +25,7 @@
 						<p><?= $databases['Database'] ?></p>
 						<form method="post" action="" class="custom-inline-form">
 							<input hidden type="text" name="databaseName" value="<?= $databases['Database'] ?>">
-							<button type="submit" name="deleteDatabase" class="delete custom-button custom-button-blue">Supprimer</button>
+							<button type="submit" name="deleteDatabase" class="delete custom-button ">Supprimer</button>
 						</form>
 					</div>
 				</div>
