@@ -225,6 +225,10 @@ class QuizController extends Controller
                 'qui_day' => $value['qui_day']
             );
         }
+        //debug($quizListBycat);
+        debug('http://'.$_SERVER['HTTP_HOST']);
+        debug($this->generateUrl('user_register'));
+        debug($_SERVER);
         /* ----------------------- Getting the SES_END for users --------------------- */
             if(isset($_SESSION) && !empty($_SESSION)){
                 $id = $_SESSION['user']['session_id'];
