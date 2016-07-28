@@ -25,7 +25,6 @@
 			<h2>Choisissez une session</h2>
 			<form method="POST" action="" class="custom-form custom-form-gold">
 				<select name="session" class="form-control">
-				<option value="-1">Choisissez une session</option>
 				<?php foreach ($sessionList as $key => $value): ?>
 					<option value="<?= $value['id'] ?>"><?= ucfirst ($value['ses_name']) ?></option>
 				<?php endforeach ?>
