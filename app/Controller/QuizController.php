@@ -227,14 +227,16 @@ class QuizController extends Controller
             );
         }
         foreach($quizList as $key => $value) {
-            $quizListBycatStatusOn[ucfirst ($value['cat_name'])][] = array(
-                'id' => $value['qui_id'],
-                'category_id' => $value['id'],
-                'qui_title' => ucfirst ($value['qui_title']),
-                'qui_link' => $value['qui_link'],
-                'qui_status' => $value['qui_status'],
-                'qui_day' => $value['qui_day']
-            );
+            if($value['qui_status'] == 1){
+                $quizListBycatStatusOn[ucfirst ($value['cat_name'])][] = array(
+                    'id' => $value['qui_id'],
+                    'category_id' => $value['id'],
+                    'qui_title' => ucfirst ($value['qui_title']),
+                    'qui_link' => $value['qui_link'],
+                    'qui_status' => $value['qui_status'],
+                    'qui_day' => $value['qui_day']
+                );
+            }
         }
         debug( $quizListBycatStatusOn);
 
@@ -251,7 +253,7 @@ class QuizController extends Controller
         $quizList = $quizManager->findAll($orderBy = "qui_day");
         $sessionManager = new SessionManager();
         $sessionList = $sessionManager->findAll();
-        $this->show('quiz/quiz', array('quizList' => $quizListBycat, 'sessionList' => $sessionList));
+        $this->show('quiz/quiz', array('quizList' => $quizListBycat, 'sessionList' => $sessionList, 'quizList2' => $quizListBycatStatusOn));
     }
 
 }
