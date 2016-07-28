@@ -21,7 +21,7 @@
 					<label>Date de fin</label>
 					<input type="date" name="sessionEnd" class="form-control">
 				</div>
-				<button type="submit" name="sessionCreate" class="center-block custom-button-blue">Créer</button>
+				<button type="submit" name="sessionCreate" class="center-block custom-button-blue form-send-button">Créer</button>
 			</form>
 		</div>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION EDITION SECTION~~~~~~~~~~~~~~~~~~~~~ -->

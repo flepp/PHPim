@@ -74,7 +74,6 @@ class QuizController extends Controller
                 $quizManager->insert($data);
                 $_SESSION['successList'][] = 'Le quiz a bien été ajouté!';
             }
-            debug($_SESSION);
             $this->redirectToRoute('quiz_add');
         }
     }
@@ -126,7 +125,6 @@ class QuizController extends Controller
             $quizDelete = $quizManager->delete($id);
             $quizName = $_POST['quizName'];
             $_SESSION['successList'][] = 'Le quiz '.$quizName.' a bien été supprimé!';
-            debug($quizList);
             $this->redirectToRoute('quiz_manage');
             //$this->show('user/admin/activateQuiz', array('quizDelete' => $quizDelete));
         }
@@ -238,23 +236,19 @@ class QuizController extends Controller
                 );
             }
         }
-        debug( $quizListBycatStatusOn);
-
         /* ----------------------- Getting the SES_END for users --------------------- */
-            if(isset($_SESSION) && !empty($_SESSION)){
-                $id = $_SESSION['user']['session_id'];
-                $userManager = new UsersManager;
-                $getSesEnd = $userManager->getSesdEnd($id);
-                $_SESSION['user']['ses_end'] = $getSesEnd['ses_end'];
-            }
+        if(isset($_SESSION) && !empty($_SESSION)){
+            $id = $_SESSION['user']['session_id'];
+            $userManager = new UsersManager;
+            $getSesEnd = $userManager->getSesdEnd($id);
+            $_SESSION['user']['ses_end'] = $getSesEnd['ses_end'];
+        }
 
-        
         $quizManager = new QuizManager();
         $quizList = $quizManager->findAll($orderBy = "qui_day");
         $sessionManager = new SessionManager();
         $sessionList = $sessionManager->findAll();
-        $this->show('quiz/quiz', array('quizList' => $quizListBycat, 'sessionList' => $sessionList, 'quizList2' => $quizListBycatStatusOn));
+        $this->show('quiz/quiz', array('quizList' => $quizListBycat, 'sessionList' => $sessionList, 'quizList2' => $quizListBycatStatusOn)); 
     }
-
 }
 ?>
