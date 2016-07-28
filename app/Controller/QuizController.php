@@ -214,6 +214,7 @@ class QuizController extends Controller
         //fetchin all and sorting par cat_name
         $quizList = $quizManager->getQuizByCat($orderBy = "qui_day");
         $quizListBycat = array();
+        $quizListBycatStatusOn = array();
         $i = 0;
         foreach($quizList as $key => $value) {
             $quizListBycat[ucfirst ($value['cat_name'])][] = array(
@@ -224,9 +225,19 @@ class QuizController extends Controller
                 'qui_status' => $value['qui_status'],
                 'qui_day' => $value['qui_day']
             );
-        }       
-        debug('http://'.$_SERVER['HTTP_HOST'].$this->generateUrl('user_register'));
-        debug($_SERVER);
+        }
+        foreach($quizList as $key => $value) {
+            $quizListBycatStatusOn[ucfirst ($value['cat_name'])][] = array(
+                'id' => $value['qui_id'],
+                'category_id' => $value['id'],
+                'qui_title' => ucfirst ($value['qui_title']),
+                'qui_link' => $value['qui_link'],
+                'qui_status' => $value['qui_status'],
+                'qui_day' => $value['qui_day']
+            );
+        }
+        debug( $quizListBycatStatusOn);
+
         /* ----------------------- Getting the SES_END for users --------------------- */
             if(isset($_SESSION) && !empty($_SESSION)){
                 $id = $_SESSION['user']['session_id'];
