@@ -445,12 +445,19 @@ color: #fff !important;
 select{
 
 	padding: 10px;
+	width: 100%;
 	min-width: 100px;
+	max-width: 100%;
 	border: 0px solid #38B3E4;
 	background-color: #E9E5DD;
 	color: #000;
 	margin-bottom: 10px;
  //-webkit-appearance:none;
+}
+
+select + button{
+
+	margin-top: 0;
 }
 
 @media screen and (min-width : 768px){
@@ -479,6 +486,21 @@ form .form-send-button{
 	    padding: 25px 30px;
 	    top: 85%;
 	    left: -15px;
+	    margin-top: 0;
+	}
+}
+
+/*  invites  */
+
+.make-space{
+
+	margin-top: 20px;
+}
+
+@media screen and (min-width : 1200px){
+	.make-space{
+
+		margin-top: 80px;
 	}
 }
 

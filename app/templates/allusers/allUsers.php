@@ -17,34 +17,45 @@
 							</option>
 						<?php endforeach; ?>
 						</select>
-						<button class="custom-button custom-button-gold" type="submit" name="Valider">Valider</button>
+					<button class="custom-button custom-button-gold form-send-button" type="submit" name="Valider">Valider</button>
 					</div>
 				</form>
 			</div>
 		</div>
+	</div>
 	<?php endif ?>
 <?php endif ?>
 
 		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Here starts the part for "user" statute ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<div class="row">
 			<?php if(count($allUsersTable) > 0) : ?>
 				<?php if ($_SESSION['user']['usr_role'] == 'user'): ?>
+					<div class="container make-space users-display">
 					<h2>Étudiants de ma session:</h2>
-				<?php else: ?>
-					<h2>Étudiants de la <?= $allUsersTable[0]['ses_name']  ?> </h2>
-				<?php endif ?>
-					<div class="row users-display">
-					<?php foreach ($allUsersTable as $key => $value): ?>
-						<div class="col-xs-12 col-sm-6 col-md-4">
-							<div class="embed-responsive embed-responsive-4by3 img-gallery-div"
-								style="background-image : url(<?= $this->assetUrl('upload/img/'.$value['usr_photo']) ?>)
-							">
-								<a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>" class="embed-responsive-item"></a>
+						<?php foreach ($allUsersTable as $key => $value): ?>
+							<div class="col-xs-12 col-sm-6 col-md-4">
+								<div class="embed-responsive embed-responsive-4by3 img-gallery-div"
+									style="background-image : url(<?= $this->assetUrl('upload/img/'.$value['usr_photo']) ?>)
+								">
+									<a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>" class="embed-responsive-item"></a>
+								</div>
 							</div>
-						</div>
-					<?php endforeach ?>
+						<?php endforeach ?>
 					</div>
+				<?php else: ?>
+					<div class="container make-space users-display">
+					<h2>Étudiants de la <?= $allUsersTable[0]['ses_name']  ?> </h2>
+						<?php foreach ($allUsersTable as $key => $value): ?>
+							<div class="col-xs-12 col-sm-6 col-md-4">
+								<div class="embed-responsive embed-responsive-4by3 img-gallery-div"
+									style="background-image : url(<?= $this->assetUrl('upload/img/'.$value['usr_photo']) ?>)
+								">
+									<a href="<?= $this->url('allusers_details', ['id' => $value['id']]) ?>" class="embed-responsive-item"></a>
+								</div>
+							</div>
+						<?php endforeach ?>
+					</div>
+				<?php endif ?>
 			<?php endif ?>
-		</div>
+		</>
 	</div>
 <?php $this->stop('main_content') ?>

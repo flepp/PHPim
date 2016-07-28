@@ -22,15 +22,19 @@
 		</div>
 	</section>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SENDING INVITATIONS TO STUDENTS~~~~~~~~~~~~~~~~~~~~~ -->
-	<section class="row invites">
+	<section class="row make-space">
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			<h2>Choisissez une session</h2>
 			<form method="POST" action="" class="">
-				<select name="session" class="form-control">
-				<?php foreach ($sessionList as $key => $value): ?>
-					<option value="<?= $value['id'] ?>"><?= ucfirst ($value['ses_name']) ?></option>
-				<?php endforeach ?>
-				</select>
+				<div class="row">
+					<div class="col-xs-3">
+						<select name="session" class="form-control">
+						<?php foreach ($sessionList as $key => $value): ?>
+							<option value="<?= $value['id'] ?>"><?= ucfirst ($value['ses_name']) ?></option>
+						<?php endforeach ?>
+						</select>
+					</div>
+				</div>
 				<?php if (isset($arrayStudents) && sizeof($arrayStudents) > 0): ?>
 					<?php foreach ($arrayStudents as $key => $students): ?>
 						<div class="database-row">
