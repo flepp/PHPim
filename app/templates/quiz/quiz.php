@@ -9,8 +9,9 @@
 			<div>
 				<h2><?= $key ?></h2>
 				<?php foreach ($quizList[$key] as $index => $value): ?>
-					<p class="quiz-item"><span></span> <a href="<?= $value['qui_link'] ?>">
-						<?= $value['qui_title'] ?></a></p>
+					<div class="quiz-item col-sm-3"><a href="<?= $value['qui_link'] ?>">
+						<?= $value['qui_title'] ?></a>
+					</div>
 				<?php endforeach ?>
 			</div>
 			<?php endforeach ?>
@@ -19,8 +20,9 @@
 				<div>
 					<h2><?= $key ?></h2>
 					<?php foreach ($quizList2[$key] as $index => $value): ?>
-						<p class="quiz-item"><span></span> <a href="<?= $value['qui_link'] ?>">
-							<?= $value['qui_title'] ?></a></p>
+						<div class="quiz-item col-sm-3"><a href="<?= $value['qui_link'] ?>">
+							<?= $value['qui_title'] ?></a>
+						</div>
 					<?php endforeach ?>
 				</div>
 			<?php endforeach ?>
@@ -28,10 +30,11 @@
 	<?php else: ?>
 		<?php foreach ($quizList2 as $key => $val): ?>
 			<div>
-				<p><?= $key ?></p>
+				<h2><?= $key ?></h2>
 				<?php foreach ($quizList2[$key] as $index => $value): ?>
-					<p><span><?= $value['qui_title'] ?></span> <a href="<?= $value['qui_link'] ?>">
-						<?= $value['qui_link'] ?></a></p>>
+					<div class="quiz-item col-sm-3"><a href="<?= $value['qui_link'] ?>">
+						<?= $value['qui_title'] ?></a>
+					</div>
 				<?php endforeach ?>
 			</div>
 		<?php endforeach ?>
