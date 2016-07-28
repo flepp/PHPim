@@ -2,13 +2,11 @@
 
 <?php $this->start('main_content') ?>
 
-<div class="container">
-	<h1 class="h1">Gestion de sessions</h1>
-	<p>Cette page vous permet de créer, modifier ainsi que supprimer les sessions de l'école WebForce 3</p>
+<div class="container container-i">
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION CREATION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
 	<section class="row">
 	 	<div class="col-md-6">
-			<h2 class="">Créer une session </h2>
+			<h1 class="">Créer une session </h1>
 			<form method="POST" action="" class="custom-form-gold custom-form">
 				<div class="form-group custom-form-group">
 					<label>Nom de la session</label>
@@ -22,12 +20,12 @@
 					<label>Date de fin</label>
 					<input type="date" name="sessionEnd" class="form-control">
 				</div>
-				<button type="submit" name="sessionCreate" class="center-block custom-button-blue form-send-button">Créer</button>
+				<button type="submit" name="sessionCreate" class="center-block custom-button-blue">Créer</button>
 			</form>
 		</div>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION EDITION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
 		<div class="col-md-6">
-			<h2 class="">Sessions créées</h2>
+			<h1 class="">Sessions créées</h1>
 			<div class="col-xs-12 section-session-right">
 				<!---------------SESSION WITH STUDENTS----------- -->
 				<div>
@@ -38,16 +36,22 @@
 						</p>
 						<div>
 							<button type="button" class="button_edit custom-button custom-button-gold">Editer</button>
-							<form class="custom-inline-form" method="POST" action="" <?php if($value['ses_status'] == 1){echo " hidden";} ?>>
-								<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
-								<input hidden type="text" name="sessionStatus" value="1">
-								<button type="submit" name="sessionOn" class="enableSession custom-button custom-button-gold">Réactivé</button>
-							</form>
-							<form class="custom-inline-form" method="POST" action="" <?php if($value['ses_status'] == 0){echo " hidden";} ?>>
-								<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
-								<input hidden type="text" name="sessionStatus" value="0">
-								<button type="submit" name="sessionOff" class="disableSession  custom-button custom-button-gold">Désactivé</button>
-							</form>
+							<?php if($value['ses_status'] == 0): ?>
+								<form class="custom-inline-form" method="POST" action="">
+									<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
+									<input hidden type="text" name="sessionStatus" value="1">
+									<button type="submit" name="sessionOn" class="enableSession custom-button custom-button-gold">Réactiver</button>
+								</form>
+							<?php endif; ?>
+							<?php if($value['ses_status'] == 1): ?>
+								<form class="custom-inline-form" method="POST" action="">
+									<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
+									<input hidden type="text" name="sessionStatus" value="0">
+									<button type="submit" name="sessionOff" class="disableSession  custom-button custom-button-gold">Désactiver</button>
+								</form>
+							<?php endif; ?>
+						</div>
+						<div>
 							<form hidden method="POST" action="" class="show_edit custom-form-blue custom-form custom-form-group">
 								<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
 								<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
