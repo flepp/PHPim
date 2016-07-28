@@ -8,7 +8,7 @@
 		<div class="col-xs-12">
 			<p>Vous pouvez, via le formulaire ce-dessous, ajouter une liste d'étudiants présente sur un fichier CSV et l'affecter à une session.</p>
 		</div>
-		<div class="col-xs-12 col-sm-6 col-md-6">
+		<div class="col-xs-12 col-sm-5 col-md-5">
 		<h2>Ajoutez une liste d'étudiants</h2>
 			<form action="" method="post" enctype="multipart/form-data" class="custom-form-blue custom-form">
 				<input type="hidden" name="fichierSoumis" value="1">
@@ -20,10 +20,12 @@
 				<button type="submit" name="upload" class="form-send-button custom-button-gold">Téléverser</button>
 			</form>
 		</div>
+	</section>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SENDING INVITATIONS TO STUDENTS~~~~~~~~~~~~~~~~~~~~~ -->
-		<div class="col-xs-12 col-sm-6 col-md-5 col-md-offset-1">
+	<section class="row invites">
+		<div class="col-xs-12 col-sm-12 col-md-12">
 			<h2>Choisissez une session</h2>
-			<form method="POST" action="" class="custom-form custom-form-gold">
+			<form method="POST" action="" class="">
 				<select name="session" class="form-control">
 				<?php foreach ($sessionList as $key => $value): ?>
 					<option value="<?= $value['id'] ?>"><?= ucfirst ($value['ses_name']) ?></option>
@@ -31,27 +33,29 @@
 				</select>
 				<?php if (isset($arrayStudents) && sizeof($arrayStudents) > 0): ?>
 					<?php foreach ($arrayStudents as $key => $students): ?>
-						<div class="row">
-							<div class="">
-								<label for="firstname">#<?= $key.' ' ?>Prénom:</label>
-								<input type="text" name="student[<?= $key ?>][firstname]" value="<?=$students['0'] ?>" id="firstname" class="form-control" >
-							</div>
-							<div class="">
-								<label>Nom:</label>
-								<input type="text" name="student[<?= $key ?>][name]" value="<?=$students['1'] ?>" class="form-control">
-							</div>
-							<div class="">
-								<label>Pseudo:</label>
-								<input type="text" name="student[<?= $key ?>][pseudo]" value="<?=$students['3'] ?>" class="form-control">
-							</div>
-							<div class="">
-								<label>Email:</label>
-								<input type="email" name="student[<?= $key ?>][email]" value="<?=$students['2'] ?>" class="form-control">
+						<div class="database-row">
+							<div class="form-group custom-form-group">
+								<div class="col-md-3">
+									<label for="firstname">#<?= $key.' ' ?>Prénom:</label>
+									<input type="text" name="student[<?= $key ?>][firstname]" value="<?=$students['0'] ?>" id="firstname" class="form-control" >
+								</div>
+								<div class="col-md-3">
+									<label>Nom:</label>
+									<input type="text" name="student[<?= $key ?>][name]" value="<?=$students['1'] ?>" class="form-control">
+								</div>
+								<div class="col-md-3">
+									<label>Pseudo:</label>
+									<input type="text" name="student[<?= $key ?>][pseudo]" value="<?=$students['3'] ?>" class="form-control">
+								</div>
+								<div class="col-md-3">
+									<label>Email:</label>
+									<input type="email" name="student[<?= $key ?>][email]" value="<?=$students['2'] ?>" class="form-control">
+								</div>
 							</div>
 						</div>
 					<?php endforeach ?>
 				<?php endif ?>
-				<button type="submit" name="sendInvitations" class="confirmation form-send-button custom-button-blue">Envoyer</button>
+				<button type="submit" name="sendInvitations" class="confirmation custom-button custom-button-blue">Envoyer</button>
 			</form>
 		</div>
 	</section>

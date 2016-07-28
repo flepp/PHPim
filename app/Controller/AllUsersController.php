@@ -31,6 +31,7 @@ class AllUsersController extends Controller {
             if (!empty($_GET['session'])) {
                 $allUsersTable = $allUsersManager->findAllUsersFromSession($_GET['session']);
             }
+
             else {
                 $allUsersTable = array();
             }

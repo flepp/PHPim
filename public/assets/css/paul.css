@@ -60,3 +60,18 @@
 #files {
 	visibility: hidden;
 }
+
+/* styles gallerie d'images */
+
+.users-display [class^="col-"]{
+
+	padding: 0;
+}
+
+.img-gallery-div{
+
+	background: #000;
+	background-position: 0% 30%;
+	-webkit-background-size: cover;
+	background-size: cover;
+}
