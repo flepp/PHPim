@@ -2,11 +2,13 @@
 
 <?php $this->start('main_content') ?>
 
-<div class="container container-i">
+<div class="container">
+	<h1 class="h1">Gestion de sessions</h1>
+	<p>Cette page vous permet de créer, modifier ainsi que supprimer les sessions de l'école WebForce 3</p>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION CREATION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
 	<section class="row">
 	 	<div class="col-md-6">
-			<h1 class="">Créer une session </h1>
+			<h2 class="">Créer une session </h2>
 			<form method="POST" action="" class="custom-form-gold custom-form">
 				<div class="form-group custom-form-group">
 					<label>Nom de la session</label>
@@ -20,12 +22,12 @@
 					<label>Date de fin</label>
 					<input type="date" name="sessionEnd" class="form-control">
 				</div>
-				<button type="submit" name="sessionCreate" class="center-block custom-button-blue">Créer</button>
+				<button type="submit" name="sessionCreate" class="center-block custom-button-blue form-send-button">Créer</button>
 			</form>
 		</div>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~SESSION EDITION SECTION~~~~~~~~~~~~~~~~~~~~~ -->
 		<div class="col-md-6">
-			<h1 class="">Sessions créées</h1>
+			<h2 class="">Sessions créées</h2>
 			<div class="col-xs-12 section-session-right">
 				<!---------------SESSION WITH STUDENTS----------- -->
 				<div>

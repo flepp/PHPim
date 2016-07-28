@@ -1,7 +1,8 @@
 <?php $this->layout('layout', ['title' => 'Ajout de quizz']) ?>
 
 <?php $this->start('main_content') ?>
-	<p>Ajouter un quiz</p>
+<div class="container">
+	<h1 class="h1">Ajout de quiz</h1>
 	<form action="" method="POST">
 		<label for="day">Jour</label>
 		<br>
@@ -26,5 +27,6 @@
 		<button type="submit">Ajouter</button>
 	</form>
 	<a href="<?= $this->url('quiz_manage'); ?>">Retour</a>
+</div>
 <?php $this->stop('main_content') ?>
 

@@ -3,14 +3,13 @@
 <?php $this->start('main_content') ?>
 
 <div class="container fondCoul photoAbout">
+	<h1 class="h1">L'équipe</h1>
 	<div class="row">
-		<h1>Ce projet à été réalisé par l'équipe de <span>WEBFORCEONE</span></h1>
-		<h2>de la session 2 (du 04-04-2016 au 29-07-2016)</h2>
 		<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 divPhoto">
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="344px" width="290px" src="<?=$this->assetUrl('img/Ibrahima-THIELO.jpg')?>">
+						<img src="<?=$this->assetUrl('img/Ibrahima-THIELO.jpg')?>">
 						<h1>Ibrahima</h1>
 					</div>
 					<div class="container back">
@@ -37,7 +36,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="344px" width="290px" src="<?=$this->assetUrl('img/Michel-CAVRO.jpg')?>">
+						<img  src="<?=$this->assetUrl('img/Michel-CAVRO.jpg')?>">
 						<h1>Michel</h1>
 					</div>
 					<div class="container back">
@@ -58,7 +57,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="344px" width="290px" src="<?=$this->assetUrl('img/Paul-IOANID.jpg')?>">
+						<img  src="<?=$this->assetUrl('img/Paul-IOANID.jpg')?>">
 						<h1>Paul</h1>
 					</div>
 					<div class="container back">
@@ -76,7 +75,7 @@
 			<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 				<div class="flipper">
 					<div class="front">
-						<img height="344px" width="290px" src="<?=$this->assetUrl('img/Philippe-TASCH.jpg')?>">
+						<img src="<?=$this->assetUrl('img/Philippe-TASCH.jpg')?>">
 						<h1>Flipper</h1>
 					</div>
 					<div class="container back">

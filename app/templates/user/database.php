@@ -1,39 +1,31 @@
-<?php $this->layout('layout', ['title' => 'Login']) ?>
+<?php $this->layout('layout', ['title' => 'Base de données']) ?>
 
 <?php $this->start('main_content') ?>
 
 <div class="container">
+	<h1 class="h1">Création de base de données</h1>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~CREATING DATABASE SECTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<section class="row col-sm-6 col-md-6">
-		<div class="col-xs-8 col-sm-6 col-md-6">
-			<h1>Créer une base de données</h1>
-			<form method="post" action="">
-				<div class="row">
-					<div class=" col-xs-2 col-sm-3 form-group col-md-2">
-						<span><?= $_SESSION['user']['usr_pseudo'].'_' ?></span>
-					</div>
-					<div class=" col-xs-6 col-sm-9 form-group col-md-8">
+	<section class="row">
+		<div class="col-xs-12 col-sm-6 col-md-6">
+			<h2>Créer une base de données</h2>
+			<form method="post" action="" class="custom-form custom-form-blue">
+				<h3>Préfixe : <span><?= $_SESSION['user']['usr_pseudo'].'_' ?></span></h3>
+					<div class="form-group custom-form-group">
 						<input type="text" name="databaseName" class="form-control">
 					</div>
-				</div>
-				<button type="submit" name="createDatabase" class="btn btn-default">Créer</button>
+					<button type="submit" name="createDatabase" class="custom-button custom-button-gold form-send-button">Créer</button>
 			</form>
 		</div>
-	</section>
-
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~EXISTING DATABASE SECTION~~~~~~~~~~~~~~~~~~~~~ -->
-	<section class="row col-sm-6 col-md-6">
-		<div class="col-xs-8 col-sm-6 col-md-6">
-			<h1>B.D.D existantes</h1>
+		<div class="col-xs-12 col-sm-6 col-md-6">
+			<h2>B.D.D existantes</h2>
 			<?php foreach ($allDatabases as $key => $databases): ?>
-				<div class="row">
-					<div class="col-xs-8">
+				<div class="database-row">
+					<div class="col-xs-12">
 						<p><?= $databases['Database'] ?></p>
-					</div>
-					<div class="col-xs-4">
-						<form method="post" action="">
+						<form method="post" action="" class="custom-inline-form">
 							<input hidden type="text" name="databaseName" value="<?= $databases['Database'] ?>">
-							<button type="submit" name="deleteDatabase" class="delete btn btn-default">Supprimer</button>
+							<button type="submit" name="deleteDatabase" class="delete custom-button custom-button-blue">Supprimer</button>
 						</form>
 					</div>
 				</div>

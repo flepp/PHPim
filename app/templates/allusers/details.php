@@ -2,11 +2,11 @@
 
 <?php $this->start('main_content') ?>
 
-	<!-- ~~~~~~~~~~~~~~~~~ I'm displaying the specific info for an user ~~~~~~~~~~~~~ -->		
+	<!-- ~~~~~~~~~~~~~~~~~ I'm displaying the specific info for an user ~~~~~~~~~~~~~ -->
 	<div class="container container-paul">
+		<h1 class="h1">Informations personnelles:</h1>
 		<div class="row">
 			<div class="col-xs-6">
-				<h1>Informations personnelles:</h1>
 				<img src="<?= $this->assetUrl('upload/img/'.$userInfo['usr_photo']) ?>"><br/><br/>
 				<ul class="list-details">
 					<li>Nom:<?= ' '.$userInfo['usr_name'] ?></li>

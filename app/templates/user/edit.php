@@ -2,7 +2,7 @@
 
 <?php $this->start('main_content') ?>
 
-<div class="container container-paul">
+<div class="container ">
 	<!-- ~~~~ I'm inserting a "form", for selecting the session, which will be displayed only for "admin" statute ~~~ -->
 	<?php if ($_SESSION['user']['usr_role'] == 'admin'): ?> 
 		<div class="on-off">
