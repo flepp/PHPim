@@ -224,10 +224,8 @@ class QuizController extends Controller
                 'qui_status' => $value['qui_status'],
                 'qui_day' => $value['qui_day']
             );
-        }
-        //debug($quizListBycat);
-        debug('http://'.$_SERVER['HTTP_HOST']);
-        debug($this->generateUrl('user_register'));
+        }       
+        debug('http://'.$_SERVER['HTTP_HOST'].$this->generateUrl('user_register'));
         debug($_SERVER);
         /* ----------------------- Getting the SES_END for users --------------------- */
             if(isset($_SESSION) && !empty($_SESSION)){

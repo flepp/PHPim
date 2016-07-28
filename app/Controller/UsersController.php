@@ -241,7 +241,10 @@ class UsersController extends Controller {
             $usrMail = isset($_POST['usrMail']) ? htmlspecialchars(trim($_POST['usrMail'])) : '';
             $emailExists = $userManager->emailExists($usrMail);
             if ($emailExists == 1) {
-                $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Message Test. <a href="http://localhost'.$controller->generateUrl('user_reset',['token' => $token]).'">Je réinitialise mon mot de passe</a>.');
+                $link = 'http://'.$_SERVER['HTTP_HOST'].$this->generateUrl('user_reset',['token' => $token]);
+                $path = '<a href="'.$link.'">'.$link.'</a>';
+
+                $forgotPass->sendMail($usrMail, 'Changez votre mot de passe','Cliquez sur ce lien pour renitialiser votre mot de passe <br/>'.$path);
                 $userList->updateToken($data,$usrMail);
                 $_SESSION['successList'][] = 'Un email contenant un lien pour la réinitialisation de votre mot de passe vous a été envoyé.';
             }
@@ -621,7 +624,8 @@ class UsersController extends Controller {
                     $email = isset($value['email']) ? trim($value['email']) : '';
                     $session = isset($_POST['session']) ? trim($_POST['session']) : '';
                     $password = time();
-                    $path = '<a href="http://localhost/PHPim/public/inscription/">http://localhost/PHPim/public/inscription/</a>';
+                    $link = 'http://'.$_SERVER['HTTP_HOST'].$this->generateUrl('user_register');
+                    $path = '<a href="'.$link.'">'.$link.'</a>';
                     $validFirstname = '';
                     $validName = '';
                     $validPseudo = '';
