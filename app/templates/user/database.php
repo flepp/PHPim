@@ -9,13 +9,11 @@
 		<div class="col-xs-12 col-sm-6 col-md-6">
 			<h2>Créer une base de données</h2>
 			<form method="post" action="" class="custom-form custom-form-blue">
-				Suffixe de la B.D.D : <span><?= $_SESSION['user']['usr_pseudo'].'_' ?></span>
-				<div class="row">
-					<div class=" col-xs-12 form-group custom-form-group">
+				<h3>Préfixe : <span><?= $_SESSION['user']['usr_pseudo'].'_' ?></span></h3>
+					<div class="form-group custom-form-group">
 						<input type="text" name="databaseName" class="form-control">
 					</div>
 					<button type="submit" name="createDatabase" class="custom-button custom-button-gold form-send-button">Créer</button>
-				</div>
 			</form>
 		</div>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~EXISTING DATABASE SECTION~~~~~~~~~~~~~~~~~~~~~ -->

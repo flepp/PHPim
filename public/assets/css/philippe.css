@@ -316,6 +316,11 @@
 		background-color: #F4B006;
 	}
 
+	.custom-form-gold input:focus{
+
+		border-color: #30A9DA;
+	}
+
 .custom-button-blue{
 
 	background-color: #38B3E4;
@@ -427,13 +432,20 @@ color: #fff !important;
 
 select{
 
-	padding: 15px;
+	padding: 10px;
 	min-width: 100px;
-	border: 3px solid #38B3E4;
+	border: 0px solid #38B3E4;
 	background-color: #E9E5DD;
 	color: #000;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
  //-webkit-appearance:none;
+}
+
+@media screen and (min-width : 768px){
+	select{
+		padding: 15px;
+		margin-bottom: 15px;
+	}
 }
 
 option{
@@ -466,6 +478,7 @@ form .form-send-button{
 	background-color: #FEB905;
 	padding: 5%;
 	margin: 10px 0;
+	display: block;
 }
 
 div[class^="col-"]:nth-of-type(even) .quiz{

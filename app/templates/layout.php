@@ -20,7 +20,9 @@
 <body>
 	<?php $this->insert('partials/navigation') ?>
 	<main>
-		<?php $this->insert('partials/notifications') ?>
+		<div class="container">
+			<?php $this->insert('partials/notifications') ?>
+		</div>
 		<?= $this->section('main_content') ?>
 	</main>
 	<?php $this->insert('partials/footer') ?>

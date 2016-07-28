@@ -7,7 +7,7 @@
 	<p>Cette page vous permet de créer une base de données pour tous les étudiants.</p>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~CREATING DATABASE FOR SESSION~~~~~~~~~~~~~~~~~~~~~ -->
 	<section class="row">
-		<div class="col-xs-12 col-sm-6 col-md-6">
+		<div class=" col-sm-6 col-md-6">
 			<form method="POST" action="" class="custom-form-gold custom-form">
 				<select name="session" class="form-control">
 				<?php foreach ($sessionList as $key => $value): ?>

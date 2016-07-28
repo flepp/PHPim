@@ -15,7 +15,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
-
 	<?= $this->section('main_content') ?>
 	<?php $this->insert('partials/footer') ?>
 	<script src="<?= $this->assetUrl('js/script.js') ?>"></script>
