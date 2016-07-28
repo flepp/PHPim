@@ -11,9 +11,6 @@
 						<input type="email" id="email" name="usrMail" class="form-control">
 					</div>
 					<button type="submit" class="custom-button custom-button-gold form-send-button">Envoyer</button>
-					<div>
-						<small>En cliquant ce bouton, je prends connaissance du fait que Benjamin Cordier puisse s'emparer de mon âme et en faire ce que bon lui semble.</small>
-					</div>
 				</form>
 			</div>
 		</div>

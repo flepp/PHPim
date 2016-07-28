@@ -1,5 +1,5 @@
 <?php
-	
+
 	//autochargement des classes
 	require("../vendor/autoload.php");
 
@@ -9,7 +9,7 @@
 	//rares fonctions globales
 	require("../W/globals.php");
 
-	define('PATHUPLOAD', dirname(__FILE__).'/assets/upload/text/');
+	define('PATHUPLOAD', 'http://'.$_SERVER['HTTP_HOST'].'/PHPim/public/assets/upload/text/');
 	define('PATHIMG', dirname(__FILE__).'/assets/upload/img/');
 
 	define('IMAGEUPLOAD', dirname(__FILE__).'/assets/upload/img/');

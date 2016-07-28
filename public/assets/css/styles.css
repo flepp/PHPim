@@ -35,7 +35,7 @@ body {
 .wrap{
 
 	min-height: 100%;
-	padding-bottom: 40px;
+	padding-bottom: 80px;
 }
 
 @media screen and (min-width: 768px){
@@ -1098,6 +1098,10 @@ div[class^="col-"]:nth-of-type(even) .quiz .custom-button{
 	padding: 0 0 15px 0;
 	margin: 0 0 15px 0;
 	border-bottom: 2px solid #fff;
+	max-height: 140px;
+	overflow: hidden;
+	-ms-word-break: break-all;
+	word-break: break-all;
 }
 
 .quiz-container h2{
@@ -1107,6 +1111,7 @@ div[class^="col-"]:nth-of-type(even) .quiz .custom-button{
 .quiz-item{
 
 	background-color: #FEB905;
+	margin-bottom: 15px;
 }
 
 .quiz-item a{
