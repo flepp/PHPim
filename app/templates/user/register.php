@@ -37,8 +37,7 @@
 					    <div class="col-md-12 custom-form-group">
 					     	<img height="90px" width="90px" src="<?= $this->assetUrl('upload/img/avatar_0.png') ?>">
 					      	<label for="InputFile">Changez la photo</label>
-					      	<div class="upload custom-button-gold">Choisissez un fichier
-					      	<input type="file" name="photo" value="" class="fileUpload"></div>
+					      	<input type="file" name="photo" value="" class="fileUpload">
 					      	<p>(fichiers autorisés: jpg, jpeg, gif, png, maximum 350Ko)</p>
 					    	<div class="form-mandatory-msg">* Champs obligatoires</div>
 					    </div>
