@@ -30,7 +30,6 @@
 			<?php if(count($allUsersTable) > 0) : ?>
 				<?php if ($_SESSION['user']['usr_role'] == 'user'): ?>
 					<div class="container make-space users-display">
-					<h2>Étudiants de ma session:</h2>
 						<?php foreach ($allUsersTable as $key => $value): ?>
 							<div class="col-xs-12 col-sm-6 col-md-4">
 								<div class="embed-responsive embed-responsive-4by3 img-gallery-div"
