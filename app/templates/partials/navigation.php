@@ -69,8 +69,9 @@
 									</svg>
 								</a>
 								<ul class="dropdown-menu nav-sub-menu">
-									<li><a href="<?= $this->url('allusers_details', ['id' => $_SESSION['user']['id']]) ?>">Mon Profil</a></li>
 									<li><a href="<?php echo $this->url('user_logout'); ?>">Déconnexion</a></li>
+									<li><a href="<?php echo $this->url('user_change_pass'); ?>">Changement mot de passe</a></li>
+									<li><a href="<?= $this->url('allusers_details', ['id' => $_SESSION['user']['id']]) ?>">Mon Profil</a></li>
 								</ul>
 							</li>
 							<?php else: ?>

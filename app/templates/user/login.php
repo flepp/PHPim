@@ -16,7 +16,7 @@
 			        	<input type="password" class="form-control" name="password" value="">
 			    	</div>
 			    	<div class="custom-form-group">
-			    		<button type="submit" class="custom-button-gold">Valider</button>
+			    		<button type="submit" class="custom-button custom-button-gold form-send-button">Valider</button>
 			    		<div class="form-mandatory-msg">* Champs obligatoires</div>
 			    	</div>
 			    </form>

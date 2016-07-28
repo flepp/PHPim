@@ -336,6 +336,7 @@
 .custom-form{
 
 	padding: 6%;
+	position: relative;
 }
 
 @media screen and (min-width : 992px){
@@ -403,10 +404,16 @@
 
 .custom-form-group input{
 
-	padding: 15px;
+	padding: 10px;
 	border: none;
 	border-bottom: 3px solid;
 	margin-bottom: 20px;
+}
+
+@media screen and (min-width : 768px){
+	.custom-form-group input{
+		padding: 15px;
+	}
 }
 
 input::-webkit-input-placeholder {
