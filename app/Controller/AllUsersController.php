@@ -9,7 +9,8 @@ use \W\Controller\Controller;
 
 class AllUsersController extends Controller {
 
-    public function allUsers() {   
+    public function allUsers() {
+        $this->allowTo(['admin','user']);   
         if (($_SESSION['user']['usr_role'] == 'user')) {
             $session = $_SESSION['user']['session_id'];
             $sessionManager = new AllUsersManager();
@@ -47,6 +48,7 @@ class AllUsersController extends Controller {
     }
 
     public function details($id) {
+        $this->allowTo(['admin','user']); 
         $usersManager = new UsersManager;
         $usersList = $usersManager->findAllUsersAndSort();
 

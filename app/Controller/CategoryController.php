@@ -6,6 +6,7 @@ use \W\Controller\Controller;
 class CategoryController extends Controller
 {
     public function manage(){
+        $this->allowTo(['admin']); 
         $categoryManager = new CategoryManager();
         $categoryList = $categoryManager->findAll();
         $this->show('user/admin/manageCategory', array('categoryList' => $categoryList));
