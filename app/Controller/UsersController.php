@@ -554,7 +554,9 @@ class UsersController extends Controller {
         foreach ($lines as $line) {
             $arrayStudents[] = str_getcsv($line);
         }
-        unset($arrayStudents[count($arrayStudents)-1]);
+        if(count($arrayStudents[count($arrayStudents)-1][0] == 0)){
+            unset($arrayStudents[count($arrayStudents)-1]);
+        }
         $_SESSION['stuSession'] = $arrayStudents;
         if (isset($_SESSION['chemin'])){
             if(file_exists($_SESSION['chemin'])){
