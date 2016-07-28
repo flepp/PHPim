@@ -10,13 +10,17 @@
 				<form method="POST" action="" class="custom-inline-form">
 					<div class="form-group custom-form-group">
 						<input hidden type="text" name="userStatus" value="1">
-						<button type="submit" name="userOn" class="custom-button custom-button-blue">Activer</button>
+						<?php if ($_SESSION['user']['usr_status'] == 0): ?>
+							<button type="submit" name="userOn" class="custom-button custom-button-blue">Activer</button>	
+						<?php endif ?>
 					</div>
 				</form>
 				<form method="POST" class="custom-inline-form">
 					<div class="form-group custom-form-group">
 						<input hidden type="text" name="userStatus" value="0">
-						<button  type="submit" name="userOff" class="custom-button custom-button-gold">Désactiver</button>
+						<?php if ($_SESSION['user']['usr_status'] == 1): ?>
+							<button  type="submit" name="userOff" class="custom-button custom-button-gold">Désactiver</button>
+						<?php endif ?>
 					</div>
 				</form>
 			</div>

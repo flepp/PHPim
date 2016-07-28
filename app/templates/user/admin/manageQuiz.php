@@ -18,16 +18,20 @@
 							<form action="<?= $this->url('quiz_manage'); ?>" method="POST" class="custom-inline-form">
 								<input type="text" hidden value="<?= $value['id']?>" name="quiId">
 								<input type="text" value="1" name="quiStatus" hidden>
-								<button type="submit" class="custom-button">
-									Activer
-								</button>
+								<?php if ($value['qui_status'] == 0): ?>
+									<button type="submit" class="custom-button">
+										Activer
+									</button>
+								<?php endif ?>
 							</form>
 							<form action="<?= $this->url('quiz_manage'); ?>" method="POST" class="custom-inline-form">
 								<input type="text" hidden value="<?= $value['id']?>" name="quiId">
 								<input type="text" value="0" name="quiStatus" hidden>
-								<button type="submit" class="custom-button">
-									Désactiver
-								</button>
+								<?php if ($value['qui_status'] == 1): ?>
+									<button type="submit" class="custom-button">
+										Désactiver
+									</button>
+								<?php endif ?>
 							</form>
 						</div>
 						<div class="quiz-content">

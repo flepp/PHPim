@@ -393,7 +393,6 @@ class UsersController extends Controller {
     public function editPost($id) {
         if(isset($_POST['userOn']) || isset($_POST['userOff'])) {
             if(!empty($_POST)) { 
-                
                 /* ------------------- Disabling or enabling a session ------------ */   
                 $id = $_SESSION['user']['id'];
                 $userStatus = $_POST['userStatus'];
@@ -413,7 +412,7 @@ class UsersController extends Controller {
                 }
 
                 /* -------- Redirecting to user edit page --------- */
-                 $this->redirectToRoute('user_edit', ['id' => $id]);
+                $this->redirectToRoute('user_edit', ['id' => $id]);
             }
         }
 
