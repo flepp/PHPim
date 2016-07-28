@@ -331,7 +331,7 @@
 }
 
 /* appliquer au formulaire SEULEMENT*/
-
+.details-list,
 .custom-form{
 
 	padding: 6%;
@@ -339,7 +339,8 @@
 }
 
 @media screen and (min-width : 992px){
-
+	
+	.details-list,
 	.custom-form{
 
 		padding: 10%;
@@ -542,6 +543,27 @@ div[class^="col-"]:nth-of-type(even) .quiz .custom-button{
 	padding: 0 0 15px 0;
 	margin: 0 0 15px 0;
 	border-bottom: 2px solid #fff;
+}
+
+.quiz-container h2{
+	margin: 40px 0 20px 0;
+}
+
+.quiz-item{
+
+	background-color: #FEB905;
+}
+
+.quiz-item a{
+	padding: 15px;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.quiz-item:nth-of-type(even){
+
+	background-color: #38B3E4;
 }
 
 

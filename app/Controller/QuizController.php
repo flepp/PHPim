@@ -74,7 +74,6 @@ class QuizController extends Controller
                 $quizManager->insert($data);
                 $_SESSION['successList'][] = 'Le quiz a bien été ajouté!';
             }
-            debug($_SESSION);
             $this->redirectToRoute('quiz_add');
         }
     }
@@ -126,7 +125,6 @@ class QuizController extends Controller
             $quizDelete = $quizManager->delete($id);
             $quizName = $_POST['quizName'];
             $_SESSION['successList'][] = 'Le quiz '.$quizName.' a bien été supprimé!';
-            debug($quizList);
             $this->redirectToRoute('quiz_manage');
             //$this->show('user/admin/activateQuiz', array('quizDelete' => $quizDelete));
         }
@@ -225,8 +223,6 @@ class QuizController extends Controller
                 'qui_day' => $value['qui_day']
             );
         }       
-        debug('http://'.$_SERVER['HTTP_HOST'].$this->generateUrl('user_register'));
-        debug($_SERVER);
         /* ----------------------- Getting the SES_END for users --------------------- */
             if(isset($_SESSION) && !empty($_SESSION)){
                 $id = $_SESSION['user']['session_id'];
