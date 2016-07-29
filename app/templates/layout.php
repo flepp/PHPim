@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +9,7 @@
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/bootstrap.css') ?>">
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/bootstrap-theme.css') ?>">
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
-	<!-- CSS personnel -->
-	<link rel="stylesheet" href="<?= $this->assetUrl('css/michel.css') ?>">
-	<link rel="stylesheet" href="<?= $this->assetUrl('css/paul.css') ?>">
-	<link rel="stylesheet" href="<?= $this->assetUrl('css/ibrahima.css') ?>">
-	<link rel="stylesheet" href="<?= $this->assetUrl('css/philippe.css') ?>">
-	<!-- Pour info: le script doit rester ici SVP -->
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
