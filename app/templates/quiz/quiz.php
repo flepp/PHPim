@@ -6,10 +6,10 @@
 	<?php if (isset($w_user) && is_array($w_user)): ?>
 		<?php if (strtotime($_SESSION['user']['ses_end']) < time()): ?>
 			<?php foreach ($quizList as $key => $val): ?>
-			<div>
+			<div class="row">
 				<h2><?= $key ?></h2>
 				<?php foreach ($quizList[$key] as $index => $value): ?>
-					<div class="quiz-item col-sm-3"><a href="<?= $value['qui_link'] ?>">
+					<div class="quiz-item"><a href="<?= $value['qui_link'] ?>">
 						<?= $value['qui_title'] ?></a>
 					</div>
 				<?php endforeach ?>
@@ -17,10 +17,10 @@
 			<?php endforeach ?>
 		<?php else: ?>
 			<?php foreach ($quizList2 as $key => $val): ?>
-				<div>
+				<div class="row">
 					<h2><?= $key ?></h2>
 					<?php foreach ($quizList2[$key] as $index => $value): ?>
-						<div class="quiz-item col-sm-3"><a href="<?= $value['qui_link'] ?>">
+						<div class="quiz-item"><a href="<?= $value['qui_link'] ?>">
 							<?= $value['qui_title'] ?></a>
 						</div>
 					<?php endforeach ?>
@@ -29,10 +29,10 @@
 		<?php endif ?>
 	<?php else: ?>
 		<?php foreach ($quizList2 as $key => $val): ?>
-			<div>
+			<div class="row">
 				<h2><?= $key ?></h2>
 				<?php foreach ($quizList2[$key] as $index => $value): ?>
-					<div class="quiz-item col-sm-3"><a href="<?= $value['qui_link'] ?>">
+					<div class="quiz-item"><a href="<?= $value['qui_link'] ?>">
 						<?= $value['qui_title'] ?></a>
 					</div>
 				<?php endforeach ?>

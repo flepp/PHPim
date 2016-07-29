@@ -9,9 +9,7 @@
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/bootstrap.css') ?>">
 	<link rel="stylesheet" href="<?= $this->assetUrl('css/bootstrap-theme.css') ?>">
-	<!-- CSS personnel -->
-	<link rel="stylesheet" href="<?= $this->assetUrl('css/philippe.css') ?>">
-	<!-- Pour info: le script doit rester ici SVP -->
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
