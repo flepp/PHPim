@@ -63,7 +63,7 @@ class UsersController extends Controller {
                                 /* --------------- Checking if a value exists in an array with "in_array" function ------------*/
                                 if (in_array($extension, $allowedExtensions)) {
                                     /* --------------- Moving an uploaded file to a new location --------------*/
-                                    if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$pseudo.'.'.$extension)) {
+                                    if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD.'/assets/upload/img/img_'.$pseudo.'.'.$extension)) {
                                         $photo = 'img_'.$pseudo.'.'.$extension;
                                         $detailsUser = new UsersManager();
                                         $userInfo = $detailsUser->find($id);
@@ -431,8 +431,8 @@ class UsersController extends Controller {
                         if (in_array($extension, $allowedExtensions)) {
                             
                             /* ------------------ Moving an uploaded file to a new location ------------------------------ */
-                            if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD.$filename)) {
-                                $_SESSION['filePath'] = IMAGEUPLOAD.$filename;
+                            if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD.'/assets/upload/img/'.$filename)) {
+                                $_SESSION['filePath'] = IMAGEUPLOAD.'/assets/upload/img/'.$filename;
                                                                         
                                 $detailsUser = new UsersManager();
                                 $userInfo = $detailsUser->find($id);
@@ -592,9 +592,9 @@ class UsersController extends Controller {
 
                             if (in_array($extension, $extensionAutorisees)) {
                                 // giving the upload path
-                                if (move_uploaded_file($fichier['tmp_name'], PATHUPLOAD.$filename)) {
-                                    $_SESSION['filePath'] = file_get_contents(PATHUPLOAD.$filename);
-                                    $_SESSION['chemin'] = PATHUPLOAD.$filename;
+                                if (move_uploaded_file($fichier['tmp_name'], PATHUPLOAD.'/assets/upload/text/'.$filename)) {
+                                    $_SESSION['filePath'] = file_get_contents(PATHUPLOAD.'/assets/upload/text/'.$filename);
+                                    $_SESSION['chemin'] = PATHUPLOAD.'/assets/upload/text/'.$filename;
 
                                     $_SESSION['successFile'][] = 'Téléchargement réussi!';                                                                      
                                 }

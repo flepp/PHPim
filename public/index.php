@@ -9,10 +9,9 @@
 	//rares fonctions globales
 	require("../W/globals.php");
 
-	define('PATHUPLOAD', dirname(__FILE__).'/assets/upload/text/');
-	define('PATHIMG', dirname(__FILE__).'/assets/upload/img/');
+	define('PATHUPLOAD', dirname(__FILE__));
 
-	define('IMAGEUPLOAD', dirname(__FILE__).'/assets/upload/img/');
+	define('IMAGEUPLOAD', dirname(__FILE__));
 
 	//instancie notre appli en lui passant la config et les routes
 	$app = new W\App($w_routes, $w_config);
