@@ -12,7 +12,7 @@
 	<div class="container">
 		<div class="row">
 			<?php if ($_SESSION['user']['usr_role'] == 'admin'): ?> 
-					<div class="col-md-6 col-md-push-6">
+					<div class="col-md-6">
 						<form method="post" action="" class="custom-form custom-form-blue">
 							<p class="form-group custom-form-group">Vous êtes connecté en tant que:</p> 
 							<div class="form-group">
@@ -26,7 +26,7 @@
 						</form>
 					</div>
 			<?php endif ?>
-			<div class="col-md-6 col-md-pull-6">
+			<div class="col-md-6">
 				<div class="details-list custom-form-gold">
 					<div class="form-group custom-form-group">
 							<div class="img-wrap">
