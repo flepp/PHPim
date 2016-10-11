@@ -36,7 +36,7 @@
 								<?= $value['ses_name'] ?> du <?= $value['ses_start'] ?> au <?= $value['ses_end'] ?>
 						</p>
 						<div>
-							<button type="button" class="button_edit custom-button custom-button-gold">Editer</button>
+						<button type="button" class="button_edit custom-button custom-button-gold">Editer</button>
 							<?php if($value['ses_status'] == 0): ?>
 								<form class="custom-inline-form" method="POST" action="">
 									<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
@@ -76,26 +76,28 @@
 						<p class="text-capitalize">
 							<?= $value['ses_name'] ?> du <?= $value['ses_start'] ?> au <?= $value['ses_end'] ?>
 						</p>
-						<button type="button" class="button_edit custom-button custom-button-gold">Editer</button>
-						<form method="POST" action="" class="custom-inline-form">
-							<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
-							<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
-							<button type="submit" name="sessionDelete" class="delete  custom-button custom-button-gold">Supprimer</button>
-						</form>
-						<form hidden method="POST" action="" class="show_edit custom-form-blue custom-form custom-form-group">
-							<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
-							<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
-							<div class="form-group">
-								<input type="text" name="sessionName" value="<?= $value['ses_name'] ?>" class="form-control">
-							</div>
-							<div class="form-group">
-								<input type="date" name="sessionStart" value="<?= $value['ses_start'] ?>" class="form-control">
-							</div>
-							<div class="form-group">
-								<input type="date" name="sessionEnd" value="<?= $value['ses_end'] ?>" class="form-control">
-							</div>
-							<button type="submit" name="sessionEdit" class="update custom-button-gold">Modifier</button>
-						</form>
+						<div>
+							<button type="button" class="button_edit custom-button custom-button-gold">Editer</button>
+							<form method="POST" action="" class="custom-inline-form">
+								<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
+								<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
+								<button type="submit" name="sessionDelete" class="delete  custom-button custom-button-gold">Supprimer</button>
+							</form>
+							<form hidden method="POST" action="" class="show_edit custom-form-blue custom-form custom-form-group">
+								<input hidden type="text" name="sessionName" value="<?= $value['ses_name'] ?>">
+								<input hidden type="text" name="sessionId" value="<?= $value['id'] ?>">
+								<div class="form-group">
+									<input type="text" name="sessionName" value="<?= $value['ses_name'] ?>" class="form-control">
+								</div>
+								<div class="form-group">
+									<input type="date" name="sessionStart" value="<?= $value['ses_start'] ?>" class="form-control">
+								</div>
+								<div class="form-group">
+									<input type="date" name="sessionEnd" value="<?= $value['ses_end'] ?>" class="form-control">
+								</div>
+								<button type="submit" name="sessionEdit" class="update custom-button-gold">Modifier</button>
+							</form>
+						</div>
 					<?php endforeach; ?>
 				</div>
 			</div>

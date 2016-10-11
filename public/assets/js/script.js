@@ -69,6 +69,15 @@ $(document).ready(function(){
         e.preventDefault();
         $(this).parent().children(".show_edit").fadeIn('slow');
         $(this).fadeOut('slow');
+        $(this).parent().prepend('<button class="custom-button custom-button-gold cancelEdit">Annuler</button>');
+    });
+
+    $(document).on('click','.cancelEdit',function(){
+        $(this).parent().children(".show_edit").fadeOut('slow');
+        $(this).next().fadeIn('slow');
+        $(this).fadeOut('slow', function(){
+            $(this).remove();
+        });
     });
 });
 
@@ -92,7 +101,7 @@ function geocodeAddress(geocoder, resultsMap) {
                 map: resultsMap,
                 position: results[0].geometry.location
         });
-        } else {
+        }else {
           alert('Geocode was not successful for the following reason: ' + status);
         }
     });
