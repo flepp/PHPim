@@ -63,7 +63,7 @@ class UsersController extends Controller {
                                 /* --------------- Checking if a value exists in an array with "in_array" function ------------*/
                                 if (in_array($extension, $allowedExtensions)) {
                                     /* --------------- Moving an uploaded file to a new location --------------*/
-                                    if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD.'/assets/upload/img/img_'.$pseudo.'.'.$extension)) {
+                                    if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$pseudo.'.'.$extension)) {
                                         $photo = 'img_'.$pseudo.'.'.$extension;
                                         $detailsUser = new UsersManager();
                                         $userInfo = $detailsUser->find($id);
@@ -417,33 +417,34 @@ class UsersController extends Controller {
         }
 
         if(isset($_POST['submitInfo'])) {
+            $userPseudo = $_POST['userpseudo'];
             $validImg = '';
             $allowedExtensions = array ('jpg', 'jpeg', 'gif', 'png');
             foreach ($_FILES as $key => $value) {
                 if (!empty($value) && !empty($value['name'])) {
                     print_r($value);
-                    if ($value['size'] <= 300000) {
+                    if ($value['size'] <= 350000) {
                         $filename = $value['name'];
                         $dotPosition = strrpos($filename, '.');
                         $extension = strtolower(substr($filename, $dotPosition + 1));
 
                         /* ------------------- Checking if a value exists in an array with "in_array" function ---------------- */
                         if (in_array($extension, $allowedExtensions)) {
-                            
+
                             /* ------------------ Moving an uploaded file to a new location ------------------------------ */
-                            if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD.'/assets/upload/img/'.$filename)) {
-                                $_SESSION['filePath'] = IMAGEUPLOAD.'/assets/upload/img/'.$filename;
-                                                                        
-                                $detailsUser = new UsersManager();
-                                $userInfo = $detailsUser->find($id);
-                                $userPhoto = array (
-                                            'usr_photo' => $filename
+                            if (move_uploaded_file($value['tmp_name'], IMAGEUPLOAD."img_".$userPseudo.'.'.$extension)) {
+                                        $photo = 'img_'.$userPseudo.'.'.$extension;
+                                        $detailsUser = new UsersManager();
+                                        $userInfo = $detailsUser->find($id);
+                                        $userPhoto = array (
+                                            'usr_photo' => $photo
                                             );
-                                $id = $userInfo['id'];
-                                if (isset($_POST)) {
-                                    $detailsUser->update($userPhoto, $id);
-                                }
-                            }
+                                        $id = $userInfo['id'];
+                                        if (isset($_POST)) {
+                                            $detailsUser->update($userPhoto, $id);
+                                            $validPhoto = true;
+                                        }
+                                    }
                             else {
                                 $_SESSION['errorList'][] = 'Attention, une erreur est survenue';
                                 $validImg = false;
@@ -457,7 +458,7 @@ class UsersController extends Controller {
                 }
             }
 
-            /* ------------------- Inserting data from POST for "user" statute use ------------------ */
+            /* ------------------- Inserting data from POST for "user" statut use ------------------ */
             /***********Control first name*************/
             $validFirstname = '';
             $userFirstName = isset($_POST['userfirstname']) ? trim($_POST['userfirstname']): '';
@@ -585,16 +586,16 @@ class UsersController extends Controller {
                 foreach ($_FILES as $key => $fichier) {
                     if (!empty($fichier) && !empty($fichier['name'])) {
 
-                        if ($fichier['size'] <= 18388608) {
+                        if ($fichier['size'] <= 8388608) {
                             $filename = $fichier['name'];
                             $dotPos = strrpos($filename, '.');
                             $extension = strtolower(substr($filename, $dotPos+1));
 
                             if (in_array($extension, $extensionAutorisees)) {
                                 // giving the upload path
-                                if (move_uploaded_file($fichier['tmp_name'], PATHUPLOAD.'/assets/upload/text/'.$filename)) {
-                                    $_SESSION['filePath'] = file_get_contents(PATHUPLOAD.'/assets/upload/text/'.$filename);
-                                    $_SESSION['chemin'] = PATHUPLOAD.'/assets/upload/text/'.$filename;
+                                if (move_uploaded_file($fichier['tmp_name'], PATHUPLOAD.$filename)) {
+                                    $_SESSION['filePath'] = file_get_contents(PATHUPLOAD.$filename);
+                                    $_SESSION['chemin'] = PATHUPLOAD.$filename;
 
                                     $_SESSION['successFile'][] = 'Téléchargement réussi!';                                                                      
                                 }
