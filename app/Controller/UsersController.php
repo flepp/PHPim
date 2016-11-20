@@ -125,7 +125,6 @@ class UsersController extends Controller {
                     );
 
                     $AllUsersManager = new UsersManager;
-
                     
                     /*-------------------USER DATABASE CREATION----------------------------*/
                     
@@ -136,15 +135,17 @@ class UsersController extends Controller {
                     $sql = 'CREATE USER \''.$pseudo.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
 
-                    $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'%\'';
+                    $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'%\' WITH GRANT OPTION';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
 
-                    $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'localhost\'';
+                    $sql = 'GRANT ALL PRIVILEGES ON `'.$pseudo.'\_%` .  * TO \''.$pseudo.'\'@\'localhost\' WITH GRANT OPTION';
                     $sth = $AllUsersManager->connectionToDatabase($sql);
+                    
                     for($i=0; $i<4; $i++){
                         $sql = 'CREATE DATABASE IF NOT EXISTS `'.$pseudo.'_sql'.$i.'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
                         $sth = $AllUsersManager->connectionToDatabase($sql);
                     }
+
                     /* ----------------- Redirection to login page ------------------- */
                     $this->redirectToRoute('user_login');
                 }

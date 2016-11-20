@@ -1,4 +1,4 @@
-<?php $this->layout('layout-home', ['title' => 'Accueil !']) ?>
+<?php $this->layout('layout-home', ['title' => 'PHPim']) ?>
 
 <?php $this->start('main_content') ?>
 <section class="home-header">
